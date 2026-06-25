@@ -1,5 +1,5 @@
 {
-  "name": "@echoblocks/shadowspace-sdk",
+  "name": "@tetrac/echoblocks-ts-sdk",
   "version": "0.1.0",
   "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
   "license": "MIT",

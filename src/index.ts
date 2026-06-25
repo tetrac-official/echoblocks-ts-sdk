@@ -1,7 +1,7 @@
-// Public API surface for @echoblocks/shadowspace-sdk.
+// Public API surface for @tetrac/echoblocks-ts-sdk.
 
 // Primary entry point.
-export { ShadowSpaceClient } from "./client.js";
+export { EchoBlocksClient } from "./client.js";
 export type {
   ClientComponents,
   FromEnvOptions,

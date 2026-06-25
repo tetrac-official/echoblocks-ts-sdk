@@ -1,6 +1,6 @@
 // Shared bootstrap for the live devnet test suite.
 //
-// Loads `.env.local` once, builds `ShadowSpaceClient` instances against the real
+// Loads `.env.local` once, builds `EchoBlocksClient` instances against the real
 // devnet deployment, and provides the small utilities the live tests need:
 // unique on-chain ids, a balance guard, and a fully-provisioned "secondary actor"
 // (funded by a transfer from the primary wallet) so cross-user paths — like,
@@ -19,7 +19,7 @@ import {
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
 
-import { ShadowSpaceClient, type FromEnvOptions } from "../src/index.js";
+import { EchoBlocksClient, type FromEnvOptions } from "../src/index.js";
 import { loadKeypair } from "../src/wallet.js";
 
 // ── env ──────────────────────────────────────────────────────────────────────
@@ -36,15 +36,15 @@ export function loadEnv(): void {
 
 // ── clients ──────────────────────────────────────────────────────────────────
 /** A client built from `.env.local` (the funded primary signer). */
-export function primaryClient(overrides: FromEnvOptions = {}): ShadowSpaceClient {
+export function primaryClient(overrides: FromEnvOptions = {}): EchoBlocksClient {
   loadEnv();
-  return ShadowSpaceClient.fromEnv({ loadEnvFile: false, ...overrides });
+  return EchoBlocksClient.fromEnv({ loadEnvFile: false, ...overrides });
 }
 
 /** A read-only client (no signer) from `.env.local`. */
-export function readOnlyClient(): ShadowSpaceClient {
+export function readOnlyClient(): EchoBlocksClient {
   loadEnv();
-  return ShadowSpaceClient.fromEnv({ loadEnvFile: false, readOnly: true });
+  return EchoBlocksClient.fromEnv({ loadEnvFile: false, readOnly: true });
 }
 
 /** The raw primary keypair (for signing funding transfers directly). */
@@ -64,7 +64,7 @@ export function uid(): bigint {
 
 // ── balance guard ────────────────────────────────────────────────────────────
 /** Throw a clear, actionable error if the signer is underfunded for live writes. */
-export async function assertFunded(client: ShadowSpaceClient, minSol = 0.05): Promise<number> {
+export async function assertFunded(client: EchoBlocksClient, minSol = 0.05): Promise<number> {
   const sol = await client.getBalance();
   if (sol < minSol) {
     throw new Error(
@@ -78,7 +78,7 @@ export async function assertFunded(client: ShadowSpaceClient, minSol = 0.05): Pr
 // ── profile bootstrap ────────────────────────────────────────────────────────
 /** Ensure the client's signer has a profile (idempotent: creates only if missing). */
 export async function ensureProfile(
-  client: ShadowSpaceClient,
+  client: EchoBlocksClient,
   username: string,
   displayName = "",
   bio = "",
@@ -91,7 +91,7 @@ export async function ensureProfile(
 
 // ── secondary actor (funded via transfer from primary) ───────────────────────
 export interface SecondaryActor {
-  client: ShadowSpaceClient;
+  client: EchoBlocksClient;
   keypair: Keypair;
   /** Return any remaining lamports to the primary wallet (best-effort). */
   sweep(): Promise<void>;
@@ -102,7 +102,7 @@ export interface SecondaryActor {
  * transferring `sol` from the primary signer (deterministic — no flaky airdrop),
  * then creates its profile. Returns `null` if funding fails, so callers can skip.
  */
-export async function provisionSecondary(primary: ShadowSpaceClient, sol = 0.02): Promise<SecondaryActor | null> {
+export async function provisionSecondary(primary: EchoBlocksClient, sol = 0.02): Promise<SecondaryActor | null> {
   const payer = primaryKeypair();
   const secondary = Keypair.generate();
   const lamports = Math.floor(sol * LAMPORTS_PER_SOL);

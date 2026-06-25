@@ -2,10 +2,10 @@
  * Read-only example: no PRIVATE_KEY required. Probes RPC health and lists some
  * on-chain state. Run with:  npm run example:read
  */
-import { ShadowSpaceClient } from "../src/index.js";
+import { EchoBlocksClient } from "../src/index.js";
 
 async function main(): Promise<void> {
-  const client = ShadowSpaceClient.fromEnv({ readOnly: true });
+  const client = EchoBlocksClient.fromEnv({ readOnly: true });
   console.log(`Cluster: ${client.cluster}  |  Program: ${client.programId.toBase58()}`);
 
   // RPC pool health (reachability, correct cluster, slot lag).

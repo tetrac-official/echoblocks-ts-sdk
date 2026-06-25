@@ -1,4 +1,4 @@
-# @echoblocks/shadowspace-sdk
+# @tetrac/echoblocks-ts-sdk
 
 A Node.js / TypeScript SDK for the **ShadowSpace** Solana program — a social app
 (profiles, posts, likes, comments, reactions, follows, communities, polls, and 1:1
@@ -30,7 +30,7 @@ switch** — all configured from a `.env` file. No wallet is created: a single
 ## Install
 
 ```bash
-npm install @echoblocks/shadowspace-sdk
+npm install @tetrac/echoblocks-ts-sdk
 # peer runtime deps are bundled as dependencies: @solana/web3.js, @coral-xyz/anchor
 ```
 
@@ -62,10 +62,10 @@ See [`.env.example`](./.env.example) for every variable and its default.
 ## Quick start
 
 ```ts
-import { ShadowSpaceClient } from "@echoblocks/shadowspace-sdk";
+import { EchoBlocksClient } from "@tetrac/echoblocks-ts-sdk";
 
 // Reads PRIVATE_KEY, IS_MAINNET, SOLANA_PDA_ADDRESS, RPC_* from the environment.
-const client = ShadowSpaceClient.fromEnv();
+const client = EchoBlocksClient.fromEnv();
 
 // One-time: create your on-chain profile.
 await client.createProfile("satoshi", "Satoshi", "gm");
@@ -98,7 +98,7 @@ await client.deletePost({ postId: 12345 });
 ### Read without a wallet
 
 ```ts
-const ro = ShadowSpaceClient.fromEnv({ readOnly: true });
+const ro = EchoBlocksClient.fromEnv({ readOnly: true });
 
 await ro.healthCheck(); // probe every RPC provider (reachability/cluster/slot)
 await ro.getProfile("<pubkey>"); // decoded Profile | null
@@ -109,7 +109,7 @@ await ro.followers("<pubkey>");
 
 ## API overview
 
-`ShadowSpaceClient.fromEnv(overrides?)` builds the client. Every override is
+`EchoBlocksClient.fromEnv(overrides?)` builds the client. Every override is
 optional and takes precedence over the matching env var (`isMainnet`, `programId`,
 `treasury`, `commitment`, `rpcUrl`, `keypair`, `privateKey`, `readOnly`, …).
 

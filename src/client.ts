@@ -1,4 +1,4 @@
-// ShadowSpaceClient — the single entry point. Wraps the typed Anchor program with
+// EchoBlocksClient — the single entry point. Wraps the typed Anchor program with
 // ergonomic methods for every on-chain instruction (post, like, comment, follow,
 // communities, polls, chat) plus typed reads. PDAs are derived automatically; the
 // signer from PRIVATE_KEY pays and signs every write.
@@ -129,7 +129,7 @@ export interface SendMessageInput {
   content: string;
 }
 
-export class ShadowSpaceClient {
+export class EchoBlocksClient {
   readonly connection: Connection;
   readonly program: Program<Shadowspace>;
   readonly pdas: Pdas;
@@ -151,7 +151,7 @@ export class ShadowSpaceClient {
    * `PRIVATE_KEY`, `IS_MAINNET`, `SOLANA_PDA_ADDRESS`, `RPC_NODE_URL`, and the RPC
    * provider keys. If no signer is available it returns a read-only client.
    */
-  static fromEnv(options: FromEnvOptions = {}): ShadowSpaceClient {
+  static fromEnv(options: FromEnvOptions = {}): EchoBlocksClient {
     const { keypair, privateKey, readOnly, loadEnvFile = true, ...overrides } = options;
     if (loadEnvFile) loadDotenv();
 
@@ -170,7 +170,7 @@ export class ShadowSpaceClient {
     const program = buildProgram(connection, wallet, config.programId, config.commitment);
     const pdas = new Pdas(config.programId);
 
-    return new ShadowSpaceClient({ connection, program, pdas, pool, config, keypair: signer });
+    return new EchoBlocksClient({ connection, program, pdas, pool, config, keypair: signer });
   }
 
   // ── Identity / introspection ───────────────────────────────────────────────

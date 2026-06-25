@@ -4,10 +4,10 @@
  *
  * Requires a funded devnet wallet in PRIVATE_KEY (see .env.example).
  */
-import { ShadowSpaceClient } from "../src/index.js";
+import { EchoBlocksClient } from "../src/index.js";
 
 async function main(): Promise<void> {
-  const client = ShadowSpaceClient.fromEnv();
+  const client = EchoBlocksClient.fromEnv();
   const me = client.walletPublicKey;
   console.log(`Wallet:  ${me.toBase58()}`);
   console.log(`Cluster: ${client.cluster}  |  Program: ${client.programId.toBase58()}`);
