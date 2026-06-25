@@ -98,44 +98,56 @@ export interface SecondaryActor {
 }
 
 /**
- * Provision a fresh, funded second wallet for cross-user tests. Funds it by
- * transferring `sol` from the primary signer (deterministic — no flaky airdrop),
- * then creates its profile. Returns `null` if funding fails, so callers can skip.
+ * Provision a fresh wallet funded by a transfer from the primary signer
+ * (deterministic — no flaky airdrop). Does NOT create a profile, so callers can
+ * exercise the create-profile path themselves (e.g. uniqueness tests). Returns
+ * `null` if funding fails, so callers can skip.
  */
-export async function provisionSecondary(primary: EchoBlocksClient, sol = 0.02): Promise<SecondaryActor | null> {
+export async function fundFreshWallet(primary: EchoBlocksClient, sol = 0.02): Promise<SecondaryActor | null> {
   const payer = primaryKeypair();
-  const secondary = Keypair.generate();
+  const wallet = Keypair.generate();
   const lamports = Math.floor(sol * LAMPORTS_PER_SOL);
 
   try {
     const tx = new Transaction().add(
-      SystemProgram.transfer({ fromPubkey: payer.publicKey, toPubkey: secondary.publicKey, lamports }),
+      SystemProgram.transfer({ fromPubkey: payer.publicKey, toPubkey: wallet.publicKey, lamports }),
     );
     await sendAndConfirmTransaction(primary.connection, tx, [payer], { commitment: "confirmed" });
   } catch (err) {
-    console.warn(`  ⚠️  could not fund secondary actor, skipping cross-user tests: ${(err as Error).message}`);
+    console.warn(`  ⚠️  could not fund a fresh wallet, skipping dependent tests: ${(err as Error).message}`);
     return null;
   }
 
-  const client = primaryClient({ keypair: secondary });
-  await ensureProfile(client, `t${shortId(secondary.publicKey)}`, "Secondary", "cross-user test actor");
+  const client = primaryClient({ keypair: wallet });
 
   const sweep = async (): Promise<void> => {
     try {
-      const bal = await client.connection.getBalance(secondary.publicKey);
+      const bal = await client.connection.getBalance(wallet.publicKey);
       const fee = 5000; // 1 signature
       if (bal > fee) {
         const tx = new Transaction().add(
-          SystemProgram.transfer({ fromPubkey: secondary.publicKey, toPubkey: payer.publicKey, lamports: bal - fee }),
+          SystemProgram.transfer({ fromPubkey: wallet.publicKey, toPubkey: payer.publicKey, lamports: bal - fee }),
         );
-        await sendAndConfirmTransaction(primary.connection, tx, [secondary], { commitment: "confirmed" });
+        await sendAndConfirmTransaction(primary.connection, tx, [wallet], { commitment: "confirmed" });
       }
     } catch {
       /* best-effort: leftover dust on the ephemeral key is acceptable */
     }
   };
 
-  return { client, keypair: secondary, sweep };
+  return { client, keypair: wallet, sweep };
+}
+
+/**
+ * Provision a fresh, funded second wallet for cross-user tests — like
+ * {@link fundFreshWallet} but also creates the wallet's profile. Returns `null`
+ * if funding fails, so callers can skip.
+ */
+export async function provisionSecondary(primary: EchoBlocksClient, sol = 0.02): Promise<SecondaryActor | null> {
+  const actor = await fundFreshWallet(primary, sol);
+  if (!actor) return null;
+  await ensureProfile(actor.client, `t${shortId(actor.keypair.publicKey)}`, "Secondary", "cross-user test actor");
+  return actor;
 }
 
 /** A short, deterministic, username-safe tag derived from a pubkey (≤16 bytes). */

@@ -242,11 +242,14 @@ export class EchoBlocksClient {
     this.checkLen("bio", bio, LIMITS.BIO);
 
     const profile = this.pdas.profile(owner);
+    // Username-uniqueness registry — the program `init`s this PDA (seeded by the
+    // username), so creating a profile with a taken handle fails on-chain.
+    const usernameRegistry = this.pdas.usernameRegistry(username);
     const signature = await this.program.methods
       .createProfile(username, displayName, bio)
-      .accountsPartial({ profile, user: owner, payer: owner, systemProgram: SystemProgram.programId })
+      .accountsPartial({ profile, usernameRegistry, user: owner, payer: owner, systemProgram: SystemProgram.programId })
       .rpc(this.confirmOptions(opts));
-    return { signature, accounts: { profile } };
+    return { signature, accounts: { profile, usernameRegistry } };
   }
 
   /** Resize an existing profile to the current schema (after a program upgrade). */
@@ -451,17 +454,21 @@ export class EchoBlocksClient {
 
     const community = this.pdas.community(input.communityId);
     const creatorProfile = this.pdas.profile(owner);
+    // Community-name-uniqueness registry — the program `init`s this PDA (seeded by
+    // the name), so a second community with the same name fails on-chain.
+    const nameRegistry = this.pdas.communityNameRegistry(input.name);
     const signature = await this.program.methods
       .createCommunity(this.bn(input.communityId), input.name, description, avatarUrl)
       .accountsPartial({
         community,
+        nameRegistry,
         creatorProfile,
         user: owner,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
       .rpc(this.confirmOptions(opts));
-    return { signature, accounts: { community, creatorProfile } };
+    return { signature, accounts: { community, creatorProfile, nameRegistry } };
   }
 
   /** Join a community (creates the caller's membership PDA). */

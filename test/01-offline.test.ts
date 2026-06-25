@@ -36,7 +36,8 @@ describe("config", () => {
     assert.equal(cfg.treasury.toBase58(), DEFAULT_TREASURY.toBase58());
     assert.equal(cfg.commitment, "confirmed");
     assert.equal(cfg.rpc.expectedGenesis, DEVNET_GENESIS);
-    assert.ok(cfg.rpc.customUrl, "RPC_NODE_URL should be set from env");
+    // RPC is driven by HELIUS_API_KEY (RPC_NODE_URL is intentionally unset — the
+    // keyed Helius provider is the pool primary). customUrl may be undefined.
     assert.ok(cfg.rpc.heliusApiKey, "HELIUS_API_KEY should be set from env");
   });
 

@@ -1,253 +1,41 @@
 /**
- * Auto-generated TypeScript IDL for the ShadowSpace program.
+ * Auto-generated TypeScript IDL for the EchoBlocks / ShadowSpace program.
  *
- * Source: the on-chain Anchor IDL of the devnet program
- * CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh (fetched with `anchor idl fetch`,
- * see src/idl/shadowspace.json for the raw on-chain form), converted to camelCase
- * with Anchor's `convertIdlToCamelCase` so the type matches the namespaces the
- * `Program` runtime exposes (program.methods.createPost, program.account.profile, ...).
+ * Source: Anchor build of the devnet program
+ * CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh (camelCase form, matching the runtime
+ * namespaces). Raw on-chain IDL is in src/idl/shadowspace.json.
  *
- * Do not edit by hand. To update: re-fetch the IDL and regenerate.
+ * Regenerate after a program change with the project's IDL regen step.
  */
 
-/* eslint-disable */
 export type Shadowspace = {
-  "accounts": [
-    {
-      "discriminator": [
-        170,
-        4,
-        71,
-        128,
-        185,
-        103,
-        250,
-        177
-      ],
-      "name": "chat"
-    },
-    {
-      "discriminator": [
-        150,
-        135,
-        96,
-        244,
-        55,
-        199,
-        50,
-        65
-      ],
-      "name": "comment"
-    },
-    {
-      "discriminator": [
-        192,
-        73,
-        211,
-        158,
-        178,
-        81,
-        19,
-        112
-      ],
-      "name": "community"
-    },
-    {
-      "discriminator": [
-        174,
-        177,
-        136,
-        60,
-        138,
-        84,
-        148,
-        209
-      ],
-      "name": "followAccount"
-    },
-    {
-      "discriminator": [
-        179,
-        237,
-        53,
-        5,
-        91,
-        236,
-        161,
-        50
-      ],
-      "name": "likeRecord"
-    },
-    {
-      "discriminator": [
-        231,
-        141,
-        180,
-        98,
-        109,
-        168,
-        175,
-        166
-      ],
-      "name": "membership"
-    },
-    {
-      "discriminator": [
-        110,
-        151,
-        23,
-        110,
-        198,
-        6,
-        125,
-        181
-      ],
-      "name": "message"
-    },
-    {
-      "discriminator": [
-        110,
-        234,
-        167,
-        188,
-        231,
-        136,
-        153,
-        111
-      ],
-      "name": "poll"
-    },
-    {
-      "discriminator": [
-        60,
-        154,
-        212,
-        155,
-        112,
-        25,
-        150,
-        182
-      ],
-      "name": "pollVote"
-    },
-    {
-      "discriminator": [
-        8,
-        147,
-        90,
-        186,
-        185,
-        56,
-        192,
-        150
-      ],
-      "name": "post"
-    },
-    {
-      "discriminator": [
-        184,
-        101,
-        165,
-        188,
-        95,
-        63,
-        127,
-        188
-      ],
-      "name": "profile"
-    },
-    {
-      "discriminator": [
-        226,
-        61,
-        100,
-        191,
-        223,
-        221,
-        142,
-        139
-      ],
-      "name": "reaction"
-    }
-  ],
   "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
-  "errors": [
-    {
-      "code": 6000,
-      "msg": "Already following this user",
-      "name": "alreadyFollowing"
-    },
-    {
-      "code": 6001,
-      "msg": "Not following this user",
-      "name": "notFollowing"
-    },
-    {
-      "code": 6002,
-      "msg": "Unauthorized",
-      "name": "unauthorized"
-    },
-    {
-      "code": 6003,
-      "msg": "Content too long",
-      "name": "contentTooLong"
-    },
-    {
-      "code": 6004,
-      "msg": "Cannot follow yourself",
-      "name": "cannotFollowSelf"
-    },
-    {
-      "code": 6005,
-      "msg": "Invalid amount",
-      "name": "invalidAmount"
-    },
-    {
-      "code": 6006,
-      "msg": "Community is full (max 100 members)",
-      "name": "communityFull"
-    },
-    {
-      "code": 6007,
-      "msg": "Account already initialized",
-      "name": "alreadyInitialized"
-    },
-    {
-      "code": 6008,
-      "msg": "Poll must have 2-4 options",
-      "name": "invalidPollOptions"
-    },
-    {
-      "code": 6009,
-      "msg": "Invalid poll choice",
-      "name": "invalidPollChoice"
-    },
-    {
-      "code": 6010,
-      "msg": "Poll has ended",
-      "name": "pollAlreadyEnded"
-    },
-    {
-      "code": 6011,
-      "msg": "Already liked this post",
-      "name": "alreadyLiked"
-    },
-    {
-      "code": 6012,
-      "msg": "Cannot like your own post",
-      "name": "cannotLikeOwnPost"
-    },
-    {
-      "code": 6013,
-      "msg": "Invalid reaction type",
-      "name": "invalidReactionType"
-    }
-  ],
+  "metadata": {
+    "name": "shadowspace",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "ShadowSpace - Social on Solana"
+  },
   "instructions": [
     {
+      "name": "closeChat",
+      "docs": [
+        "Close a legacy chat account and return rent"
+      ],
+      "discriminator": [
+        182,
+        227,
+        125,
+        158,
+        213,
+        132,
+        147,
+        192
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -264,19 +52,18 @@ export type Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -285,26 +72,27 @@ export type Shadowspace = {
           "name": "chatId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        182,
-        227,
-        125,
-        158,
-        213,
-        132,
-        147,
-        192
-      ],
-      "docs": [
-        "Close a legacy chat account and return rent"
-      ],
-      "name": "closeChat"
+      ]
     },
     {
+      "name": "closeComment",
+      "docs": [
+        "Close a comment account and return rent"
+      ],
+      "discriminator": [
+        220,
+        161,
+        167,
+        122,
+        254,
+        149,
+        11,
+        78
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -328,11 +116,11 @@ export type Shadowspace = {
                 "path": "commentIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -345,28 +133,27 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -379,26 +166,24 @@ export type Shadowspace = {
           "name": "commentIndex",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        220,
-        161,
-        167,
-        122,
-        254,
-        149,
-        11,
-        78
-      ],
-      "docs": [
-        "Close a comment account and return rent"
-      ],
-      "name": "closeComment"
+      ]
     },
     {
+      "name": "closeCommunity",
+      "discriminator": [
+        193,
+        80,
+        180,
+        65,
+        226,
+        240,
+        125,
+        104
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -420,13 +205,12 @@ export type Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -438,23 +222,27 @@ export type Shadowspace = {
           "name": "communityId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        193,
-        80,
-        180,
-        65,
-        226,
-        240,
-        125,
-        104
-      ],
-      "name": "closeCommunity"
+      ]
     },
     {
+      "name": "closeMessage",
+      "docs": [
+        "Close a legacy message account and return rent"
+      ],
+      "discriminator": [
+        53,
+        48,
+        100,
+        249,
+        207,
+        188,
+        96,
+        22
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -478,19 +266,18 @@ export type Shadowspace = {
                 "path": "messageIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -503,26 +290,24 @@ export type Shadowspace = {
           "name": "messageIndex",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        53,
-        48,
-        100,
-        249,
-        207,
-        188,
-        96,
-        22
-      ],
-      "docs": [
-        "Close a legacy message account and return rent"
-      ],
-      "name": "closeMessage"
+      ]
     },
     {
+      "name": "closePoll",
+      "discriminator": [
+        139,
+        213,
+        162,
+        65,
+        172,
+        150,
+        123,
+        67
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -535,22 +320,21 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "poll"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -558,23 +342,27 @@ export type Shadowspace = {
           "name": "pollId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        139,
-        213,
-        162,
-        65,
-        172,
-        150,
-        123,
-        67
-      ],
-      "name": "closePoll"
+      ]
     },
     {
+      "name": "closePost",
+      "docs": [
+        "Close a post account and return rent to the treasury"
+      ],
+      "discriminator": [
+        131,
+        190,
+        34,
+        94,
+        190,
+        71,
+        183,
+        81
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -595,11 +383,11 @@ export type Shadowspace = {
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -619,19 +407,18 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -640,62 +427,13 @@ export type Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        131,
-        190,
-        34,
-        94,
-        190,
-        71,
-        183,
-        81
-      ],
-      "docs": [
-        "Close a post account and return rent to the treasury"
-      ],
-      "name": "closePost"
+      ]
     },
     {
-      "accounts": [
-        {
-          "name": "profile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Treasury wallet — rent refund destination"
-          ],
-          "name": "treasury",
-          "writable": true
-        }
+      "name": "closeProfile",
+      "docs": [
+        "Close a profile account and return rent to the treasury"
       ],
-      "args": [],
       "discriminator": [
         167,
         36,
@@ -706,15 +444,65 @@ export type Shadowspace = {
         46,
         207
       ],
-      "docs": [
-        "Close a profile account and return rent to the treasury"
+      "accounts": [
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Treasury wallet — rent refund destination"
+          ],
+          "writable": true
+        }
       ],
-      "name": "closeProfile"
+      "args": []
     },
     {
+      "name": "closeReaction",
+      "docs": [
+        "Close a reaction account and return rent"
+      ],
+      "discriminator": [
+        92,
+        52,
+        140,
+        129,
+        113,
+        132,
+        43,
+        244
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -739,8 +527,7 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -756,9 +543,9 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -769,14 +556,14 @@ export type Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -785,26 +572,24 @@ export type Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        92,
-        52,
-        140,
-        129,
-        113,
-        132,
-        43,
-        244
-      ],
-      "docs": [
-        "Close a reaction account and return rent"
-      ],
-      "name": "closeReaction"
+      ]
     },
     {
+      "name": "createChat",
+      "discriminator": [
+        133,
+        186,
+        254,
+        72,
+        143,
+        178,
+        221,
+        28
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -821,28 +606,27 @@ export type Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user1",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "user2"
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -850,23 +634,24 @@ export type Shadowspace = {
           "name": "chatId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        133,
-        186,
-        254,
-        72,
-        143,
-        178,
-        221,
-        28
-      ],
-      "name": "createChat"
+      ]
     },
     {
+      "name": "createComment",
+      "discriminator": [
+        236,
+        232,
+        11,
+        180,
+        70,
+        206,
+        73,
+        145
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -890,11 +675,11 @@ export type Shadowspace = {
                 "path": "commentIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -907,17 +692,16 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "commenterProfile",
@@ -936,29 +720,29 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "commenterProfile.owner"
+                "path": "commenter_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "author",
           "docs": [
             "The commenter — must be the commenter_profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -974,23 +758,24 @@ export type Shadowspace = {
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        236,
-        232,
-        11,
-        180,
-        70,
-        206,
-        73,
-        145
-      ],
-      "name": "createComment"
+      ]
     },
     {
+      "name": "createCommunity",
+      "discriminator": [
+        203,
+        214,
+        176,
+        194,
+        13,
+        207,
+        22,
+        60
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1012,8 +797,42 @@ export type Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "nameRegistry",
+          "docs": [
+            "Community-name registry — `init` makes a duplicate name fail: a second",
+            "community claiming the same name (even with a different id) aborts the tx."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121,
+                  95,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "name"
+              }
+            ]
+          }
         },
         {
           "name": "creatorProfile",
@@ -1040,17 +859,17 @@ export type Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1070,23 +889,24 @@ export type Shadowspace = {
           "name": "avatarUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        203,
-        214,
-        176,
-        194,
-        13,
-        207,
-        22,
-        60
-      ],
-      "name": "createCommunity"
+      ]
     },
     {
+      "name": "createPoll",
+      "discriminator": [
+        182,
+        171,
+        112,
+        238,
+        6,
+        219,
+        14,
+        110
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1099,20 +919,20 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1132,22 +952,21 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1183,23 +1002,24 @@ export type Shadowspace = {
           "name": "endsAt",
           "type": "i64"
         }
-      ],
-      "discriminator": [
-        182,
-        171,
-        112,
-        238,
-        6,
-        219,
-        14,
-        110
-      ],
-      "name": "createPoll"
+      ]
     },
     {
+      "name": "createPost",
+      "discriminator": [
+        123,
+        92,
+        184,
+        29,
+        231,
+        24,
+        15,
+        202
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1212,20 +1032,20 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1241,30 +1061,29 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "The post author — must be the profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1280,23 +1099,24 @@ export type Shadowspace = {
           "name": "isPrivate",
           "type": "bool"
         }
-      ],
-      "discriminator": [
-        123,
-        92,
-        184,
-        29,
-        231,
-        24,
-        15,
-        202
-      ],
-      "name": "createPost"
+      ]
     },
     {
+      "name": "createProfile",
+      "discriminator": [
+        225,
+        205,
+        234,
+        143,
+        17,
+        186,
+        50,
+        220
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1316,25 +1136,53 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "usernameRegistry",
+          "docs": [
+            "Username registry — `init` (not `init_if_needed`) makes a duplicate username",
+            "fail: claiming an already-taken handle aborts the transaction."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "username"
+              }
+            ]
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — can be a server keypair for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1350,26 +1198,27 @@ export type Shadowspace = {
           "name": "bio",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        225,
-        205,
-        234,
-        143,
-        17,
-        186,
-        50,
-        220
-      ],
-      "name": "createProfile"
+      ]
     },
     {
+      "name": "editPost",
+      "discriminator": [
+        218,
+        25,
+        82,
+        105,
+        200,
+        189,
+        238,
+        75
+      ],
       "accounts": [
         {
+          "name": "post",
           "docs": [
             "The post PDA — seeded by the author's pubkey, so only the real author's post is found"
           ],
-          "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1390,14 +1239,13 @@ export type Shadowspace = {
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "Must be the original author — if anyone else signs, the seed/constraint check fails"
           ],
-          "name": "author",
           "signer": true
         }
       ],
@@ -1410,23 +1258,24 @@ export type Shadowspace = {
           "name": "newContent",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        218,
-        25,
-        82,
-        105,
-        200,
-        189,
-        238,
-        75
-      ],
-      "name": "editPost"
+      ]
     },
     {
+      "name": "followUser",
+      "discriminator": [
+        126,
+        176,
+        97,
+        36,
+        63,
+        145,
+        4,
+        134
+      ],
       "accounts": [
         {
           "name": "followAccount",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1441,161 +1290,21 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followerProfile.owner"
+                "path": "follower_profile.owner",
+                "account": "profile"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followerProfile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "followingProfile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "account": "profile",
-                "kind": "account",
-                "path": "followingProfile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
-          ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
-        }
-      ],
-      "args": [],
-      "discriminator": [
-        126,
-        176,
-        97,
-        36,
-        63,
-        145,
-        4,
-        134
-      ],
-      "name": "followUser"
-    },
-    {
-      "accounts": [
-        {
-          "name": "membership",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  109,
-                  101,
-                  109,
-                  98,
-                  101,
-                  114,
-                  115,
-                  104,
-                  105,
-                  112
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "community"
-              },
-              {
-                "account": "profile",
-                "kind": "account",
-                "path": "memberProfile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "community",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  109,
-                  117,
-                  110,
-                  105,
-                  116,
-                  121
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "communityId"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "memberProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1618,26 +1327,52 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "followingProfile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "following_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "docs": [
+            "Fee payer — can be a server keypair for gasless UX"
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [
-        {
-          "name": "communityId",
-          "type": "u64"
-        }
-      ],
+      "args": []
+    },
+    {
+      "name": "joinCommunity",
       "discriminator": [
         252,
         106,
@@ -1648,12 +1383,10 @@ export type Shadowspace = {
         28,
         232
       ],
-      "name": "joinCommunity"
-    },
-    {
       "accounts": [
         {
           "name": "membership",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1676,16 +1409,16 @@ export type Shadowspace = {
                 "path": "community"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "memberProfile.owner"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1707,8 +1440,7 @@ export type Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "memberProfile",
@@ -1734,12 +1466,128 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "communityId",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "leaveCommunity",
+      "discriminator": [
+        218,
+        140,
+        41,
+        66,
+        8,
+        140,
+        33,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "membership",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  109,
+                  98,
+                  101,
+                  114,
+                  115,
+                  104,
+                  105,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community"
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "communityId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "memberProfile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
           "docs": [
             "Must be the profile owner — prevents others from kicking members"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -1751,23 +1599,24 @@ export type Shadowspace = {
           "name": "communityId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        218,
-        140,
-        41,
-        66,
-        8,
-        140,
-        33,
-        161
-      ],
-      "name": "leaveCommunity"
+      ]
     },
     {
+      "name": "likePost",
+      "discriminator": [
+        45,
+        242,
+        154,
+        71,
+        63,
+        133,
+        54,
+        186
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1780,17 +1629,16 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
@@ -1809,18 +1657,19 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "likeRecord",
           "docs": [
             "One LikeRecord PDA per (post, liker) — init will fail if they've already liked"
           ],
-          "name": "likeRecord",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1841,27 +1690,26 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "user",
           "docs": [
             "The liker — must be the profile owner (read-only, no SOL needed)"
           ],
-          "name": "user",
           "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Treasury pays for like_record rent"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1869,23 +1717,28 @@ export type Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        45,
-        242,
-        154,
-        71,
-        63,
-        133,
-        54,
-        186
-      ],
-      "name": "likePost"
+      ]
     },
     {
+      "name": "migrateProfile",
+      "docs": [
+        "Resize an existing profile account to the current schema size.",
+        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
+      ],
+      "discriminator": [
+        224,
+        187,
+        132,
+        189,
+        185,
+        163,
+        183,
+        237
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1905,40 +1758,36 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [],
-      "discriminator": [
-        224,
-        187,
-        132,
-        189,
-        185,
-        163,
-        183,
-        237
-      ],
-      "docs": [
-        "Resize an existing profile account to the current schema size.",
-        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
-      ],
-      "name": "migrateProfile"
+      "args": []
     },
     {
+      "name": "reactToPost",
+      "discriminator": [
+        186,
+        193,
+        53,
+        26,
+        172,
+        69,
+        217,
+        231
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1959,13 +1808,12 @@ export type Shadowspace = {
                 "path": "post"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "reactorProfile.owner"
+                "path": "reactor_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -1981,9 +1829,9 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -2009,29 +1857,29 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "reactorProfile.owner"
+                "path": "reactor_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "user",
           "docs": [
             "The reactor — must be the reactor_profile owner"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2043,23 +1891,24 @@ export type Shadowspace = {
           "name": "reactionType",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        186,
-        193,
-        53,
-        26,
-        172,
-        69,
-        217,
-        231
-      ],
-      "name": "reactToPost"
+      ]
     },
     {
+      "name": "sendMessage",
+      "discriminator": [
+        57,
+        40,
+        34,
+        178,
+        189,
+        10,
+        65,
+        26
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2083,11 +1932,11 @@ export type Shadowspace = {
                 "path": "messageIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2104,28 +1953,27 @@ export type Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "sender",
           "docs": [
             "Message sender — must be a participant in the chat"
           ],
-          "name": "sender",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2141,23 +1989,24 @@ export type Shadowspace = {
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        57,
-        40,
-        34,
-        178,
-        189,
-        10,
-        65,
-        26
-      ],
-      "name": "sendMessage"
+      ]
     },
     {
+      "name": "unfollowUser",
+      "discriminator": [
+        204,
+        183,
+        196,
+        110,
+        97,
+        165,
+        226,
+        213
+      ],
       "accounts": [
         {
           "name": "followAccount",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2172,21 +2021,21 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followerProfile.owner"
+                "path": "follower_profile.owner",
+                "account": "profile"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followerProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2206,11 +2055,11 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followingProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2226,44 +2075,44 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
-      "args": [],
-      "discriminator": [
-        204,
-        183,
-        196,
-        110,
-        97,
-        165,
-        226,
-        213
-      ],
-      "name": "unfollowUser"
+      "args": []
     },
     {
+      "name": "updateCommunity",
+      "discriminator": [
+        250,
+        158,
+        38,
+        207,
+        116,
+        171,
+        210,
+        51
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2285,13 +2134,12 @@ export type Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -2307,23 +2155,24 @@ export type Shadowspace = {
           "name": "avatarUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        250,
-        158,
-        38,
-        207,
-        116,
-        171,
-        210,
-        51
-      ],
-      "name": "updateCommunity"
+      ]
     },
     {
+      "name": "updateProfile",
+      "discriminator": [
+        98,
+        67,
+        99,
+        206,
+        86,
+        115,
+        175,
+        1
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2343,25 +2192,24 @@ export type Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury pays for realloc rent in gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2381,23 +2229,24 @@ export type Shadowspace = {
           "name": "bannerUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        98,
-        67,
-        99,
-        206,
-        86,
-        115,
-        175,
-        1
-      ],
-      "name": "updateProfile"
+      ]
     },
     {
+      "name": "votePoll",
+      "discriminator": [
+        154,
+        219,
+        48,
+        148,
+        149,
+        7,
+        153,
+        194
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2410,20 +2259,20 @@ export type Shadowspace = {
                 ]
               },
               {
-                "account": "poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "poll"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "pollVote",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2445,13 +2294,12 @@ export type Shadowspace = {
                 "path": "poll"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "voterProfile.owner"
+                "path": "voter_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "voterProfile",
@@ -2478,17 +2326,17 @@ export type Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2500,30 +2348,270 @@ export type Shadowspace = {
           "name": "choice",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        154,
-        219,
-        48,
-        148,
-        149,
-        7,
-        153,
-        194
-      ],
-      "name": "votePoll"
+      ]
     }
   ],
-  "metadata": {
-    "description": "ShadowSpace - Social on Solana",
-    "name": "shadowspace",
-    "spec": "0.1.0",
-    "version": "0.1.0"
-  },
+  "accounts": [
+    {
+      "name": "chat",
+      "discriminator": [
+        170,
+        4,
+        71,
+        128,
+        185,
+        103,
+        250,
+        177
+      ]
+    },
+    {
+      "name": "comment",
+      "discriminator": [
+        150,
+        135,
+        96,
+        244,
+        55,
+        199,
+        50,
+        65
+      ]
+    },
+    {
+      "name": "community",
+      "discriminator": [
+        192,
+        73,
+        211,
+        158,
+        178,
+        81,
+        19,
+        112
+      ]
+    },
+    {
+      "name": "communityNameRegistry",
+      "discriminator": [
+        55,
+        189,
+        142,
+        44,
+        79,
+        178,
+        102,
+        162
+      ]
+    },
+    {
+      "name": "followAccount",
+      "discriminator": [
+        174,
+        177,
+        136,
+        60,
+        138,
+        84,
+        148,
+        209
+      ]
+    },
+    {
+      "name": "likeRecord",
+      "discriminator": [
+        179,
+        237,
+        53,
+        5,
+        91,
+        236,
+        161,
+        50
+      ]
+    },
+    {
+      "name": "membership",
+      "discriminator": [
+        231,
+        141,
+        180,
+        98,
+        109,
+        168,
+        175,
+        166
+      ]
+    },
+    {
+      "name": "message",
+      "discriminator": [
+        110,
+        151,
+        23,
+        110,
+        198,
+        6,
+        125,
+        181
+      ]
+    },
+    {
+      "name": "poll",
+      "discriminator": [
+        110,
+        234,
+        167,
+        188,
+        231,
+        136,
+        153,
+        111
+      ]
+    },
+    {
+      "name": "pollVote",
+      "discriminator": [
+        60,
+        154,
+        212,
+        155,
+        112,
+        25,
+        150,
+        182
+      ]
+    },
+    {
+      "name": "post",
+      "discriminator": [
+        8,
+        147,
+        90,
+        186,
+        185,
+        56,
+        192,
+        150
+      ]
+    },
+    {
+      "name": "profile",
+      "discriminator": [
+        184,
+        101,
+        165,
+        188,
+        95,
+        63,
+        127,
+        188
+      ]
+    },
+    {
+      "name": "reaction",
+      "discriminator": [
+        226,
+        61,
+        100,
+        191,
+        223,
+        221,
+        142,
+        139
+      ]
+    },
+    {
+      "name": "usernameRegistry",
+      "discriminator": [
+        145,
+        217,
+        207,
+        126,
+        35,
+        114,
+        138,
+        18
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "alreadyFollowing",
+      "msg": "Already following this user"
+    },
+    {
+      "code": 6001,
+      "name": "notFollowing",
+      "msg": "Not following this user"
+    },
+    {
+      "code": 6002,
+      "name": "unauthorized",
+      "msg": "unauthorized"
+    },
+    {
+      "code": 6003,
+      "name": "contentTooLong",
+      "msg": "Content too long"
+    },
+    {
+      "code": 6004,
+      "name": "cannotFollowSelf",
+      "msg": "Cannot follow yourself"
+    },
+    {
+      "code": 6005,
+      "name": "invalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6006,
+      "name": "communityFull",
+      "msg": "Community is full (max 100 members)"
+    },
+    {
+      "code": 6007,
+      "name": "alreadyInitialized",
+      "msg": "Account already initialized"
+    },
+    {
+      "code": 6008,
+      "name": "invalidPollOptions",
+      "msg": "Poll must have 2-4 options"
+    },
+    {
+      "code": 6009,
+      "name": "invalidPollChoice",
+      "msg": "Invalid poll choice"
+    },
+    {
+      "code": 6010,
+      "name": "pollAlreadyEnded",
+      "msg": "Poll has ended"
+    },
+    {
+      "code": 6011,
+      "name": "alreadyLiked",
+      "msg": "Already liked this post"
+    },
+    {
+      "code": 6012,
+      "name": "cannotLikeOwnPost",
+      "msg": "Cannot like your own post"
+    },
+    {
+      "code": 6013,
+      "name": "invalidReactionType",
+      "msg": "Invalid reaction type"
+    }
+  ],
   "types": [
     {
       "name": "chat",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chatId",
@@ -2545,13 +2633,13 @@ export type Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "comment",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2573,13 +2661,13 @@ export type Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "community",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -2609,13 +2697,32 @@ export type Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "communityNameRegistry",
+      "docs": [
+        "Reservation account proving a community name is taken (PDA seeded by the name)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "communityId",
+            "type": "u64"
+          }
+        ]
       }
     },
     {
       "name": "followAccount",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "follower",
@@ -2625,13 +2732,13 @@ export type Shadowspace = {
             "name": "following",
             "type": "pubkey"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "likeRecord",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2645,13 +2752,13 @@ export type Shadowspace = {
             "name": "likedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "membership",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "community",
@@ -2665,13 +2772,13 @@ export type Shadowspace = {
             "name": "joinedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "message",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chatId",
@@ -2693,13 +2800,13 @@ export type Shadowspace = {
             "name": "timestamp",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "poll",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -2765,13 +2872,13 @@ export type Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "pollVote",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "poll",
@@ -2789,13 +2896,13 @@ export type Shadowspace = {
             "name": "votedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "post",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "author",
@@ -2829,13 +2936,13 @@ export type Shadowspace = {
             "name": "updatedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "profile",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "owner",
@@ -2885,13 +2992,13 @@ export type Shadowspace = {
             "name": "bannerUrl",
             "type": "string"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "reaction",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2905,250 +3012,57 @@ export type Shadowspace = {
             "name": "reactionType",
             "type": "u8"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "usernameRegistry",
+      "docs": [
+        "Reservation account proving a username is taken. Its PDA is seeded by the",
+        "username itself, so it can exist at most once per handle — that single-init",
+        "constraint is what enforces username uniqueness."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
       }
     }
   ]
 };
 
 export const IDL: Shadowspace = {
-  "accounts": [
-    {
-      "discriminator": [
-        170,
-        4,
-        71,
-        128,
-        185,
-        103,
-        250,
-        177
-      ],
-      "name": "chat"
-    },
-    {
-      "discriminator": [
-        150,
-        135,
-        96,
-        244,
-        55,
-        199,
-        50,
-        65
-      ],
-      "name": "comment"
-    },
-    {
-      "discriminator": [
-        192,
-        73,
-        211,
-        158,
-        178,
-        81,
-        19,
-        112
-      ],
-      "name": "community"
-    },
-    {
-      "discriminator": [
-        174,
-        177,
-        136,
-        60,
-        138,
-        84,
-        148,
-        209
-      ],
-      "name": "followAccount"
-    },
-    {
-      "discriminator": [
-        179,
-        237,
-        53,
-        5,
-        91,
-        236,
-        161,
-        50
-      ],
-      "name": "likeRecord"
-    },
-    {
-      "discriminator": [
-        231,
-        141,
-        180,
-        98,
-        109,
-        168,
-        175,
-        166
-      ],
-      "name": "membership"
-    },
-    {
-      "discriminator": [
-        110,
-        151,
-        23,
-        110,
-        198,
-        6,
-        125,
-        181
-      ],
-      "name": "message"
-    },
-    {
-      "discriminator": [
-        110,
-        234,
-        167,
-        188,
-        231,
-        136,
-        153,
-        111
-      ],
-      "name": "poll"
-    },
-    {
-      "discriminator": [
-        60,
-        154,
-        212,
-        155,
-        112,
-        25,
-        150,
-        182
-      ],
-      "name": "pollVote"
-    },
-    {
-      "discriminator": [
-        8,
-        147,
-        90,
-        186,
-        185,
-        56,
-        192,
-        150
-      ],
-      "name": "post"
-    },
-    {
-      "discriminator": [
-        184,
-        101,
-        165,
-        188,
-        95,
-        63,
-        127,
-        188
-      ],
-      "name": "profile"
-    },
-    {
-      "discriminator": [
-        226,
-        61,
-        100,
-        191,
-        223,
-        221,
-        142,
-        139
-      ],
-      "name": "reaction"
-    }
-  ],
   "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
-  "errors": [
-    {
-      "code": 6000,
-      "msg": "Already following this user",
-      "name": "alreadyFollowing"
-    },
-    {
-      "code": 6001,
-      "msg": "Not following this user",
-      "name": "notFollowing"
-    },
-    {
-      "code": 6002,
-      "msg": "Unauthorized",
-      "name": "unauthorized"
-    },
-    {
-      "code": 6003,
-      "msg": "Content too long",
-      "name": "contentTooLong"
-    },
-    {
-      "code": 6004,
-      "msg": "Cannot follow yourself",
-      "name": "cannotFollowSelf"
-    },
-    {
-      "code": 6005,
-      "msg": "Invalid amount",
-      "name": "invalidAmount"
-    },
-    {
-      "code": 6006,
-      "msg": "Community is full (max 100 members)",
-      "name": "communityFull"
-    },
-    {
-      "code": 6007,
-      "msg": "Account already initialized",
-      "name": "alreadyInitialized"
-    },
-    {
-      "code": 6008,
-      "msg": "Poll must have 2-4 options",
-      "name": "invalidPollOptions"
-    },
-    {
-      "code": 6009,
-      "msg": "Invalid poll choice",
-      "name": "invalidPollChoice"
-    },
-    {
-      "code": 6010,
-      "msg": "Poll has ended",
-      "name": "pollAlreadyEnded"
-    },
-    {
-      "code": 6011,
-      "msg": "Already liked this post",
-      "name": "alreadyLiked"
-    },
-    {
-      "code": 6012,
-      "msg": "Cannot like your own post",
-      "name": "cannotLikeOwnPost"
-    },
-    {
-      "code": 6013,
-      "msg": "Invalid reaction type",
-      "name": "invalidReactionType"
-    }
-  ],
+  "metadata": {
+    "name": "shadowspace",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "ShadowSpace - Social on Solana"
+  },
   "instructions": [
     {
+      "name": "closeChat",
+      "docs": [
+        "Close a legacy chat account and return rent"
+      ],
+      "discriminator": [
+        182,
+        227,
+        125,
+        158,
+        213,
+        132,
+        147,
+        192
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3165,19 +3079,18 @@ export const IDL: Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -3186,26 +3099,27 @@ export const IDL: Shadowspace = {
           "name": "chatId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        182,
-        227,
-        125,
-        158,
-        213,
-        132,
-        147,
-        192
-      ],
-      "docs": [
-        "Close a legacy chat account and return rent"
-      ],
-      "name": "closeChat"
+      ]
     },
     {
+      "name": "closeComment",
+      "docs": [
+        "Close a comment account and return rent"
+      ],
+      "discriminator": [
+        220,
+        161,
+        167,
+        122,
+        254,
+        149,
+        11,
+        78
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3229,11 +3143,11 @@ export const IDL: Shadowspace = {
                 "path": "commentIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3246,28 +3160,27 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -3280,26 +3193,24 @@ export const IDL: Shadowspace = {
           "name": "commentIndex",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        220,
-        161,
-        167,
-        122,
-        254,
-        149,
-        11,
-        78
-      ],
-      "docs": [
-        "Close a comment account and return rent"
-      ],
-      "name": "closeComment"
+      ]
     },
     {
+      "name": "closeCommunity",
+      "discriminator": [
+        193,
+        80,
+        180,
+        65,
+        226,
+        240,
+        125,
+        104
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3321,13 +3232,12 @@ export const IDL: Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -3339,23 +3249,27 @@ export const IDL: Shadowspace = {
           "name": "communityId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        193,
-        80,
-        180,
-        65,
-        226,
-        240,
-        125,
-        104
-      ],
-      "name": "closeCommunity"
+      ]
     },
     {
+      "name": "closeMessage",
+      "docs": [
+        "Close a legacy message account and return rent"
+      ],
+      "discriminator": [
+        53,
+        48,
+        100,
+        249,
+        207,
+        188,
+        96,
+        22
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3379,19 +3293,18 @@ export const IDL: Shadowspace = {
                 "path": "messageIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -3404,26 +3317,24 @@ export const IDL: Shadowspace = {
           "name": "messageIndex",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        53,
-        48,
-        100,
-        249,
-        207,
-        188,
-        96,
-        22
-      ],
-      "docs": [
-        "Close a legacy message account and return rent"
-      ],
-      "name": "closeMessage"
+      ]
     },
     {
+      "name": "closePoll",
+      "discriminator": [
+        139,
+        213,
+        162,
+        65,
+        172,
+        150,
+        123,
+        67
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3436,22 +3347,21 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "poll"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -3459,23 +3369,27 @@ export const IDL: Shadowspace = {
           "name": "pollId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        139,
-        213,
-        162,
-        65,
-        172,
-        150,
-        123,
-        67
-      ],
-      "name": "closePoll"
+      ]
     },
     {
+      "name": "closePost",
+      "docs": [
+        "Close a post account and return rent to the treasury"
+      ],
+      "discriminator": [
+        131,
+        190,
+        34,
+        94,
+        190,
+        71,
+        183,
+        81
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3496,11 +3410,11 @@ export const IDL: Shadowspace = {
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3520,19 +3434,18 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -3541,62 +3454,13 @@ export const IDL: Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        131,
-        190,
-        34,
-        94,
-        190,
-        71,
-        183,
-        81
-      ],
-      "docs": [
-        "Close a post account and return rent to the treasury"
-      ],
-      "name": "closePost"
+      ]
     },
     {
-      "accounts": [
-        {
-          "name": "profile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Treasury wallet — rent refund destination"
-          ],
-          "name": "treasury",
-          "writable": true
-        }
+      "name": "closeProfile",
+      "docs": [
+        "Close a profile account and return rent to the treasury"
       ],
-      "args": [],
       "discriminator": [
         167,
         36,
@@ -3607,15 +3471,65 @@ export const IDL: Shadowspace = {
         46,
         207
       ],
-      "docs": [
-        "Close a profile account and return rent to the treasury"
+      "accounts": [
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Treasury wallet — rent refund destination"
+          ],
+          "writable": true
+        }
       ],
-      "name": "closeProfile"
+      "args": []
     },
     {
+      "name": "closeReaction",
+      "docs": [
+        "Close a reaction account and return rent"
+      ],
+      "discriminator": [
+        92,
+        52,
+        140,
+        129,
+        113,
+        132,
+        43,
+        244
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3640,8 +3554,7 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -3657,9 +3570,9 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -3670,14 +3583,14 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -3686,26 +3599,24 @@ export const IDL: Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        92,
-        52,
-        140,
-        129,
-        113,
-        132,
-        43,
-        244
-      ],
-      "docs": [
-        "Close a reaction account and return rent"
-      ],
-      "name": "closeReaction"
+      ]
     },
     {
+      "name": "createChat",
+      "discriminator": [
+        133,
+        186,
+        254,
+        72,
+        143,
+        178,
+        221,
+        28
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3722,28 +3633,27 @@ export const IDL: Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user1",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "user2"
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -3751,23 +3661,24 @@ export const IDL: Shadowspace = {
           "name": "chatId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        133,
-        186,
-        254,
-        72,
-        143,
-        178,
-        221,
-        28
-      ],
-      "name": "createChat"
+      ]
     },
     {
+      "name": "createComment",
+      "discriminator": [
+        236,
+        232,
+        11,
+        180,
+        70,
+        206,
+        73,
+        145
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3791,11 +3702,11 @@ export const IDL: Shadowspace = {
                 "path": "commentIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3808,17 +3719,16 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "commenterProfile",
@@ -3837,29 +3747,29 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "commenterProfile.owner"
+                "path": "commenter_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "author",
           "docs": [
             "The commenter — must be the commenter_profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -3875,23 +3785,24 @@ export const IDL: Shadowspace = {
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        236,
-        232,
-        11,
-        180,
-        70,
-        206,
-        73,
-        145
-      ],
-      "name": "createComment"
+      ]
     },
     {
+      "name": "createCommunity",
+      "discriminator": [
+        203,
+        214,
+        176,
+        194,
+        13,
+        207,
+        22,
+        60
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -3913,8 +3824,42 @@ export const IDL: Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "nameRegistry",
+          "docs": [
+            "Community-name registry — `init` makes a duplicate name fail: a second",
+            "community claiming the same name (even with a different id) aborts the tx."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121,
+                  95,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "name"
+              }
+            ]
+          }
         },
         {
           "name": "creatorProfile",
@@ -3941,17 +3886,17 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -3971,23 +3916,24 @@ export const IDL: Shadowspace = {
           "name": "avatarUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        203,
-        214,
-        176,
-        194,
-        13,
-        207,
-        22,
-        60
-      ],
-      "name": "createCommunity"
+      ]
     },
     {
+      "name": "createPoll",
+      "discriminator": [
+        182,
+        171,
+        112,
+        238,
+        6,
+        219,
+        14,
+        110
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4000,20 +3946,20 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4033,22 +3979,21 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -4084,23 +4029,24 @@ export const IDL: Shadowspace = {
           "name": "endsAt",
           "type": "i64"
         }
-      ],
-      "discriminator": [
-        182,
-        171,
-        112,
-        238,
-        6,
-        219,
-        14,
-        110
-      ],
-      "name": "createPoll"
+      ]
     },
     {
+      "name": "createPost",
+      "discriminator": [
+        123,
+        92,
+        184,
+        29,
+        231,
+        24,
+        15,
+        202
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4113,20 +4059,20 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4142,30 +4088,29 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "The post author — must be the profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -4181,23 +4126,24 @@ export const IDL: Shadowspace = {
           "name": "isPrivate",
           "type": "bool"
         }
-      ],
-      "discriminator": [
-        123,
-        92,
-        184,
-        29,
-        231,
-        24,
-        15,
-        202
-      ],
-      "name": "createPost"
+      ]
     },
     {
+      "name": "createProfile",
+      "discriminator": [
+        225,
+        205,
+        234,
+        143,
+        17,
+        186,
+        50,
+        220
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4217,25 +4163,53 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "usernameRegistry",
+          "docs": [
+            "Username registry — `init` (not `init_if_needed`) makes a duplicate username",
+            "fail: claiming an already-taken handle aborts the transaction."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "username"
+              }
+            ]
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — can be a server keypair for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -4251,26 +4225,27 @@ export const IDL: Shadowspace = {
           "name": "bio",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        225,
-        205,
-        234,
-        143,
-        17,
-        186,
-        50,
-        220
-      ],
-      "name": "createProfile"
+      ]
     },
     {
+      "name": "editPost",
+      "discriminator": [
+        218,
+        25,
+        82,
+        105,
+        200,
+        189,
+        238,
+        75
+      ],
       "accounts": [
         {
+          "name": "post",
           "docs": [
             "The post PDA — seeded by the author's pubkey, so only the real author's post is found"
           ],
-          "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4291,14 +4266,13 @@ export const IDL: Shadowspace = {
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "Must be the original author — if anyone else signs, the seed/constraint check fails"
           ],
-          "name": "author",
           "signer": true
         }
       ],
@@ -4311,23 +4285,24 @@ export const IDL: Shadowspace = {
           "name": "newContent",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        218,
-        25,
-        82,
-        105,
-        200,
-        189,
-        238,
-        75
-      ],
-      "name": "editPost"
+      ]
     },
     {
+      "name": "followUser",
+      "discriminator": [
+        126,
+        176,
+        97,
+        36,
+        63,
+        145,
+        4,
+        134
+      ],
       "accounts": [
         {
           "name": "followAccount",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4342,161 +4317,21 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followerProfile.owner"
+                "path": "follower_profile.owner",
+                "account": "profile"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followerProfile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "followingProfile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "account": "profile",
-                "kind": "account",
-                "path": "followingProfile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
-          ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
-        }
-      ],
-      "args": [],
-      "discriminator": [
-        126,
-        176,
-        97,
-        36,
-        63,
-        145,
-        4,
-        134
-      ],
-      "name": "followUser"
-    },
-    {
-      "accounts": [
-        {
-          "name": "membership",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  109,
-                  101,
-                  109,
-                  98,
-                  101,
-                  114,
-                  115,
-                  104,
-                  105,
-                  112
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "community"
-              },
-              {
-                "account": "profile",
-                "kind": "account",
-                "path": "memberProfile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "community",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  109,
-                  117,
-                  110,
-                  105,
-                  116,
-                  121
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "communityId"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "memberProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4519,26 +4354,52 @@ export const IDL: Shadowspace = {
           }
         },
         {
+          "name": "followingProfile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "following_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "docs": [
+            "Fee payer — can be a server keypair for gasless UX"
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [
-        {
-          "name": "communityId",
-          "type": "u64"
-        }
-      ],
+      "args": []
+    },
+    {
+      "name": "joinCommunity",
       "discriminator": [
         252,
         106,
@@ -4549,12 +4410,10 @@ export const IDL: Shadowspace = {
         28,
         232
       ],
-      "name": "joinCommunity"
-    },
-    {
       "accounts": [
         {
           "name": "membership",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4577,16 +4436,16 @@ export const IDL: Shadowspace = {
                 "path": "community"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "memberProfile.owner"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4608,8 +4467,7 @@ export const IDL: Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "memberProfile",
@@ -4635,12 +4493,128 @@ export const IDL: Shadowspace = {
           }
         },
         {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "communityId",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "leaveCommunity",
+      "discriminator": [
+        218,
+        140,
+        41,
+        66,
+        8,
+        140,
+        33,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "membership",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  109,
+                  98,
+                  101,
+                  114,
+                  115,
+                  104,
+                  105,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community"
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "communityId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "memberProfile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
           "docs": [
             "Must be the profile owner — prevents others from kicking members"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -4652,23 +4626,24 @@ export const IDL: Shadowspace = {
           "name": "communityId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        218,
-        140,
-        41,
-        66,
-        8,
-        140,
-        33,
-        161
-      ],
-      "name": "leaveCommunity"
+      ]
     },
     {
+      "name": "likePost",
+      "discriminator": [
+        45,
+        242,
+        154,
+        71,
+        63,
+        133,
+        54,
+        186
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4681,17 +4656,16 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
                 "path": "postId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
@@ -4710,18 +4684,19 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "likeRecord",
           "docs": [
             "One LikeRecord PDA per (post, liker) — init will fail if they've already liked"
           ],
-          "name": "likeRecord",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4742,27 +4717,26 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "user",
           "docs": [
             "The liker — must be the profile owner (read-only, no SOL needed)"
           ],
-          "name": "user",
           "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Treasury pays for like_record rent"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -4770,23 +4744,28 @@ export const IDL: Shadowspace = {
           "name": "postId",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        45,
-        242,
-        154,
-        71,
-        63,
-        133,
-        54,
-        186
-      ],
-      "name": "likePost"
+      ]
     },
     {
+      "name": "migrateProfile",
+      "docs": [
+        "Resize an existing profile account to the current schema size.",
+        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
+      ],
+      "discriminator": [
+        224,
+        187,
+        132,
+        189,
+        185,
+        163,
+        183,
+        237
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4806,40 +4785,36 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [],
-      "discriminator": [
-        224,
-        187,
-        132,
-        189,
-        185,
-        163,
-        183,
-        237
-      ],
-      "docs": [
-        "Resize an existing profile account to the current schema size.",
-        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
-      ],
-      "name": "migrateProfile"
+      "args": []
     },
     {
+      "name": "reactToPost",
+      "discriminator": [
+        186,
+        193,
+        53,
+        26,
+        172,
+        69,
+        217,
+        231
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4860,13 +4835,12 @@ export const IDL: Shadowspace = {
                 "path": "post"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "reactorProfile.owner"
+                "path": "reactor_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -4882,9 +4856,9 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -4910,29 +4884,29 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "reactorProfile.owner"
+                "path": "reactor_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
+          "name": "user",
           "docs": [
             "The reactor — must be the reactor_profile owner"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -4944,23 +4918,24 @@ export const IDL: Shadowspace = {
           "name": "reactionType",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        186,
-        193,
-        53,
-        26,
-        172,
-        69,
-        217,
-        231
-      ],
-      "name": "reactToPost"
+      ]
     },
     {
+      "name": "sendMessage",
+      "discriminator": [
+        57,
+        40,
+        34,
+        178,
+        189,
+        10,
+        65,
+        26
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -4984,11 +4959,11 @@ export const IDL: Shadowspace = {
                 "path": "messageIndex"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5005,28 +4980,27 @@ export const IDL: Shadowspace = {
                 "path": "chatId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "sender",
           "docs": [
             "Message sender — must be a participant in the chat"
           ],
-          "name": "sender",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -5042,23 +5016,24 @@ export const IDL: Shadowspace = {
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        57,
-        40,
-        34,
-        178,
-        189,
-        10,
-        65,
-        26
-      ],
-      "name": "sendMessage"
+      ]
     },
     {
+      "name": "unfollowUser",
+      "discriminator": [
+        204,
+        183,
+        196,
+        110,
+        97,
+        165,
+        226,
+        213
+      ],
       "accounts": [
         {
           "name": "followAccount",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5073,21 +5048,21 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followerProfile.owner"
+                "path": "follower_profile.owner",
+                "account": "profile"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followerProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5107,11 +5082,11 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "followingProfile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5127,44 +5102,44 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "followingProfile.owner"
+                "path": "following_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
-      "args": [],
-      "discriminator": [
-        204,
-        183,
-        196,
-        110,
-        97,
-        165,
-        226,
-        213
-      ],
-      "name": "unfollowUser"
+      "args": []
     },
     {
+      "name": "updateCommunity",
+      "discriminator": [
+        250,
+        158,
+        38,
+        207,
+        116,
+        171,
+        210,
+        51
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5186,13 +5161,12 @@ export const IDL: Shadowspace = {
                 "path": "communityId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -5208,23 +5182,24 @@ export const IDL: Shadowspace = {
           "name": "avatarUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        250,
-        158,
-        38,
-        207,
-        116,
-        171,
-        210,
-        51
-      ],
-      "name": "updateCommunity"
+      ]
     },
     {
+      "name": "updateProfile",
+      "discriminator": [
+        98,
+        67,
+        99,
+        206,
+        86,
+        115,
+        175,
+        1
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5244,25 +5219,24 @@ export const IDL: Shadowspace = {
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury pays for realloc rent in gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -5282,23 +5256,24 @@ export const IDL: Shadowspace = {
           "name": "bannerUrl",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        98,
-        67,
-        99,
-        206,
-        86,
-        115,
-        175,
-        1
-      ],
-      "name": "updateProfile"
+      ]
     },
     {
+      "name": "votePoll",
+      "discriminator": [
+        154,
+        219,
+        48,
+        148,
+        149,
+        7,
+        153,
+        194
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5311,20 +5286,20 @@ export const IDL: Shadowspace = {
                 ]
               },
               {
-                "account": "poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "poll"
               },
               {
                 "kind": "arg",
                 "path": "pollId"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "pollVote",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -5346,13 +5321,12 @@ export const IDL: Shadowspace = {
                 "path": "poll"
               },
               {
-                "account": "profile",
                 "kind": "account",
-                "path": "voterProfile.owner"
+                "path": "voter_profile.owner",
+                "account": "profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "voterProfile",
@@ -5379,17 +5353,17 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "systemProgram"
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -5401,30 +5375,270 @@ export const IDL: Shadowspace = {
           "name": "choice",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        154,
-        219,
-        48,
-        148,
-        149,
-        7,
-        153,
-        194
-      ],
-      "name": "votePoll"
+      ]
     }
   ],
-  "metadata": {
-    "description": "ShadowSpace - Social on Solana",
-    "name": "shadowspace",
-    "spec": "0.1.0",
-    "version": "0.1.0"
-  },
+  "accounts": [
+    {
+      "name": "chat",
+      "discriminator": [
+        170,
+        4,
+        71,
+        128,
+        185,
+        103,
+        250,
+        177
+      ]
+    },
+    {
+      "name": "comment",
+      "discriminator": [
+        150,
+        135,
+        96,
+        244,
+        55,
+        199,
+        50,
+        65
+      ]
+    },
+    {
+      "name": "community",
+      "discriminator": [
+        192,
+        73,
+        211,
+        158,
+        178,
+        81,
+        19,
+        112
+      ]
+    },
+    {
+      "name": "communityNameRegistry",
+      "discriminator": [
+        55,
+        189,
+        142,
+        44,
+        79,
+        178,
+        102,
+        162
+      ]
+    },
+    {
+      "name": "followAccount",
+      "discriminator": [
+        174,
+        177,
+        136,
+        60,
+        138,
+        84,
+        148,
+        209
+      ]
+    },
+    {
+      "name": "likeRecord",
+      "discriminator": [
+        179,
+        237,
+        53,
+        5,
+        91,
+        236,
+        161,
+        50
+      ]
+    },
+    {
+      "name": "membership",
+      "discriminator": [
+        231,
+        141,
+        180,
+        98,
+        109,
+        168,
+        175,
+        166
+      ]
+    },
+    {
+      "name": "message",
+      "discriminator": [
+        110,
+        151,
+        23,
+        110,
+        198,
+        6,
+        125,
+        181
+      ]
+    },
+    {
+      "name": "poll",
+      "discriminator": [
+        110,
+        234,
+        167,
+        188,
+        231,
+        136,
+        153,
+        111
+      ]
+    },
+    {
+      "name": "pollVote",
+      "discriminator": [
+        60,
+        154,
+        212,
+        155,
+        112,
+        25,
+        150,
+        182
+      ]
+    },
+    {
+      "name": "post",
+      "discriminator": [
+        8,
+        147,
+        90,
+        186,
+        185,
+        56,
+        192,
+        150
+      ]
+    },
+    {
+      "name": "profile",
+      "discriminator": [
+        184,
+        101,
+        165,
+        188,
+        95,
+        63,
+        127,
+        188
+      ]
+    },
+    {
+      "name": "reaction",
+      "discriminator": [
+        226,
+        61,
+        100,
+        191,
+        223,
+        221,
+        142,
+        139
+      ]
+    },
+    {
+      "name": "usernameRegistry",
+      "discriminator": [
+        145,
+        217,
+        207,
+        126,
+        35,
+        114,
+        138,
+        18
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "alreadyFollowing",
+      "msg": "Already following this user"
+    },
+    {
+      "code": 6001,
+      "name": "notFollowing",
+      "msg": "Not following this user"
+    },
+    {
+      "code": 6002,
+      "name": "unauthorized",
+      "msg": "unauthorized"
+    },
+    {
+      "code": 6003,
+      "name": "contentTooLong",
+      "msg": "Content too long"
+    },
+    {
+      "code": 6004,
+      "name": "cannotFollowSelf",
+      "msg": "Cannot follow yourself"
+    },
+    {
+      "code": 6005,
+      "name": "invalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6006,
+      "name": "communityFull",
+      "msg": "Community is full (max 100 members)"
+    },
+    {
+      "code": 6007,
+      "name": "alreadyInitialized",
+      "msg": "Account already initialized"
+    },
+    {
+      "code": 6008,
+      "name": "invalidPollOptions",
+      "msg": "Poll must have 2-4 options"
+    },
+    {
+      "code": 6009,
+      "name": "invalidPollChoice",
+      "msg": "Invalid poll choice"
+    },
+    {
+      "code": 6010,
+      "name": "pollAlreadyEnded",
+      "msg": "Poll has ended"
+    },
+    {
+      "code": 6011,
+      "name": "alreadyLiked",
+      "msg": "Already liked this post"
+    },
+    {
+      "code": 6012,
+      "name": "cannotLikeOwnPost",
+      "msg": "Cannot like your own post"
+    },
+    {
+      "code": 6013,
+      "name": "invalidReactionType",
+      "msg": "Invalid reaction type"
+    }
+  ],
   "types": [
     {
       "name": "chat",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chatId",
@@ -5446,13 +5660,13 @@ export const IDL: Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "comment",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -5474,13 +5688,13 @@ export const IDL: Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "community",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -5510,13 +5724,32 @@ export const IDL: Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "communityNameRegistry",
+      "docs": [
+        "Reservation account proving a community name is taken (PDA seeded by the name)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "communityId",
+            "type": "u64"
+          }
+        ]
       }
     },
     {
       "name": "followAccount",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "follower",
@@ -5526,13 +5759,13 @@ export const IDL: Shadowspace = {
             "name": "following",
             "type": "pubkey"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "likeRecord",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -5546,13 +5779,13 @@ export const IDL: Shadowspace = {
             "name": "likedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "membership",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "community",
@@ -5566,13 +5799,13 @@ export const IDL: Shadowspace = {
             "name": "joinedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "message",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chatId",
@@ -5594,13 +5827,13 @@ export const IDL: Shadowspace = {
             "name": "timestamp",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "poll",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -5666,13 +5899,13 @@ export const IDL: Shadowspace = {
             "name": "createdAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "pollVote",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "poll",
@@ -5690,13 +5923,13 @@ export const IDL: Shadowspace = {
             "name": "votedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "post",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "author",
@@ -5730,13 +5963,13 @@ export const IDL: Shadowspace = {
             "name": "updatedAt",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "profile",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "owner",
@@ -5786,13 +6019,13 @@ export const IDL: Shadowspace = {
             "name": "bannerUrl",
             "type": "string"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "reaction",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -5806,8 +6039,24 @@ export const IDL: Shadowspace = {
             "name": "reactionType",
             "type": "u8"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "usernameRegistry",
+      "docs": [
+        "Reservation account proving a username is taken. Its PDA is seeded by the",
+        "username itself, so it can exist at most once per handle — that single-init",
+        "constraint is what enforces username uniqueness."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
       }
     }
   ]

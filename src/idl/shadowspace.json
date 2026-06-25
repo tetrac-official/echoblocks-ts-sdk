@@ -1,240 +1,31 @@
 {
-  "accounts": [
-    {
-      "discriminator": [
-        170,
-        4,
-        71,
-        128,
-        185,
-        103,
-        250,
-        177
-      ],
-      "name": "Chat"
-    },
-    {
-      "discriminator": [
-        150,
-        135,
-        96,
-        244,
-        55,
-        199,
-        50,
-        65
-      ],
-      "name": "Comment"
-    },
-    {
-      "discriminator": [
-        192,
-        73,
-        211,
-        158,
-        178,
-        81,
-        19,
-        112
-      ],
-      "name": "Community"
-    },
-    {
-      "discriminator": [
-        174,
-        177,
-        136,
-        60,
-        138,
-        84,
-        148,
-        209
-      ],
-      "name": "FollowAccount"
-    },
-    {
-      "discriminator": [
-        179,
-        237,
-        53,
-        5,
-        91,
-        236,
-        161,
-        50
-      ],
-      "name": "LikeRecord"
-    },
-    {
-      "discriminator": [
-        231,
-        141,
-        180,
-        98,
-        109,
-        168,
-        175,
-        166
-      ],
-      "name": "Membership"
-    },
-    {
-      "discriminator": [
-        110,
-        151,
-        23,
-        110,
-        198,
-        6,
-        125,
-        181
-      ],
-      "name": "Message"
-    },
-    {
-      "discriminator": [
-        110,
-        234,
-        167,
-        188,
-        231,
-        136,
-        153,
-        111
-      ],
-      "name": "Poll"
-    },
-    {
-      "discriminator": [
-        60,
-        154,
-        212,
-        155,
-        112,
-        25,
-        150,
-        182
-      ],
-      "name": "PollVote"
-    },
-    {
-      "discriminator": [
-        8,
-        147,
-        90,
-        186,
-        185,
-        56,
-        192,
-        150
-      ],
-      "name": "Post"
-    },
-    {
-      "discriminator": [
-        184,
-        101,
-        165,
-        188,
-        95,
-        63,
-        127,
-        188
-      ],
-      "name": "Profile"
-    },
-    {
-      "discriminator": [
-        226,
-        61,
-        100,
-        191,
-        223,
-        221,
-        142,
-        139
-      ],
-      "name": "Reaction"
-    }
-  ],
   "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
-  "errors": [
-    {
-      "code": 6000,
-      "msg": "Already following this user",
-      "name": "AlreadyFollowing"
-    },
-    {
-      "code": 6001,
-      "msg": "Not following this user",
-      "name": "NotFollowing"
-    },
-    {
-      "code": 6002,
-      "msg": "Unauthorized",
-      "name": "Unauthorized"
-    },
-    {
-      "code": 6003,
-      "msg": "Content too long",
-      "name": "ContentTooLong"
-    },
-    {
-      "code": 6004,
-      "msg": "Cannot follow yourself",
-      "name": "CannotFollowSelf"
-    },
-    {
-      "code": 6005,
-      "msg": "Invalid amount",
-      "name": "InvalidAmount"
-    },
-    {
-      "code": 6006,
-      "msg": "Community is full (max 100 members)",
-      "name": "CommunityFull"
-    },
-    {
-      "code": 6007,
-      "msg": "Account already initialized",
-      "name": "AlreadyInitialized"
-    },
-    {
-      "code": 6008,
-      "msg": "Poll must have 2-4 options",
-      "name": "InvalidPollOptions"
-    },
-    {
-      "code": 6009,
-      "msg": "Invalid poll choice",
-      "name": "InvalidPollChoice"
-    },
-    {
-      "code": 6010,
-      "msg": "Poll has ended",
-      "name": "PollAlreadyEnded"
-    },
-    {
-      "code": 6011,
-      "msg": "Already liked this post",
-      "name": "AlreadyLiked"
-    },
-    {
-      "code": 6012,
-      "msg": "Cannot like your own post",
-      "name": "CannotLikeOwnPost"
-    },
-    {
-      "code": 6013,
-      "msg": "Invalid reaction type",
-      "name": "InvalidReactionType"
-    }
-  ],
+  "metadata": {
+    "name": "shadowspace",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "ShadowSpace - Social on Solana"
+  },
   "instructions": [
     {
+      "name": "close_chat",
+      "docs": [
+        "Close a legacy chat account and return rent"
+      ],
+      "discriminator": [
+        182,
+        227,
+        125,
+        158,
+        213,
+        132,
+        147,
+        192
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -251,19 +42,18 @@
                 "path": "chat_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -272,26 +62,27 @@
           "name": "_chat_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        182,
-        227,
-        125,
-        158,
-        213,
-        132,
-        147,
-        192
-      ],
-      "docs": [
-        "Close a legacy chat account and return rent"
-      ],
-      "name": "close_chat"
+      ]
     },
     {
+      "name": "close_comment",
+      "docs": [
+        "Close a comment account and return rent"
+      ],
+      "discriminator": [
+        220,
+        161,
+        167,
+        122,
+        254,
+        149,
+        11,
+        78
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -315,11 +106,11 @@
                 "path": "comment_index"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -332,28 +123,27 @@
                 ]
               },
               {
-                "account": "Post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "Post"
               },
               {
                 "kind": "arg",
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -366,26 +156,24 @@
           "name": "_comment_index",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        220,
-        161,
-        167,
-        122,
-        254,
-        149,
-        11,
-        78
-      ],
-      "docs": [
-        "Close a comment account and return rent"
-      ],
-      "name": "close_comment"
+      ]
     },
     {
+      "name": "close_community",
+      "discriminator": [
+        193,
+        80,
+        180,
+        65,
+        226,
+        240,
+        125,
+        104
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -407,13 +195,12 @@
                 "path": "community_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -425,23 +212,27 @@
           "name": "_community_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        193,
-        80,
-        180,
-        65,
-        226,
-        240,
-        125,
-        104
-      ],
-      "name": "close_community"
+      ]
     },
     {
+      "name": "close_message",
+      "docs": [
+        "Close a legacy message account and return rent"
+      ],
+      "discriminator": [
+        53,
+        48,
+        100,
+        249,
+        207,
+        188,
+        96,
+        22
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -465,19 +256,18 @@
                 "path": "message_index"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -490,26 +280,24 @@
           "name": "_message_index",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        53,
-        48,
-        100,
-        249,
-        207,
-        188,
-        96,
-        22
-      ],
-      "docs": [
-        "Close a legacy message account and return rent"
-      ],
-      "name": "close_message"
+      ]
     },
     {
+      "name": "close_poll",
+      "discriminator": [
+        139,
+        213,
+        162,
+        65,
+        172,
+        150,
+        123,
+        67
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -522,22 +310,21 @@
                 ]
               },
               {
-                "account": "Poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "Poll"
               },
               {
                 "kind": "arg",
                 "path": "poll_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -545,23 +332,27 @@
           "name": "_poll_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        139,
-        213,
-        162,
-        65,
-        172,
-        150,
-        123,
-        67
-      ],
-      "name": "close_poll"
+      ]
     },
     {
+      "name": "close_post",
+      "docs": [
+        "Close a post account and return rent to the treasury"
+      ],
+      "discriminator": [
+        131,
+        190,
+        34,
+        94,
+        190,
+        71,
+        183,
+        81
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -582,11 +373,11 @@
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -606,19 +397,18 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -627,62 +417,13 @@
           "name": "_post_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        131,
-        190,
-        34,
-        94,
-        190,
-        71,
-        183,
-        81
-      ],
-      "docs": [
-        "Close a post account and return rent to the treasury"
-      ],
-      "name": "close_post"
+      ]
     },
     {
-      "accounts": [
-        {
-          "name": "profile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Treasury wallet — rent refund destination"
-          ],
-          "name": "treasury",
-          "writable": true
-        }
+      "name": "close_profile",
+      "docs": [
+        "Close a profile account and return rent to the treasury"
       ],
-      "args": [],
       "discriminator": [
         167,
         36,
@@ -693,15 +434,65 @@
         46,
         207
       ],
-      "docs": [
-        "Close a profile account and return rent to the treasury"
+      "accounts": [
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Treasury wallet — rent refund destination"
+          ],
+          "writable": true
+        }
       ],
-      "name": "close_profile"
+      "args": []
     },
     {
+      "name": "close_reaction",
+      "docs": [
+        "Close a reaction account and return rent"
+      ],
+      "discriminator": [
+        92,
+        52,
+        140,
+        129,
+        113,
+        132,
+        43,
+        244
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -726,8 +517,7 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -743,9 +533,9 @@
                 ]
               },
               {
-                "account": "Post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "Post"
               },
               {
                 "kind": "arg",
@@ -756,14 +546,14 @@
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
@@ -772,26 +562,24 @@
           "name": "_post_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        92,
-        52,
-        140,
-        129,
-        113,
-        132,
-        43,
-        244
-      ],
-      "docs": [
-        "Close a reaction account and return rent"
-      ],
-      "name": "close_reaction"
+      ]
     },
     {
+      "name": "create_chat",
+      "discriminator": [
+        133,
+        186,
+        254,
+        72,
+        143,
+        178,
+        221,
+        28
+      ],
       "accounts": [
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -808,28 +596,27 @@
                 "path": "chat_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user1",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "user2"
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -837,23 +624,24 @@
           "name": "chat_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        133,
-        186,
-        254,
-        72,
-        143,
-        178,
-        221,
-        28
-      ],
-      "name": "create_chat"
+      ]
     },
     {
+      "name": "create_comment",
+      "discriminator": [
+        236,
+        232,
+        11,
+        180,
+        70,
+        206,
+        73,
+        145
+      ],
       "accounts": [
         {
           "name": "comment",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -877,11 +665,11 @@
                 "path": "comment_index"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -894,17 +682,16 @@
                 ]
               },
               {
-                "account": "Post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "Post"
               },
               {
                 "kind": "arg",
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "commenter_profile",
@@ -923,29 +710,29 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "commenter_profile.owner"
+                "path": "commenter_profile.owner",
+                "account": "Profile"
               }
             ]
           }
         },
         {
+          "name": "author",
           "docs": [
             "The commenter — must be the commenter_profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -961,23 +748,24 @@
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        236,
-        232,
-        11,
-        180,
-        70,
-        206,
-        73,
-        145
-      ],
-      "name": "create_comment"
+      ]
     },
     {
+      "name": "create_community",
+      "discriminator": [
+        203,
+        214,
+        176,
+        194,
+        13,
+        207,
+        22,
+        60
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -999,8 +787,42 @@
                 "path": "community_id"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "name_registry",
+          "docs": [
+            "Community-name registry — `init` makes a duplicate name fail: a second",
+            "community claiming the same name (even with a different id) aborts the tx."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121,
+                  95,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "name"
+              }
+            ]
+          }
         },
         {
           "name": "creator_profile",
@@ -1027,17 +849,17 @@
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1057,23 +879,24 @@
           "name": "avatar_url",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        203,
-        214,
-        176,
-        194,
-        13,
-        207,
-        22,
-        60
-      ],
-      "name": "create_community"
+      ]
     },
     {
+      "name": "create_poll",
+      "discriminator": [
+        182,
+        171,
+        112,
+        238,
+        6,
+        219,
+        14,
+        110
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1086,20 +909,20 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "Profile"
               },
               {
                 "kind": "arg",
                 "path": "poll_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1119,22 +942,21 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1170,23 +992,24 @@
           "name": "ends_at",
           "type": "i64"
         }
-      ],
-      "discriminator": [
-        182,
-        171,
-        112,
-        238,
-        6,
-        219,
-        14,
-        110
-      ],
-      "name": "create_poll"
+      ]
     },
     {
+      "name": "create_post",
+      "discriminator": [
+        123,
+        92,
+        184,
+        29,
+        231,
+        24,
+        15,
+        202
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1199,20 +1022,20 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "Profile"
               },
               {
                 "kind": "arg",
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1228,30 +1051,29 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "The post author — must be the profile owner"
           ],
-          "name": "author",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1267,23 +1089,24 @@
           "name": "is_private",
           "type": "bool"
         }
-      ],
-      "discriminator": [
-        123,
-        92,
-        184,
-        29,
-        231,
-        24,
-        15,
-        202
-      ],
-      "name": "create_post"
+      ]
     },
     {
+      "name": "create_profile",
+      "discriminator": [
+        225,
+        205,
+        234,
+        143,
+        17,
+        186,
+        50,
+        220
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1303,25 +1126,53 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
+        },
+        {
+          "name": "username_registry",
+          "docs": [
+            "Username registry — `init` (not `init_if_needed`) makes a duplicate username",
+            "fail: claiming an already-taken handle aborts the transaction."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  110,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "username"
+              }
+            ]
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — can be a server keypair for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1337,26 +1188,27 @@
           "name": "bio",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        225,
-        205,
-        234,
-        143,
-        17,
-        186,
-        50,
-        220
-      ],
-      "name": "create_profile"
+      ]
     },
     {
+      "name": "edit_post",
+      "discriminator": [
+        218,
+        25,
+        82,
+        105,
+        200,
+        189,
+        238,
+        75
+      ],
       "accounts": [
         {
+          "name": "post",
           "docs": [
             "The post PDA — seeded by the author's pubkey, so only the real author's post is found"
           ],
-          "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1377,14 +1229,13 @@
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "author",
           "docs": [
             "Must be the original author — if anyone else signs, the seed/constraint check fails"
           ],
-          "name": "author",
           "signer": true
         }
       ],
@@ -1397,23 +1248,24 @@
           "name": "new_content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        218,
-        25,
-        82,
-        105,
-        200,
-        189,
-        238,
-        75
-      ],
-      "name": "edit_post"
+      ]
     },
     {
+      "name": "follow_user",
+      "discriminator": [
+        126,
+        176,
+        97,
+        36,
+        63,
+        145,
+        4,
+        134
+      ],
       "accounts": [
         {
           "name": "follow_account",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1428,161 +1280,21 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "follower_profile.owner"
+                "path": "follower_profile.owner",
+                "account": "Profile"
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "following_profile.owner"
+                "path": "following_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "follower_profile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "user"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "following_profile",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  102,
-                  105,
-                  108,
-                  101
-                ]
-              },
-              {
-                "account": "Profile",
-                "kind": "account",
-                "path": "following_profile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
-          ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
-        },
-        {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
-        }
-      ],
-      "args": [],
-      "discriminator": [
-        126,
-        176,
-        97,
-        36,
-        63,
-        145,
-        4,
-        134
-      ],
-      "name": "follow_user"
-    },
-    {
-      "accounts": [
-        {
-          "name": "membership",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  109,
-                  101,
-                  109,
-                  98,
-                  101,
-                  114,
-                  115,
-                  104,
-                  105,
-                  112
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "community"
-              },
-              {
-                "account": "Profile",
-                "kind": "account",
-                "path": "member_profile.owner"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "community",
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  99,
-                  111,
-                  109,
-                  109,
-                  117,
-                  110,
-                  105,
-                  116,
-                  121
-                ]
-              },
-              {
-                "kind": "arg",
-                "path": "community_id"
-              }
-            ]
-          },
-          "writable": true
-        },
-        {
-          "name": "member_profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1605,26 +1317,52 @@
           }
         },
         {
+          "name": "following_profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "following_profile.owner",
+                "account": "Profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "docs": [
+            "Fee payer — can be a server keypair for gasless UX"
+          ],
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [
-        {
-          "name": "_community_id",
-          "type": "u64"
-        }
-      ],
+      "args": []
+    },
+    {
+      "name": "join_community",
       "discriminator": [
         252,
         106,
@@ -1635,12 +1373,10 @@
         28,
         232
       ],
-      "name": "join_community"
-    },
-    {
       "accounts": [
         {
           "name": "membership",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1663,16 +1399,16 @@
                 "path": "community"
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "member_profile.owner"
+                "path": "member_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1694,8 +1430,7 @@
                 "path": "community_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "member_profile",
@@ -1721,12 +1456,128 @@
           }
         },
         {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_community_id",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "leave_community",
+      "discriminator": [
+        218,
+        140,
+        41,
+        66,
+        8,
+        140,
+        33,
+        161
+      ],
+      "accounts": [
+        {
+          "name": "membership",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  109,
+                  98,
+                  101,
+                  114,
+                  115,
+                  104,
+                  105,
+                  112
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community"
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "Profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "community_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "member_profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
           "docs": [
             "Must be the profile owner — prevents others from kicking members"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "treasury",
@@ -1738,23 +1589,24 @@
           "name": "_community_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        218,
-        140,
-        41,
-        66,
-        8,
-        140,
-        33,
-        161
-      ],
-      "name": "leave_community"
+      ]
     },
     {
+      "name": "like_post",
+      "discriminator": [
+        45,
+        242,
+        154,
+        71,
+        63,
+        133,
+        54,
+        186
+      ],
       "accounts": [
         {
           "name": "post",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1767,17 +1619,16 @@
                 ]
               },
               {
-                "account": "Post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "Post"
               },
               {
                 "kind": "arg",
                 "path": "post_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "profile",
@@ -1796,18 +1647,19 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "profile.owner"
+                "path": "profile.owner",
+                "account": "Profile"
               }
             ]
           }
         },
         {
+          "name": "like_record",
           "docs": [
             "One LikeRecord PDA per (post, liker) — init will fail if they've already liked"
           ],
-          "name": "like_record",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1828,27 +1680,26 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "user",
           "docs": [
             "The liker — must be the profile owner (read-only, no SOL needed)"
           ],
-          "name": "user",
           "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Treasury pays for like_record rent"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -1856,23 +1707,28 @@
           "name": "_post_id",
           "type": "u64"
         }
-      ],
-      "discriminator": [
-        45,
-        242,
-        154,
-        71,
-        63,
-        133,
-        54,
-        186
-      ],
-      "name": "like_post"
+      ]
     },
     {
+      "name": "migrate_profile",
+      "docs": [
+        "Resize an existing profile account to the current schema size.",
+        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
+      ],
+      "discriminator": [
+        224,
+        187,
+        132,
+        189,
+        185,
+        163,
+        183,
+        237
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1892,40 +1748,36 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
-      "args": [],
-      "discriminator": [
-        224,
-        187,
-        132,
-        189,
-        185,
-        163,
-        183,
-        237
-      ],
-      "docs": [
-        "Resize an existing profile account to the current schema size.",
-        "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
-      ],
-      "name": "migrate_profile"
+      "args": []
     },
     {
+      "name": "react_to_post",
+      "discriminator": [
+        186,
+        193,
+        53,
+        26,
+        172,
+        69,
+        217,
+        231
+      ],
       "accounts": [
         {
           "name": "reaction",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1946,13 +1798,12 @@
                 "path": "post"
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "reactor_profile.owner"
+                "path": "reactor_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "post",
@@ -1968,9 +1819,9 @@
                 ]
               },
               {
-                "account": "Post",
                 "kind": "account",
-                "path": "post.author"
+                "path": "post.author",
+                "account": "Post"
               },
               {
                 "kind": "arg",
@@ -1996,29 +1847,29 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "reactor_profile.owner"
+                "path": "reactor_profile.owner",
+                "account": "Profile"
               }
             ]
           }
         },
         {
+          "name": "user",
           "docs": [
             "The reactor — must be the reactor_profile owner"
           ],
-          "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2030,23 +1881,24 @@
           "name": "reaction_type",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        186,
-        193,
-        53,
-        26,
-        172,
-        69,
-        217,
-        231
-      ],
-      "name": "react_to_post"
+      ]
     },
     {
+      "name": "send_message",
+      "discriminator": [
+        57,
+        40,
+        34,
+        178,
+        189,
+        10,
+        65,
+        26
+      ],
       "accounts": [
         {
           "name": "message",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2070,11 +1922,11 @@
                 "path": "message_index"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "chat",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2091,28 +1943,27 @@
                 "path": "chat_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
+          "name": "sender",
           "docs": [
             "Message sender — must be a participant in the chat"
           ],
-          "name": "sender",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury for gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2128,23 +1979,24 @@
           "name": "content",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        57,
-        40,
-        34,
-        178,
-        189,
-        10,
-        65,
-        26
-      ],
-      "name": "send_message"
+      ]
     },
     {
+      "name": "unfollow_user",
+      "discriminator": [
+        204,
+        183,
+        196,
+        110,
+        97,
+        165,
+        226,
+        213
+      ],
       "accounts": [
         {
           "name": "follow_account",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2159,21 +2011,21 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "follower_profile.owner"
+                "path": "follower_profile.owner",
+                "account": "Profile"
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "following_profile.owner"
+                "path": "following_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "follower_profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2193,11 +2045,11 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "following_profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2213,44 +2065,44 @@
                 ]
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "following_profile.owner"
+                "path": "following_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "treasury",
           "docs": [
             "Treasury wallet — rent refund destination"
           ],
-          "name": "treasury",
           "writable": true
         }
       ],
-      "args": [],
-      "discriminator": [
-        204,
-        183,
-        196,
-        110,
-        97,
-        165,
-        226,
-        213
-      ],
-      "name": "unfollow_user"
+      "args": []
     },
     {
+      "name": "update_community",
+      "discriminator": [
+        250,
+        158,
+        38,
+        207,
+        116,
+        171,
+        210,
+        51
+      ],
       "accounts": [
         {
           "name": "community",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2272,13 +2124,12 @@
                 "path": "community_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         }
       ],
       "args": [
@@ -2294,23 +2145,24 @@
           "name": "avatar_url",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        250,
-        158,
-        38,
-        207,
-        116,
-        171,
-        210,
-        51
-      ],
-      "name": "update_community"
+      ]
     },
     {
+      "name": "update_profile",
+      "discriminator": [
+        98,
+        67,
+        99,
+        206,
+        86,
+        115,
+        175,
+        1
+      ],
       "accounts": [
         {
           "name": "profile",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2330,25 +2182,24 @@
                 "path": "user"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
+          "name": "payer",
           "docs": [
             "Fee payer — treasury pays for realloc rent in gasless UX"
           ],
-          "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2368,23 +2219,24 @@
           "name": "banner_url",
           "type": "string"
         }
-      ],
-      "discriminator": [
-        98,
-        67,
-        99,
-        206,
-        86,
-        115,
-        175,
-        1
-      ],
-      "name": "update_profile"
+      ]
     },
     {
+      "name": "vote_poll",
+      "discriminator": [
+        154,
+        219,
+        48,
+        148,
+        149,
+        7,
+        153,
+        194
+      ],
       "accounts": [
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2397,20 +2249,20 @@
                 ]
               },
               {
-                "account": "Poll",
                 "kind": "account",
-                "path": "poll.creator"
+                "path": "poll.creator",
+                "account": "Poll"
               },
               {
                 "kind": "arg",
                 "path": "poll_id"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "poll_vote",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -2432,13 +2284,12 @@
                 "path": "poll"
               },
               {
-                "account": "Profile",
                 "kind": "account",
-                "path": "voter_profile.owner"
+                "path": "voter_profile.owner",
+                "account": "Profile"
               }
             ]
-          },
-          "writable": true
+          }
         },
         {
           "name": "voter_profile",
@@ -2465,17 +2316,17 @@
         },
         {
           "name": "user",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
           "name": "payer",
-          "signer": true,
-          "writable": true
+          "writable": true,
+          "signer": true
         },
         {
-          "address": "11111111111111111111111111111111",
-          "name": "system_program"
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
@@ -2487,30 +2338,270 @@
           "name": "choice",
           "type": "u8"
         }
-      ],
-      "discriminator": [
-        154,
-        219,
-        48,
-        148,
-        149,
-        7,
-        153,
-        194
-      ],
-      "name": "vote_poll"
+      ]
     }
   ],
-  "metadata": {
-    "description": "ShadowSpace - Social on Solana",
-    "name": "shadowspace",
-    "spec": "0.1.0",
-    "version": "0.1.0"
-  },
+  "accounts": [
+    {
+      "name": "Chat",
+      "discriminator": [
+        170,
+        4,
+        71,
+        128,
+        185,
+        103,
+        250,
+        177
+      ]
+    },
+    {
+      "name": "Comment",
+      "discriminator": [
+        150,
+        135,
+        96,
+        244,
+        55,
+        199,
+        50,
+        65
+      ]
+    },
+    {
+      "name": "Community",
+      "discriminator": [
+        192,
+        73,
+        211,
+        158,
+        178,
+        81,
+        19,
+        112
+      ]
+    },
+    {
+      "name": "CommunityNameRegistry",
+      "discriminator": [
+        55,
+        189,
+        142,
+        44,
+        79,
+        178,
+        102,
+        162
+      ]
+    },
+    {
+      "name": "FollowAccount",
+      "discriminator": [
+        174,
+        177,
+        136,
+        60,
+        138,
+        84,
+        148,
+        209
+      ]
+    },
+    {
+      "name": "LikeRecord",
+      "discriminator": [
+        179,
+        237,
+        53,
+        5,
+        91,
+        236,
+        161,
+        50
+      ]
+    },
+    {
+      "name": "Membership",
+      "discriminator": [
+        231,
+        141,
+        180,
+        98,
+        109,
+        168,
+        175,
+        166
+      ]
+    },
+    {
+      "name": "Message",
+      "discriminator": [
+        110,
+        151,
+        23,
+        110,
+        198,
+        6,
+        125,
+        181
+      ]
+    },
+    {
+      "name": "Poll",
+      "discriminator": [
+        110,
+        234,
+        167,
+        188,
+        231,
+        136,
+        153,
+        111
+      ]
+    },
+    {
+      "name": "PollVote",
+      "discriminator": [
+        60,
+        154,
+        212,
+        155,
+        112,
+        25,
+        150,
+        182
+      ]
+    },
+    {
+      "name": "Post",
+      "discriminator": [
+        8,
+        147,
+        90,
+        186,
+        185,
+        56,
+        192,
+        150
+      ]
+    },
+    {
+      "name": "Profile",
+      "discriminator": [
+        184,
+        101,
+        165,
+        188,
+        95,
+        63,
+        127,
+        188
+      ]
+    },
+    {
+      "name": "Reaction",
+      "discriminator": [
+        226,
+        61,
+        100,
+        191,
+        223,
+        221,
+        142,
+        139
+      ]
+    },
+    {
+      "name": "UsernameRegistry",
+      "discriminator": [
+        145,
+        217,
+        207,
+        126,
+        35,
+        114,
+        138,
+        18
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "AlreadyFollowing",
+      "msg": "Already following this user"
+    },
+    {
+      "code": 6001,
+      "name": "NotFollowing",
+      "msg": "Not following this user"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6003,
+      "name": "ContentTooLong",
+      "msg": "Content too long"
+    },
+    {
+      "code": 6004,
+      "name": "CannotFollowSelf",
+      "msg": "Cannot follow yourself"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidAmount",
+      "msg": "Invalid amount"
+    },
+    {
+      "code": 6006,
+      "name": "CommunityFull",
+      "msg": "Community is full (max 100 members)"
+    },
+    {
+      "code": 6007,
+      "name": "AlreadyInitialized",
+      "msg": "Account already initialized"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidPollOptions",
+      "msg": "Poll must have 2-4 options"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidPollChoice",
+      "msg": "Invalid poll choice"
+    },
+    {
+      "code": 6010,
+      "name": "PollAlreadyEnded",
+      "msg": "Poll has ended"
+    },
+    {
+      "code": 6011,
+      "name": "AlreadyLiked",
+      "msg": "Already liked this post"
+    },
+    {
+      "code": 6012,
+      "name": "CannotLikeOwnPost",
+      "msg": "Cannot like your own post"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidReactionType",
+      "msg": "Invalid reaction type"
+    }
+  ],
   "types": [
     {
       "name": "Chat",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chat_id",
@@ -2532,13 +2623,13 @@
             "name": "created_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Comment",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2560,13 +2651,13 @@
             "name": "created_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Community",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -2596,13 +2687,32 @@
             "name": "created_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "CommunityNameRegistry",
+      "docs": [
+        "Reservation account proving a community name is taken (PDA seeded by the name)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "community_id",
+            "type": "u64"
+          }
+        ]
       }
     },
     {
       "name": "FollowAccount",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "follower",
@@ -2612,13 +2722,13 @@
             "name": "following",
             "type": "pubkey"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "LikeRecord",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2632,13 +2742,13 @@
             "name": "liked_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Membership",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "community",
@@ -2652,13 +2762,13 @@
             "name": "joined_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Message",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "chat_id",
@@ -2680,13 +2790,13 @@
             "name": "timestamp",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Poll",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "creator",
@@ -2752,13 +2862,13 @@
             "name": "created_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "PollVote",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "poll",
@@ -2776,13 +2886,13 @@
             "name": "voted_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Post",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "author",
@@ -2816,13 +2926,13 @@
             "name": "updated_at",
             "type": "i64"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Profile",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "owner",
@@ -2872,13 +2982,13 @@
             "name": "banner_url",
             "type": "string"
           }
-        ],
-        "kind": "struct"
+        ]
       }
     },
     {
       "name": "Reaction",
       "type": {
+        "kind": "struct",
         "fields": [
           {
             "name": "post",
@@ -2892,8 +3002,24 @@
             "name": "reaction_type",
             "type": "u8"
           }
-        ],
-        "kind": "struct"
+        ]
+      }
+    },
+    {
+      "name": "UsernameRegistry",
+      "docs": [
+        "Reservation account proving a username is taken. Its PDA is seeded by the",
+        "username itself, so it can exist at most once per handle — that single-init",
+        "constraint is what enforces username uniqueness."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          }
+        ]
       }
     }
   ]
