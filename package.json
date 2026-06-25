@@ -4,6 +4,9 @@
   "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
   "license": "MIT",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
