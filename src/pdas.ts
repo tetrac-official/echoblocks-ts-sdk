@@ -85,4 +85,18 @@ export class Pdas {
   pollVote(poll: PublicKey | string, voter: PublicKey | string): PublicKey {
     return this.derive([SEEDS.POLL_VOTE, toPublicKey(poll).toBuffer(), toPublicKey(voter).toBuffer()]);
   }
+
+  /** Username-uniqueness registry PDA. Seeded by the raw UTF-8 username bytes
+   * (matches the program's `username.as_bytes()`), so it exists at most once per
+   * handle. Pass the exact username string used in `createProfile`. */
+  usernameRegistry(username: string): PublicKey {
+    return this.derive([SEEDS.USERNAME, Buffer.from(username, "utf8")]);
+  }
+
+  /** Community-name-uniqueness registry PDA. Seeded by the raw UTF-8 name bytes
+   * (matches the program's `name.as_bytes()`). Pass the exact name used in
+   * `createCommunity`. */
+  communityNameRegistry(name: string): PublicKey {
+    return this.derive([SEEDS.COMMUNITY_NAME, Buffer.from(name, "utf8")]);
+  }
 }

@@ -34,6 +34,9 @@ export const SEEDS = {
   POLL: Buffer.from("poll"),
   POLL_VOTE: Buffer.from("poll_vote"),
   LIKE: Buffer.from("like"),
+  // Uniqueness registries — PDA seeded by the handle itself (enforces uniqueness).
+  USERNAME: Buffer.from("username"),
+  COMMUNITY_NAME: Buffer.from("community_name"),
 } as const;
 
 /**
