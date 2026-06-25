@@ -1,0 +1,5 @@
+dist
+node_modules
+src/idl/shadowspace.ts
+src/idl/shadowspace.json
+package-lock.json

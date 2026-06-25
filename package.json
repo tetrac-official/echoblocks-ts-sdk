@@ -1,0 +1,67 @@
+{
+  "name": "@echoblocks/shadowspace-sdk",
+  "version": "0.1.0",
+  "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && prettier --check \"**/*.{ts,js,mjs,json,md}\"",
+    "lint:fix": "eslint . --fix && prettier --write \"**/*.{ts,js,mjs,json,md}\"",
+    "format": "prettier --write \"**/*.{ts,js,mjs,json,md}\"",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "example:post": "tsx examples/post.ts",
+    "example:read": "tsx examples/read.ts",
+    "test": "node --import tsx --test --test-concurrency=1 test/*.test.ts",
+    "test:offline": "node --import tsx --test test/01-offline.test.ts",
+    "test:live": "node --import tsx --test --test-concurrency=1 test/0[2-9]*.test.ts"
+  },
+  "keywords": [
+    "solana",
+    "anchor",
+    "sdk",
+    "shadowspace",
+    "web3",
+    "social",
+    "devnet",
+    "rpc-failover"
+  ],
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@solana/web3.js": "^1.98.4",
+    "bs58": "^6.0.0",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "tsup": "^8.5.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
