@@ -3,6 +3,15 @@
   "version": "0.2.0",
   "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
   "license": "MIT",
+  "author": "Tetrac",
+  "homepage": "https://github.com/tetrac-official/echoblocks-ts-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetrac-official/echoblocks-ts-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tetrac-official/echoblocks-ts-sdk/issues"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -19,7 +28,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=18"
