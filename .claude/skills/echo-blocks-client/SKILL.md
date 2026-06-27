@@ -8,8 +8,9 @@ description: >
   fromEnv / PRIVATE_KEY / RPC failover, creating a profile and posting, deriving
   PDAs, reading on-chain accounts, handling content limits and caller-chosen ids,
   or diagnosing failures like AnchorError 3007 "AccountOwnedByWrongProgram",
-  "account ... already in use", WalletRequiredError, or any mismatch between the
-  bundled IDL and the deployed program (the `agent_record` / `set_agent` drift).
+  "account ... already in use", WalletRequiredError, InvalidTreasury, the protocol
+  fee plus the config + treasury accounts now required on create_post and every
+  close, or a future mismatch between the bundled IDL and the deployed program.
 ---
 
 # EchoBlocksClient (@tetrac/echoblocks-ts-sdk)
@@ -29,8 +30,8 @@ no separate wallet account is created.
 ```ts
 import { EchoBlocksClient } from "@tetrac/echoblocks-ts-sdk";
 
-const client = EchoBlocksClient.fromEnv();           // reads .env (see vars below)
-const me = client.walletPublicKey;                   // throws if read-only
+const client = EchoBlocksClient.fromEnv(); // reads .env (see vars below)
+const me = client.walletPublicKey; // throws if read-only
 
 // 1. A profile is REQUIRED before posting/commenting/etc. Create it once.
 if (!(await client.getProfile(me))) {
@@ -55,16 +56,16 @@ takes a fully-assembled `ClientComponents`, not config.
 `fromEnv()` calls `dotenv` and reads `process.env`. Override any of these via the
 options arg (e.g. `fromEnv({ isMainnet: true, rpcUrl, privateKey, readOnly })`).
 
-| Var | Required | Meaning |
-|---|---|---|
-| `PRIVATE_KEY` | to write | Signer/payer. base58, hex (64/128 chars, `0x` optional), or JSON byte array `[1,2,...]`. Absent → **read-only client**. |
-| `IS_MAINNET` | no | `false` → devnet (default), `true` → mainnet-beta. Flips cluster, keyless fallback, expected genesis. |
-| `SOLANA_PDA_ADDRESS` | no | Program ID. Defaults to the devnet deployment. Set this to repoint without a code change. |
-| `SOLANA_TREASURY_ADDRESS` | no | Rent-refund destination. Hard-coded in the program; only change if you forked it. |
-| `SOLANA_COMMITMENT` | no | `processed` \| `confirmed` (default) \| `finalized`. |
-| `RPC_NODE_URL` | no | Pin one explicit primary endpoint (include auth in the URL). |
-| `HELIUS_API_KEY` | no | Works on both clusters; becomes the pool primary. |
-| `FLUX_API_KEY`, `ALCHEMY_SOLANA_KEY`, `QUICKNODE_SOLANA_URL`, `SYNDICA_SOLANA_KEY`, `DRPC_SOLANA_URL` | no | Mainnet-only secondaries; ignored on devnet. |
+| Var                                                                                                   | Required | Meaning                                                                                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PRIVATE_KEY`                                                                                         | to write | Signer/payer. base58, hex (64/128 chars, `0x` optional), or JSON byte array `[1,2,...]`. Absent → **read-only client**.                                                                                        |
+| `IS_MAINNET`                                                                                          | no       | `false` → devnet (default), `true` → mainnet-beta. Flips cluster, keyless fallback, expected genesis.                                                                                                          |
+| `SOLANA_PDA_ADDRESS`                                                                                  | no       | Program ID. Defaults to the devnet deployment. Set this to repoint without a code change.                                                                                                                      |
+| `SOLANA_TREASURY_ADDRESS`                                                                             | no       | Rent/fee destination. Must equal the program's on-chain `config.treasury` (DAO-rotatable via `update_config`). If the DAO rotates it, set this to the new value or every create/close fails `InvalidTreasury`. |
+| `SOLANA_COMMITMENT`                                                                                   | no       | `processed` \| `confirmed` (default) \| `finalized`.                                                                                                                                                           |
+| `RPC_NODE_URL`                                                                                        | no       | Pin one explicit primary endpoint (include auth in the URL).                                                                                                                                                   |
+| `HELIUS_API_KEY`                                                                                      | no       | Works on both clusters; becomes the pool primary.                                                                                                                                                              |
+| `FLUX_API_KEY`, `ALCHEMY_SOLANA_KEY`, `QUICKNODE_SOLANA_URL`, `SYNDICA_SOLANA_KEY`, `DRPC_SOLANA_URL` | no       | Mainnet-only secondaries; ignored on devnet.                                                                                                                                                                   |
 
 You never pick a provider by hand — set whichever keys you have and the pool
 orders/rotates them (`RPC_NODE_URL` → keyed → keyless public fallback) with a
@@ -126,8 +127,8 @@ encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messa
 `Address` args accept a `PublicKey` or base58 string. `U64Like` ids accept
 `number | string | BN`. Need a PDA yourself? Use `client.pdas` (`profile(owner)`,
 `post(author, postId)`, `comment`, `reaction`, `like`, `follow`, `community`,
-`membership`, `poll`, `pollVote`, `chat`, `message`, `usernameRegistry`,
-`communityNameRegistry`).
+`membership`, `poll`, `pollVote`, `chat`, `message`, `config` (the global
+protocol-fee config PDA), `usernameRegistry`, `communityNameRegistry`).
 
 ## Correctness rules — read before you write
 
@@ -145,13 +146,13 @@ encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messa
 - **Content limits are bytes (UTF-8), validated client-side** (throws
   `ValidationError` before spending a transaction):
 
-  | Field | Max | Field | Max |
-  |---|---|---|---|
-  | username | 16 | post content | 500 |
-  | display name | 24 | comment content | 100 |
-  | bio | 64 | message content | 512 |
-  | avatar/banner URL | 128 | poll question | 200 |
-  | community name | 32 | poll option | 50 |
+  | Field                        | Max | Field                 | Max |
+  | ---------------------------- | --- | --------------------- | --- |
+  | username                     | 16  | post content          | 500 |
+  | display name                 | 24  | comment content       | 100 |
+  | bio                          | 64  | message content       | 512 |
+  | avatar/banner URL            | 128 | poll question         | 200 |
+  | community name               | 32  | poll option           | 50  |
   | community description/avatar | 128 | community max members | 100 |
 
 - **Enums/ranges:** `reactionType` 0–5 (`ReactionType.Like..Angry`); poll `choice`
@@ -159,9 +160,15 @@ encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messa
 - **Read-only clients throw on writes.** No `PRIVATE_KEY` (or `readOnly: true`) →
   `walletPublicKey` and every write throw `WalletRequiredError`. Gate writes on
   `client.isReadOnly`.
-- **`close_*` / `leave_*` / `unfollow` refund rent to the treasury** — you must pass
-  (the SDK passes) the program's hard-coded treasury; any other address is
-  rejected. Only the owner/creator may close their accounts.
+- **`close_*` / `leave_*` / `unfollow` refund rent to `config.treasury`** — the SDK
+  passes the global config PDA + your configured treasury; both are bound on-chain to
+  `config.treasury`, so a stale/wrong treasury is rejected with `InvalidTreasury`
+  (see version-drift section). Only the owner/creator may close their accounts.
+- **`createPost` may cost a protocol fee.** `create_post` carries the same `config` +
+  `treasury` accounts. When the DAO has enabled the fee (a config flag), each post also
+  transfers a small flat fee (default 2× the base signature fee ≈ 10 000 lamports) from
+  the payer to `config.treasury`, on top of network fee + rent. It is OFF until the DAO
+  turns it on; the SDK needs no change either way. Tips/paid-unlocks are never charged.
 - **Program-enforced rejections** you should expect and handle: liking your own
   post or double-liking; following yourself; voting twice; closing something you
   don't own.
@@ -171,29 +178,38 @@ encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messa
   failures surface as Anchor errors with a code and the offending account name —
   read the account name in the message; it tells you which PDA was wrong.
 
-## ⚠️ The bundled IDL can lag the deployed program (version drift)
+## Bundled IDL ↔ deployed program (currently in sync; handling future drift)
 
-This is the most important non-obvious failure mode. The SDK derives the account
-list for each instruction from its **bundled** IDL (`src/idl/shadowspace.json`).
-If the on-chain program has been **upgraded** since the SDK was published, the
-bundled account layout can be stale, and Anchor will send the wrong accounts in
-the wrong slots.
+The SDK builds each instruction's account list from its **bundled** IDL
+(`src/idl/shadowspace.json`, mirrored as a typed `src/idl/shadowspace.ts`). It must
+match the deployed program or Anchor sends the wrong accounts in the wrong slots.
 
-**Known live drift (SDK 0.2.0):** the deployed program added delegated posting —
-new instructions `set_agent` / `revoke_agent` and an **optional `agent_record`
-account inserted into `create_post`** (between `author` and `payer`). The bundled
-IDL predates this, so `createPost` sends one account too few. The program then
-reads the signer wallet into the `agent_record` slot and aborts:
+**As of the bundled IDL v0.3.0 the SDK is current** with the deployed program
+(`CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh`). Two upgrades are absorbed and wired
+into every affected method:
 
-```
-AnchorError caused by account: agent_record.
-Error Code: AccountOwnedByWrongProgram. Error Number: 3007.
-Left: 11111111111111111111111111111111   (System Program — the wallet's owner)
-Right: CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh   (expected: ShadowSpace)
-```
+- **Delegated signing (optional `agent_record`).** Every social instruction now takes
+  an OPTIONAL `agent_record`. The SDK always signs as the owner, so it passes
+  `agentRecord: null` (Anchor encodes None as the program id). It does **not** yet
+  expose `set_agent` / delegated signing — a future enhancement.
+- **Protocol-fee switch (`config` + `treasury`).** `create_post` and every
+  rent-returning close (`close_post/comment/reaction/profile/chat/message`,
+  `unfollow_user`, `leave_community`, `close_community`) require a PDA-derived `config`
+  account (`["config"]`) and a `treasury` bound on-chain to `config.treasury`. The SDK
+  passes `config: client.pdas.config()` and `treasury: client.treasury` for you.
 
-Any `3007 AccountOwnedByWrongProgram` naming an account that the SDK "shouldn't"
-be touching is this class of bug: **the bundled IDL is behind the chain.**
+So `createPost` / closes / follows build correctly today — **no known drift**. The rest
+of this section is for the **next** program upgrade.
+
+### Symptoms of future drift
+
+- `3007 AccountOwnedByWrongProgram` naming an account the SDK "shouldn't" touch (e.g.
+  the wallet landing in a slot like `agent_record`) → the bundled IDL is **missing** a
+  newly-inserted account.
+- `Reached maximum depth … Unresolved accounts: X` → the bundled IDL **has** an account
+  the builder doesn't pass (Anchor can't resolve an optional / PDA account by itself).
+- `InvalidTreasury (6015)` on a create/close → `client.treasury` ≠ on-chain
+  `config.treasury` (the DAO rotated it). Fix `SOLANA_TREASURY_ADDRESS`; not an IDL bug.
 
 ### Detect it
 
@@ -208,27 +224,41 @@ anchor idl fetch CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh \
 
 If account names/order differ, the SDK is out of sync.
 
-### Fix A — maintainer (preferred): regenerate the bundled IDL
+### Fix A — maintainer (preferred): regenerate the bundled IDL, then rewire
 
-Replace `src/idl/shadowspace.json` (and the typed `src/idl/shadowspace.ts`) with
-the freshly fetched on-chain IDL, then add the new accounts to the affected client
-methods and rebuild. For `create_post`, the owner posts with no delegate, so
-`agent_record` is passed as **None** (Anchor encodes None as the program id):
+This is exactly how v0.3.0 was produced:
+
+1. Copy the on-chain IDL into `src/idl/shadowspace.json`; regenerate the typed
+   `src/idl/shadowspace.ts` (Anchor's camelCase `Shadowspace` type + a matching
+   `export const IDL` of the same literal).
+2. Add the new accounts to the affected client methods. The None marker for an absent
+   optional account (the SDK signs as owner, so `agent_record` is always None) is
+   `null`; add `config` + `treasury` to `create_post` and the closes:
 
 ```ts
-.accountsPartial({ post, profile, author: owner,
-  agentRecord: this.program.programId,   // None marker
-  payer: owner, systemProgram: SystemProgram.programId })
+.accountsPartial({
+  post, profile, author: owner,
+  agentRecord: null,                  // optional account absent → None
+  payer: owner,
+  config: this.pdas.config(),         // ["config"] PDA — required by the program
+  treasury: this.config.treasury,     // must equal config.treasury
+  systemProgram: SystemProgram.programId,
+})
 ```
 
-(To support delegated posting, expose `set_agent(agent)` — the profile owner
-registers one `AgentRecord` PDA seeded `["agent", profile.owner]`; the agent then
-signs `create_post` with that `agent_record` passed in.)
+3. `npm run typecheck && npm run build`. **Verify without spending SOL**: build with
+   `.instruction()` instead of `.rpc()` and inspect `ix.keys` — an absent optional
+   account's slot must be the **program id** (None), not your wallet.
 
-### Fix B — consumer (no SDK rebuild): post against the on-chain IDL at the call site
+(To support delegated posting later, expose `set_agent(agent)` — the owner registers
+one `Agent` PDA seeded `["agent", profile.owner]`; the agent then signs with that
+`agent_record` passed in instead of `null`.)
 
-Reuse the client's already-configured provider/pdas and build the instruction from
-the fetched IDL, passing `agent_record` as None. Single wallet, no env change:
+### Fix B — consumer (no SDK rebuild): build against the fetched IDL at the call site
+
+If a published SDK lags and you can't wait for a release, reuse the client's
+provider/pdas and build from the fetched on-chain IDL — pass the absent optional as
+`null` and include `config` + `treasury`:
 
 ```ts
 import { Program, web3 } from "@coral-xyz/anchor";
@@ -245,16 +275,18 @@ await program.methods
     post: client.pdas.post(owner, postId),
     profile: client.pdas.profile(owner),
     author: owner,
-    agentRecord: program.programId,              // None (optional account absent)
+    agentRecord: null, // None (optional account absent)
     payer: owner,
+    config: client.pdas.config(),
+    treasury: client.treasury,
     systemProgram: web3.SystemProgram.programId,
   })
   .rpc();
 ```
 
-Verify the layout without spending SOL by calling `.instruction()` instead of
-`.rpc()` and inspecting `ix.keys` — the `agent_record` slot must be the **program
-id** (None), not your wallet.
+Verify the layout without spending SOL by calling `.instruction()` instead of `.rpc()`
+and inspecting `ix.keys` — an absent optional account's slot must be the **program id**
+(None), not your wallet.
 
 ## Advanced: build your own Program
 
