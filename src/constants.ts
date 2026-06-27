@@ -37,6 +37,8 @@ export const SEEDS = {
   // Uniqueness registries — PDA seeded by the handle itself (enforces uniqueness).
   USERNAME: Buffer.from("username"),
   COMMUNITY_NAME: Buffer.from("community_name"),
+  // Global protocol-fee config (single PDA, no per-user seed) — holds treasury + fee switch.
+  CONFIG: Buffer.from("config"),
 } as const;
 
 /**

@@ -1,18 +1,16 @@
 /**
- * Auto-generated TypeScript IDL for the EchoBlocks / ShadowSpace program.
+ * TypeScript IDL for the EchoBlocks / ShadowSpace program (canonical snake_case Anchor output).
  *
- * Source: Anchor build of the devnet program
- * CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh (camelCase form, matching the runtime
- * namespaces). Raw on-chain IDL is in src/idl/shadowspace.json.
- *
- * Regenerate after a program change with the project's IDL regen step.
+ * Source: anchor build of devnet CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh.
+ * Raw on-chain IDL: src/idl/shadowspace.json. Regenerate after a program change by copying
+ * target/idl/shadowspace.json here and re-deriving this file (type + const, same literal).
  */
 
 export type Shadowspace = {
   "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
   "metadata": {
     "name": "shadowspace",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "spec": "0.1.0",
     "description": "ShadowSpace - Social on Solana"
   },
@@ -60,10 +58,29 @@ export type Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -146,14 +163,59 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the comment author OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "comment.author",
+                "account": "comment"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -208,9 +270,57 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "community"
+              }
+            ]
+          }
+        },
+        {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "treasury",
@@ -274,10 +384,29 @@ export type Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -333,8 +462,34 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the poll creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poll.creator",
+                "account": "poll"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -376,7 +531,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -404,21 +560,67 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "post.author",
+                "account": "post"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the post author OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -475,10 +677,29 @@ export type Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -524,7 +745,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "reaction.user",
+                "account": "reaction"
               }
             ]
           }
@@ -556,14 +778,59 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the reactor OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "reaction.user",
+                "account": "reaction"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -609,9 +876,62 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "user1Profile",
+          "docs": [
+            "First participant's profile — identity = `user1_profile.owner`"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user1_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "user1",
+          "docs": [
+            "The acting signer — must be user1_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user1_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "user2"
@@ -619,7 +939,7 @@ export type Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -730,10 +1050,33 @@ export type Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "The commenter — must be the commenter_profile owner"
+            "The acting signer — must be the commenter_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "commenter_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -852,15 +1195,42 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "creator_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be creator_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -949,15 +1319,42 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -1071,15 +1468,70 @@ export type Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "The post author — must be the profile owner"
+            "The acting signer — must be the profile owner OR the owner's registered agent"
           ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "docs": [
+            "Optional agent record proving `author` is the owner's delegated signer"
+          ],
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — REQUIRED + PDA-derived ([CONFIG_SEED]) so it can't be spoofed or",
+            "omitted to dodge the fee. Reads the on/off switch + bps rate."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Fee sink — must equal `config.treasury`, so fees can't be redirected by a crafted tx."
+          ],
+          "writable": true
         },
         {
           "name": "systemProgram",
@@ -1175,7 +1627,7 @@ export type Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -1232,7 +1684,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -1244,9 +1697,32 @@ export type Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "Must be the original author — if anyone else signs, the seed/constraint check fails"
+            "The acting signer — must be the author OR the author's registered agent"
           ],
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -1321,7 +1797,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "follower_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -1353,13 +1830,39 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be follower_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "follower_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -1370,6 +1873,69 @@ export type Shadowspace = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "initConfig",
+      "docs": [
+        "One-time bootstrap of the GlobalConfig PDA. Gated to the known deployer key",
+        "(TREASURY_PUBKEY) so it can't be front-run between the program upgrade and this call.",
+        "Pass the Squads vault as `authority` directly, or pass the deployer and rotate via",
+        "`update_config` immediately after. Launches with the fee OFF (DAO flips it on later)."
+      ],
+      "discriminator": [
+        23,
+        235,
+        115,
+        232,
+        168,
+        96,
+        1,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "docs": [
+            "Front-run protection: only the known deployer/treasury key may bootstrap the config."
+          ],
+          "writable": true,
+          "signer": true,
+          "address": "BYNtxb7zMereaMrmMcWCQx3G6Y1KZspnMJbiuqoh9MrF"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "authority",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
     },
     {
       "name": "joinCommunity",
@@ -1460,15 +2026,42 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be member_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -1576,7 +2169,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -1584,10 +2178,55 @@ export type Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "Must be the profile owner — prevents others from kicking members"
+            "The acting signer — must be member_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "treasury",
@@ -1667,7 +2306,7 @@ export type Shadowspace = {
         {
           "name": "likeRecord",
           "docs": [
-            "One LikeRecord PDA per (post, liker) — init will fail if they've already liked"
+            "One LikeRecord PDA per (post, owner) — init will fail if they've already liked"
           ],
           "writable": true,
           "pda": {
@@ -1687,7 +2326,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -1695,9 +2335,32 @@ export type Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "The liker — must be the profile owner (read-only, no SOL needed)"
+            "The acting signer — must be the profile owner OR the owner's registered agent"
           ],
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -1867,10 +2530,33 @@ export type Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "The reactor — must be the reactor_profile owner"
+            "The acting signer — must be the reactor_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "reactor_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -1892,6 +2578,79 @@ export type Shadowspace = {
           "type": "u8"
         }
       ]
+    },
+    {
+      "name": "revokeAgent",
+      "docs": [
+        "Revoke the caller's agent, closing the record and refunding its rent to the owner."
+      ],
+      "discriminator": [
+        227,
+        60,
+        209,
+        125,
+        240,
+        117,
+        163,
+        73
+      ],
+      "accounts": [
+        {
+          "name": "agentRecord",
+          "docs": [
+            "Close the agent record and refund rent to the owner."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
     },
     {
       "name": "sendMessage",
@@ -1956,17 +2715,67 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "senderProfile",
+          "docs": [
+            "Sender's profile — identity = `sender_profile.owner`"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "sender_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "sender",
           "docs": [
-            "Message sender — must be a participant in the chat"
+            "The acting signer — must be sender_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "sender_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -1988,6 +2797,94 @@ export type Shadowspace = {
         {
           "name": "content",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "setAgent",
+      "docs": [
+        "Register (or update) the wallet authorized to sign social actions on behalf of the",
+        "caller. Only the profile owner can set their own agent. Re-calling updates the agent."
+      ],
+      "discriminator": [
+        154,
+        74,
+        121,
+        91,
+        137,
+        19,
+        101,
+        166
+      ],
+      "accounts": [
+        {
+          "name": "agentRecord",
+          "docs": [
+            "The agent record for the caller's identity — `init_if_needed` so the same owner",
+            "can set once and later update. Seeded by `profile.owner`, so only the identity's",
+            "own PDA is ever touched."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "docs": [
+            "The caller's profile — PDA seeded by `user`, so `profile.owner == user`."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "agent",
+          "type": "pubkey"
         }
       ]
     },
@@ -2052,7 +2949,8 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "follower_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -2084,14 +2982,59 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be follower_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "follower_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -2138,8 +3081,34 @@ export type Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "community"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -2154,6 +3123,81 @@ export type Shadowspace = {
         {
           "name": "avatarUrl",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "updateConfig",
+      "docs": [
+        "The DAO lever (authority-only). Partial updates via `Option` so a proposal changes only",
+        "what it intends: rotate governance, rotate the fee sink, flip the switch, or adjust the",
+        "rate (bounded by MAX_POST_FEE_BPS). `has_one = authority` enforces the Squads vault signs."
+      ],
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "docs": [
+            "The current authority — a Squads multisig vault (or the deployer pre-rotation)."
+          ],
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "newAuthority",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "newTreasury",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "postFeeEnabled",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "postFeeBps",
+          "type": {
+            "option": "u32"
+          }
         }
       ]
     },
@@ -2202,7 +3246,7 @@ export type Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury pays for realloc rent in gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers the realloc rent"
           ],
           "writable": true,
           "signer": true
@@ -2319,15 +3363,42 @@ export type Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "voter_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the voter_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "voter_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -2352,6 +3423,19 @@ export type Shadowspace = {
     }
   ],
   "accounts": [
+    {
+      "name": "agent",
+      "discriminator": [
+        47,
+        166,
+        112,
+        147,
+        155,
+        197,
+        86,
+        7
+      ]
+    },
     {
       "name": "chat",
       "discriminator": [
@@ -2415,6 +3499,19 @@ export type Shadowspace = {
         84,
         148,
         209
+      ]
+    },
+    {
+      "name": "globalConfig",
+      "discriminator": [
+        149,
+        8,
+        156,
+        202,
+        160,
+        252,
+        176,
+        217
       ]
     },
     {
@@ -2605,9 +3702,52 @@ export type Shadowspace = {
       "code": 6013,
       "name": "invalidReactionType",
       "msg": "Invalid reaction type"
+    },
+    {
+      "code": 6014,
+      "name": "feeTooHigh",
+      "msg": "Fee exceeds the allowed maximum"
+    },
+    {
+      "code": 6015,
+      "name": "invalidTreasury",
+      "msg": "Treasury account does not match config"
     }
   ],
   "types": [
+    {
+      "name": "agent",
+      "docs": [
+        "Maps an identity (funding wallet, `owner`) to its authorized agent (signing",
+        "wallet). Presence + match = the agent may sign social actions for `owner`.",
+        "Closing it (revoke) removes that authority. One per identity (seeded by owner)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "updatedAt",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
     {
       "name": "chat",
       "type": {
@@ -2731,6 +3871,50 @@ export type Shadowspace = {
           {
             "name": "following",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "globalConfig",
+      "docs": [
+        "Protocol-fee config — the single DAO-owned knob (PDA seeded `[CONFIG_SEED]`, one per program).",
+        "`authority` may call `update_config`; `treasury` is the fee sink; `post_fee_enabled` is the",
+        "on/off switch; `post_fee_bps` is basis points of BASE_FEE_LAMPORTS. `_reserved` leaves room to",
+        "add a future value-bearing fee (e.g. gated-join/subscription %) without a migrate. See",
+        "docs/PRD-protocol-fee-switch.md."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "postFeeEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "postFeeBps",
+            "type": "u32"
+          },
+          {
+            "name": "reserved",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -3039,7 +4223,7 @@ export const IDL: Shadowspace = {
   "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
   "metadata": {
     "name": "shadowspace",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "spec": "0.1.0",
     "description": "ShadowSpace - Social on Solana"
   },
@@ -3087,10 +4271,29 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3173,14 +4376,59 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the comment author OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "comment.author",
+                "account": "comment"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3235,9 +4483,57 @@ export const IDL: Shadowspace = {
           }
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "community"
+              }
+            ]
+          }
+        },
+        {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "treasury",
@@ -3301,10 +4597,29 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3360,8 +4675,34 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the poll creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "poll.creator",
+                "account": "poll"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -3403,7 +4744,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -3431,21 +4773,67 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "post.author",
+                "account": "post"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the post author OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3502,10 +4890,29 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3551,7 +4958,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "reaction.user",
+                "account": "reaction"
               }
             ]
           }
@@ -3583,14 +4991,59 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the reactor OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "reaction.user",
+                "account": "reaction"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -3636,9 +5089,62 @@ export const IDL: Shadowspace = {
           }
         },
         {
+          "name": "user1Profile",
+          "docs": [
+            "First participant's profile — identity = `user1_profile.owner`"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user1_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "user1",
+          "docs": [
+            "The acting signer — must be user1_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user1_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "user2"
@@ -3646,7 +5152,7 @@ export const IDL: Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -3757,10 +5263,33 @@ export const IDL: Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "The commenter — must be the commenter_profile owner"
+            "The acting signer — must be the commenter_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "commenter_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -3879,15 +5408,42 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "creator_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be creator_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -3976,15 +5532,42 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -4098,15 +5681,70 @@ export const IDL: Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "The post author — must be the profile owner"
+            "The acting signer — must be the profile owner OR the owner's registered agent"
           ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "docs": [
+            "Optional agent record proving `author` is the owner's delegated signer"
+          ],
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — REQUIRED + PDA-derived ([CONFIG_SEED]) so it can't be spoofed or",
+            "omitted to dodge the fee. Reads the on/off switch + bps rate."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Fee sink — must equal `config.treasury`, so fees can't be redirected by a crafted tx."
+          ],
+          "writable": true
         },
         {
           "name": "systemProgram",
@@ -4202,7 +5840,7 @@ export const IDL: Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -4259,7 +5897,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "author"
+                "path": "post.author",
+                "account": "post"
               },
               {
                 "kind": "arg",
@@ -4271,9 +5910,32 @@ export const IDL: Shadowspace = {
         {
           "name": "author",
           "docs": [
-            "Must be the original author — if anyone else signs, the seed/constraint check fails"
+            "The acting signer — must be the author OR the author's registered agent"
           ],
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -4348,7 +6010,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "follower_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -4380,13 +6043,39 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be follower_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "follower_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "docs": [
-            "Fee payer — can be a server keypair for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -4397,6 +6086,69 @@ export const IDL: Shadowspace = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "initConfig",
+      "docs": [
+        "One-time bootstrap of the GlobalConfig PDA. Gated to the known deployer key",
+        "(TREASURY_PUBKEY) so it can't be front-run between the program upgrade and this call.",
+        "Pass the Squads vault as `authority` directly, or pass the deployer and rotate via",
+        "`update_config` immediately after. Launches with the fee OFF (DAO flips it on later)."
+      ],
+      "discriminator": [
+        23,
+        235,
+        115,
+        232,
+        168,
+        96,
+        1,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "docs": [
+            "Front-run protection: only the known deployer/treasury key may bootstrap the config."
+          ],
+          "writable": true,
+          "signer": true,
+          "address": "BYNtxb7zMereaMrmMcWCQx3G6Y1KZspnMJbiuqoh9MrF"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "authority",
+          "type": "pubkey"
+        },
+        {
+          "name": "treasury",
+          "type": "pubkey"
+        }
+      ]
     },
     {
       "name": "joinCommunity",
@@ -4487,15 +6239,42 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be member_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -4603,7 +6382,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "member_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -4611,10 +6391,55 @@ export const IDL: Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "Must be the profile owner — prevents others from kicking members"
+            "The acting signer — must be member_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "member_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
         },
         {
           "name": "treasury",
@@ -4694,7 +6519,7 @@ export const IDL: Shadowspace = {
         {
           "name": "likeRecord",
           "docs": [
-            "One LikeRecord PDA per (post, liker) — init will fail if they've already liked"
+            "One LikeRecord PDA per (post, owner) — init will fail if they've already liked"
           ],
           "writable": true,
           "pda": {
@@ -4714,7 +6539,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -4722,9 +6548,32 @@ export const IDL: Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "The liker — must be the profile owner (read-only, no SOL needed)"
+            "The acting signer — must be the profile owner OR the owner's registered agent"
           ],
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -4894,10 +6743,33 @@ export const IDL: Shadowspace = {
         {
           "name": "user",
           "docs": [
-            "The reactor — must be the reactor_profile owner"
+            "The acting signer — must be the reactor_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "reactor_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -4919,6 +6791,79 @@ export const IDL: Shadowspace = {
           "type": "u8"
         }
       ]
+    },
+    {
+      "name": "revokeAgent",
+      "docs": [
+        "Revoke the caller's agent, closing the record and refunding its rent to the owner."
+      ],
+      "discriminator": [
+        227,
+        60,
+        209,
+        125,
+        240,
+        117,
+        163,
+        73
+      ],
+      "accounts": [
+        {
+          "name": "agentRecord",
+          "docs": [
+            "Close the agent record and refund rent to the owner."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
     },
     {
       "name": "sendMessage",
@@ -4983,17 +6928,67 @@ export const IDL: Shadowspace = {
           }
         },
         {
+          "name": "senderProfile",
+          "docs": [
+            "Sender's profile — identity = `sender_profile.owner`"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "sender_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "sender",
           "docs": [
-            "Message sender — must be a participant in the chat"
+            "The acting signer — must be sender_profile owner OR their registered agent"
           ],
           "writable": true,
           "signer": true
         },
         {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "sender_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury for gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers this tx's fees + rent"
           ],
           "writable": true,
           "signer": true
@@ -5015,6 +7010,94 @@ export const IDL: Shadowspace = {
         {
           "name": "content",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "setAgent",
+      "docs": [
+        "Register (or update) the wallet authorized to sign social actions on behalf of the",
+        "caller. Only the profile owner can set their own agent. Re-calling updates the agent."
+      ],
+      "discriminator": [
+        154,
+        74,
+        121,
+        91,
+        137,
+        19,
+        101,
+        166
+      ],
+      "accounts": [
+        {
+          "name": "agentRecord",
+          "docs": [
+            "The agent record for the caller's identity — `init_if_needed` so the same owner",
+            "can set once and later update. Seeded by `profile.owner`, so only the identity's",
+            "own PDA is ever touched."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "docs": [
+            "The caller's profile — PDA seeded by `user`, so `profile.owner == user`."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "agent",
+          "type": "pubkey"
         }
       ]
     },
@@ -5079,7 +7162,8 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "follower_profile.owner",
+                "account": "profile"
               }
             ]
           }
@@ -5111,14 +7195,59 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be follower_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
         },
         {
-          "name": "treasury",
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "follower_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "config",
           "docs": [
-            "Treasury wallet — rent refund destination"
+            "Protocol-fee config — PDA-derived ([CONFIG_SEED]) so it can't be spoofed; pins `treasury`",
+            "to the DAO-rotatable `config.treasury` (replaces the old hardcoded TREASURY_PUBKEY check)."
           ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
           "writable": true
         }
       ],
@@ -5165,8 +7294,34 @@ export const IDL: Shadowspace = {
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "community"
+              }
+            ]
+          }
         }
       ],
       "args": [
@@ -5181,6 +7336,81 @@ export const IDL: Shadowspace = {
         {
           "name": "avatarUrl",
           "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "updateConfig",
+      "docs": [
+        "The DAO lever (authority-only). Partial updates via `Option` so a proposal changes only",
+        "what it intends: rotate governance, rotate the fee sink, flip the switch, or adjust the",
+        "rate (bounded by MAX_POST_FEE_BPS). `has_one = authority` enforces the Squads vault signs."
+      ],
+      "discriminator": [
+        29,
+        158,
+        252,
+        191,
+        10,
+        83,
+        219,
+        99
+      ],
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "docs": [
+            "The current authority — a Squads multisig vault (or the deployer pre-rotation)."
+          ],
+          "signer": true,
+          "relations": [
+            "config"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "newAuthority",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "newTreasury",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "postFeeEnabled",
+          "type": {
+            "option": "bool"
+          }
+        },
+        {
+          "name": "postFeeBps",
+          "type": {
+            "option": "u32"
+          }
         }
       ]
     },
@@ -5229,7 +7459,7 @@ export const IDL: Shadowspace = {
         {
           "name": "payer",
           "docs": [
-            "Fee payer — treasury pays for realloc rent in gasless UX"
+            "Fee payer — the creator's wallet (main or agent) that covers the realloc rent"
           ],
           "writable": true,
           "signer": true
@@ -5346,15 +7576,42 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "account",
-                "path": "user"
+                "path": "voter_profile.owner",
+                "account": "profile"
               }
             ]
           }
         },
         {
           "name": "user",
+          "docs": [
+            "The acting signer — must be the voter_profile owner OR their registered agent"
+          ],
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "voter_profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
         },
         {
           "name": "payer",
@@ -5379,6 +7636,19 @@ export const IDL: Shadowspace = {
     }
   ],
   "accounts": [
+    {
+      "name": "agent",
+      "discriminator": [
+        47,
+        166,
+        112,
+        147,
+        155,
+        197,
+        86,
+        7
+      ]
+    },
     {
       "name": "chat",
       "discriminator": [
@@ -5442,6 +7712,19 @@ export const IDL: Shadowspace = {
         84,
         148,
         209
+      ]
+    },
+    {
+      "name": "globalConfig",
+      "discriminator": [
+        149,
+        8,
+        156,
+        202,
+        160,
+        252,
+        176,
+        217
       ]
     },
     {
@@ -5632,9 +7915,52 @@ export const IDL: Shadowspace = {
       "code": 6013,
       "name": "invalidReactionType",
       "msg": "Invalid reaction type"
+    },
+    {
+      "code": 6014,
+      "name": "feeTooHigh",
+      "msg": "Fee exceeds the allowed maximum"
+    },
+    {
+      "code": 6015,
+      "name": "invalidTreasury",
+      "msg": "Treasury account does not match config"
     }
   ],
   "types": [
+    {
+      "name": "agent",
+      "docs": [
+        "Maps an identity (funding wallet, `owner`) to its authorized agent (signing",
+        "wallet). Presence + match = the agent may sign social actions for `owner`.",
+        "Closing it (revoke) removes that authority. One per identity (seeded by owner)."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "updatedAt",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
     {
       "name": "chat",
       "type": {
@@ -5758,6 +8084,50 @@ export const IDL: Shadowspace = {
           {
             "name": "following",
             "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "globalConfig",
+      "docs": [
+        "Protocol-fee config — the single DAO-owned knob (PDA seeded `[CONFIG_SEED]`, one per program).",
+        "`authority` may call `update_config`; `treasury` is the fee sink; `post_fee_enabled` is the",
+        "on/off switch; `post_fee_bps` is basis points of BASE_FEE_LAMPORTS. `_reserved` leaves room to",
+        "add a future value-bearing fee (e.g. gated-join/subscription %) without a migrate. See",
+        "docs/PRD-protocol-fee-switch.md."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "postFeeEnabled",
+            "type": "bool"
+          },
+          {
+            "name": "postFeeBps",
+            "type": "u32"
+          },
+          {
+            "name": "reserved",
+            "type": {
+              "array": [
+                "u8",
+                64
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }

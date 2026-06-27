@@ -292,7 +292,7 @@ export class EchoBlocksClient {
     const profile = this.pdas.profile(owner);
     const signature = await this.program.methods
       .closeProfile()
-      .accountsPartial({ profile, user: owner, treasury: this.config.treasury })
+      .accountsPartial({ profile, user: owner, config: this.pdas.config(), treasury: this.config.treasury })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { profile } };
   }
@@ -309,7 +309,16 @@ export class EchoBlocksClient {
     const post = this.pdas.post(owner, input.postId);
     const signature = await this.program.methods
       .createPost(this.bn(input.postId), input.content, input.isPrivate ?? false)
-      .accountsPartial({ post, profile, author: owner, payer: owner, systemProgram: SystemProgram.programId })
+      .accountsPartial({
+        post,
+        profile,
+        author: owner,
+        agentRecord: null, // owner-signed (no agent delegation in the SDK) → None
+        payer: owner,
+        config: this.pdas.config(),
+        treasury: this.config.treasury, // must equal config.treasury (protocol fee sink)
+        systemProgram: SystemProgram.programId,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { post, profile } };
   }
@@ -321,7 +330,7 @@ export class EchoBlocksClient {
     const post = this.pdas.post(owner, input.postId);
     const signature = await this.program.methods
       .editPost(this.bn(input.postId), input.content)
-      .accountsPartial({ post, author: owner })
+      .accountsPartial({ post, author: owner, agentRecord: null })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { post } };
   }
@@ -333,7 +342,14 @@ export class EchoBlocksClient {
     const profile = this.pdas.profile(owner);
     const signature = await this.program.methods
       .closePost(this.bn(input.postId))
-      .accountsPartial({ post, profile, user: owner, treasury: this.config.treasury })
+      .accountsPartial({
+        post,
+        profile,
+        user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { post, profile } };
   }
@@ -357,6 +373,7 @@ export class EchoBlocksClient {
         profile,
         likeRecord,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -380,6 +397,7 @@ export class EchoBlocksClient {
         post,
         commenterProfile,
         author: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -395,7 +413,14 @@ export class EchoBlocksClient {
     const comment = this.pdas.comment(post, input.commentIndex);
     const signature = await this.program.methods
       .closeComment(this.bn(input.postId), this.bn(input.commentIndex))
-      .accountsPartial({ comment, post, user: owner, treasury: this.config.treasury })
+      .accountsPartial({
+        comment,
+        post,
+        user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { comment, post } };
   }
@@ -419,6 +444,7 @@ export class EchoBlocksClient {
         post,
         reactorProfile,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -434,7 +460,14 @@ export class EchoBlocksClient {
     const reaction = this.pdas.reaction(post, owner);
     const signature = await this.program.methods
       .closeReaction(this.bn(input.postId))
-      .accountsPartial({ reaction, post, user: owner, treasury: this.config.treasury })
+      .accountsPartial({
+        reaction,
+        post,
+        user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { reaction, post } };
   }
@@ -464,6 +497,7 @@ export class EchoBlocksClient {
         nameRegistry,
         creatorProfile,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -484,6 +518,7 @@ export class EchoBlocksClient {
         community,
         memberProfile,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -499,7 +534,15 @@ export class EchoBlocksClient {
     const membership = this.pdas.membership(community, owner);
     const signature = await this.program.methods
       .leaveCommunity(this.bn(input.communityId))
-      .accountsPartial({ membership, community, memberProfile, user: owner, treasury: this.config.treasury })
+      .accountsPartial({
+        membership,
+        community,
+        memberProfile,
+        user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { membership, community, memberProfile } };
   }
@@ -514,7 +557,7 @@ export class EchoBlocksClient {
     const community = this.pdas.community(input.communityId);
     const signature = await this.program.methods
       .updateCommunity(this.bn(input.communityId), description, avatarUrl)
-      .accountsPartial({ community, user: owner })
+      .accountsPartial({ community, user: owner, agentRecord: null })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { community } };
   }
@@ -525,7 +568,13 @@ export class EchoBlocksClient {
     const community = this.pdas.community(input.communityId);
     const signature = await this.program.methods
       .closeCommunity(this.bn(input.communityId))
-      .accountsPartial({ community, user: owner, treasury: this.config.treasury })
+      .accountsPartial({
+        community,
+        user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { community } };
   }
@@ -563,7 +612,14 @@ export class EchoBlocksClient {
         input.numOptions,
         this.bn(input.endsAt),
       )
-      .accountsPartial({ poll, profile, user: owner, payer: owner, systemProgram: SystemProgram.programId })
+      .accountsPartial({
+        poll,
+        profile,
+        user: owner,
+        agentRecord: null,
+        payer: owner,
+        systemProgram: SystemProgram.programId,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { poll, profile } };
   }
@@ -585,6 +641,7 @@ export class EchoBlocksClient {
         pollVote,
         voterProfile,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -598,7 +655,7 @@ export class EchoBlocksClient {
     const poll = this.pdas.poll(owner, input.pollId);
     const signature = await this.program.methods
       .closePoll(this.bn(input.pollId))
-      .accountsPartial({ poll, user: owner })
+      .accountsPartial({ poll, user: owner, agentRecord: null })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { poll } };
   }
@@ -621,6 +678,7 @@ export class EchoBlocksClient {
         followerProfile,
         followingProfile,
         user: owner,
+        agentRecord: null,
         payer: owner,
         systemProgram: SystemProgram.programId,
       })
@@ -642,6 +700,8 @@ export class EchoBlocksClient {
         followerProfile,
         followingProfile,
         user: owner,
+        agentRecord: null,
+        config: this.pdas.config(),
         treasury: this.config.treasury,
       })
       .rpc(this.confirmOptions(opts));
@@ -659,7 +719,14 @@ export class EchoBlocksClient {
     const chat = this.pdas.chat(input.chatId);
     const signature = await this.program.methods
       .createChat(this.bn(input.chatId))
-      .accountsPartial({ chat, user1: owner, user2, payer: owner, systemProgram: SystemProgram.programId })
+      .accountsPartial({
+        chat,
+        user1: owner,
+        user2,
+        agentRecord: null,
+        payer: owner,
+        systemProgram: SystemProgram.programId,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { chat } };
   }
@@ -672,7 +739,14 @@ export class EchoBlocksClient {
     const chat = this.pdas.chat(input.chatId);
     const signature = await this.program.methods
       .sendMessage(this.bn(input.chatId), this.bn(input.messageIndex), input.content)
-      .accountsPartial({ message, chat, sender: owner, payer: owner, systemProgram: SystemProgram.programId })
+      .accountsPartial({
+        message,
+        chat,
+        sender: owner,
+        agentRecord: null,
+        payer: owner,
+        systemProgram: SystemProgram.programId,
+      })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { message, chat } };
   }
@@ -683,7 +757,7 @@ export class EchoBlocksClient {
     const chat = this.pdas.chat(input.chatId);
     const signature = await this.program.methods
       .closeChat(this.bn(input.chatId))
-      .accountsPartial({ chat, user: owner, treasury: this.config.treasury })
+      .accountsPartial({ chat, user: owner, config: this.pdas.config(), treasury: this.config.treasury })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { chat } };
   }
@@ -697,7 +771,7 @@ export class EchoBlocksClient {
     const message = this.pdas.message(input.chatId, input.messageIndex);
     const signature = await this.program.methods
       .closeMessage(this.bn(input.chatId), this.bn(input.messageIndex))
-      .accountsPartial({ message, user: owner, treasury: this.config.treasury })
+      .accountsPartial({ message, user: owner, config: this.pdas.config(), treasury: this.config.treasury })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { message } };
   }

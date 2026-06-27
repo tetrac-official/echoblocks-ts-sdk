@@ -86,6 +86,12 @@ export class Pdas {
     return this.derive([SEEDS.POLL_VOTE, toPublicKey(poll).toBuffer(), toPublicKey(voter).toBuffer()]);
   }
 
+  /** Global protocol-fee config PDA (`["config"]`). One per program; holds the
+   * treasury + fee switch. Required on `create_post` and every rent-returning close. */
+  config(): PublicKey {
+    return this.derive([SEEDS.CONFIG]);
+  }
+
   /** Username-uniqueness registry PDA. Seeded by the raw UTF-8 username bytes
    * (matches the program's `username.as_bytes()`), so it exists at most once per
    * handle. Pass the exact username string used in `createProfile`. */
