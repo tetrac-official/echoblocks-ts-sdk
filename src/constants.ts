@@ -4,13 +4,15 @@
 // changing the program will break account resolution.
 
 import { PublicKey } from "@solana/web3.js";
+import { IDL } from "./idl/shadowspace.js";
 
 /**
- * Default ShadowSpace program ID — the devnet deployment. Overridable at runtime
- * via the `SOLANA_PDA_ADDRESS` env var (see config.ts) so the SDK can be repointed
- * at a new deployment without a code change.
+ * Default ShadowSpace program ID — derived from the bundled IDL's `address` (the single source of
+ * truth inside the SDK; kept in lockstep with the program by `anchor keys sync`), so the default id
+ * can never drift from the IDL the SDK ships with. Overridable at runtime via the `SOLANA_PDA_ADDRESS`
+ * env var (see config.ts) to repoint the SDK at a different deployment without a code change.
  */
-export const DEFAULT_PROGRAM_ID = new PublicKey("CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh");
+export const DEFAULT_PROGRAM_ID = new PublicKey(IDL.address);
 
 /**
  * Treasury wallet — the destination for all rent refunds on `close_*` / `leave_*`
@@ -24,6 +26,9 @@ export const DEFAULT_TREASURY = new PublicKey("BYNtxb7zMereaMrmMcWCQx3G6Y1KZspnM
 export const SEEDS = {
   PROFILE: Buffer.from("profile"),
   POST: Buffer.from("post"),
+  // Companion hot-stats account: holds a post's mutable counters (likes / comment_count /
+  // reaction tallies) split out of the Post body. Seeded by the same (author, postId) as the post.
+  POST_STATS: Buffer.from("post_stats"),
   CHAT: Buffer.from("chat"),
   MESSAGE: Buffer.from("message"),
   FOLLOW: Buffer.from("follow"),

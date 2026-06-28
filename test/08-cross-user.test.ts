@@ -71,8 +71,8 @@ describe("live: cross-user (devnet)", () => {
     assert.ok(record, "like record should exist");
     assert.equal(record.liker.toBase58(), them.toBase58());
 
-    const post = await primary.getPost(me, postId);
-    assert.ok((post?.likes ?? 0) >= 1, "post.likes should be at least 1");
+    const stats = await primary.getPostStats(me, postId);
+    assert.ok((stats?.likes ?? 0) >= 1, "post stats likes should be at least 1");
   });
 
   test("secondary follows then unfollows the primary → counter deltas", T, async (t) => {

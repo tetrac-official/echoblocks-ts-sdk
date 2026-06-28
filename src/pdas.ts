@@ -46,6 +46,14 @@ export class Pdas {
     return this.derive([SEEDS.POST, toPublicKey(author).toBuffer(), u64ToLeBytes(postId)]);
   }
 
+  /** PostStats PDA — same (author, postId) inputs as the post; holds the mutable counters
+   * (likes / comment_count / reaction tallies) the Post body no longer carries. AUTHOR is always
+   * the POST's author (never the liker/commenter/reactor). Required on `create_post`, the
+   * like/comment/react instructions, and the matching `close_*` (which also closes this account). */
+  postStats(author: PublicKey | string, postId: U64Like): PublicKey {
+    return this.derive([SEEDS.POST_STATS, toPublicKey(author).toBuffer(), u64ToLeBytes(postId)]);
+  }
+
   comment(post: PublicKey | string, commentIndex: U64Like): PublicKey {
     return this.derive([SEEDS.COMMENT, toPublicKey(post).toBuffer(), u64ToLeBytes(commentIndex)]);
   }

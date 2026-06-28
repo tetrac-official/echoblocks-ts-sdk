@@ -52,5 +52,14 @@ export default [
       "no-console": "off",
     },
   },
+  {
+    // Build / codegen scripts run on Node as plain ESM JS — give them Node globals.
+    files: ["scripts/**/*.{mjs,js}"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: nodeGlobals,
+    },
+  },
   prettier,
 ];

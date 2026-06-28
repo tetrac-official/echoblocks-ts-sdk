@@ -10,6 +10,7 @@ type Accounts = IdlAccounts<Shadowspace>;
 // Decoded on-chain account types (pubkeys → PublicKey, u64/i64 → BN, etc.).
 export type ProfileAccount = Accounts["profile"];
 export type PostAccount = Accounts["post"];
+export type PostStatsAccount = Accounts["postStats"];
 export type CommentAccount = Accounts["comment"];
 export type ReactionAccount = Accounts["reaction"];
 export type LikeRecordAccount = Accounts["likeRecord"];

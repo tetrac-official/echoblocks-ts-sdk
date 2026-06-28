@@ -44,8 +44,11 @@ describe("live: post / comment / reaction lifecycle (devnet)", () => {
     assert.equal(post.author.toBase58(), me.toBase58());
     assert.equal(post.postId.toString(), postId.toString());
     assert.equal(post.content, content);
-    assert.equal(post.likes, 0);
-    assert.equal(post.commentCount, 0);
+    // Counters live on the separate PostStats account now (created alongside the post).
+    const stats = await client.getPostStats(me, postId);
+    assert.ok(stats, "post stats should exist after create");
+    assert.equal(stats.likes, 0);
+    assert.equal(stats.commentCount, 0);
   });
 
   test("editPost → content updates, updatedAt advances", T, async () => {
@@ -77,8 +80,8 @@ describe("live: post / comment / reaction lifecycle (devnet)", () => {
       "commentsForPost should include the new comment",
     );
 
-    const post = await client.getPost(me, postId);
-    assert.equal(post?.commentCount, 1);
+    const stats = await client.getPostStats(me, postId);
+    assert.equal(stats?.commentCount, 1);
   });
 
   test("reactToPost → reaction PDA stores the reaction type", T, async () => {
@@ -102,8 +105,8 @@ describe("live: post / comment / reaction lifecycle (devnet)", () => {
   test("closeComment → comment account is gone, commentCount back to 0", T, async () => {
     await client.closeComment({ postAuthor: me, postId, commentIndex });
     assert.equal(await client.getComment(me, postId, commentIndex), null);
-    const post = await client.getPost(me, postId);
-    assert.equal(post?.commentCount, 0);
+    const stats = await client.getPostStats(me, postId);
+    assert.equal(stats?.commentCount, 0);
   });
 
   test("closePost → post account deallocated (rent → treasury)", T, async () => {

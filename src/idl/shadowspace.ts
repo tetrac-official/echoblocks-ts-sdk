@@ -1,13 +1,15 @@
 /**
- * TypeScript IDL for the EchoBlocks / ShadowSpace program (canonical snake_case Anchor output).
+ * TypeScript IDL for the EchoBlocks / ShadowSpace program.
  *
- * Source: anchor build of devnet CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh.
- * Raw on-chain IDL: src/idl/shadowspace.json. Regenerate after a program change by copying
- * target/idl/shadowspace.json here and re-deriving this file (type + const, same literal).
+ * Source: anchor build of the deployed program — the id is the IDL `address` below (kept in sync
+ * with Anchor.toml by `anchor keys sync`). `type Shadowspace` is Anchor's target/types (camelCase,
+ * what `IdlAccounts` maps); `IDL` is the raw snake_case on-chain IDL (the form `new Program(IDL)`
+ * wants — Anchor camelCases it at runtime), cast to that type.
+ * DO NOT hand-edit — regenerate with: node scripts/regen-idl.mjs <shadowspace-program dir>.
  */
 
 export type Shadowspace = {
-  "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
+  "address": "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY",
   "metadata": {
     "name": "shadowspace",
     "version": "0.3.0",
@@ -137,7 +139,9 @@ export type Shadowspace = {
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -147,6 +151,38 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -542,6 +578,41 @@ export type Shadowspace = {
           }
         },
         {
+          "name": "postStats",
+          "docs": [
+            "Close the companion stats account in the same tx so it can't be orphaned (rent leak)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
           "name": "profile",
           "writable": true,
           "pda": {
@@ -762,6 +833,38 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -999,7 +1102,9 @@ export type Shadowspace = {
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -1009,6 +1114,38 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -1426,6 +1563,41 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "docs": [
+            "Companion hot-stats account — created alongside the body, same (author, post_id) seed inputs."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -2255,7 +2427,10 @@ export type Shadowspace = {
       "accounts": [
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only here (author + key); the counter is on PostStats — keeping the body",
+            "unlocked lets concurrent likes on different posts parallelize."
+          ],
           "pda": {
             "seeds": [
               {
@@ -2265,6 +2440,38 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -2489,6 +2696,38 @@ export type Shadowspace = {
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "post"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -3593,6 +3832,19 @@ export type Shadowspace = {
       ]
     },
     {
+      "name": "postStats",
+      "discriminator": [
+        104,
+        236,
+        206,
+        40,
+        231,
+        171,
+        30,
+        210
+      ]
+    },
+    {
       "name": "profile",
       "discriminator": [
         184,
@@ -4085,6 +4337,13 @@ export type Shadowspace = {
     },
     {
       "name": "post",
+      "docs": [
+        "Post BODY (cold). Fixed-width fields FIRST, variable `content` LAST, so author / is_private /",
+        "epoch_day / created_at all sit at stable byte offsets the client can `memcmp`-filter and",
+        "`dataSlice`-project. Mutable counters moved to `PostStats`. See docs/PRD-post-layout-split-stats.md.",
+        "Byte offsets after the 8-byte discriminator:",
+        "author 8 · post_id 40 · is_private 48 · epoch_day 49 · created_at 53 · updated_at 61 · content 69(var)"
+      ],
       "type": {
         "kind": "struct",
         "fields": [
@@ -4097,12 +4356,42 @@ export type Shadowspace = {
             "type": "u64"
           },
           {
-            "name": "content",
-            "type": "string"
-          },
-          {
             "name": "isPrivate",
             "type": "bool"
+          },
+          {
+            "name": "epochDay",
+            "type": "u32"
+          },
+          {
+            "name": "createdAt",
+            "type": "i64"
+          },
+          {
+            "name": "updatedAt",
+            "type": "i64"
+          },
+          {
+            "name": "content",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "postStats",
+      "docs": [
+        "Post STATS (hot). The mutable counters split out of `Post` so the feed can refresh counts via a",
+        "cheap `getMultipleAccounts` over ~90-byte accounts (or a full scan) without re-downloading the",
+        "500-byte bodies. `reaction_counts` lets the feed render reaction tallies with NO whole-`Reaction`",
+        "scan. Seeded `[POST_STATS_SEED, author, post_id]` — same inputs as the body."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
           },
           {
             "name": "likes",
@@ -4113,12 +4402,26 @@ export type Shadowspace = {
             "type": "u32"
           },
           {
-            "name": "createdAt",
-            "type": "i64"
+            "name": "reactionCounts",
+            "type": {
+              "array": [
+                "u32",
+                6
+              ]
+            }
           },
           {
-            "name": "updatedAt",
-            "type": "i64"
+            "name": "reserved",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
@@ -4219,8 +4522,10 @@ export type Shadowspace = {
   ]
 };
 
-export const IDL: Shadowspace = {
-  "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
+// Raw on-chain IDL (snake_case). Anchor camelCases it at runtime, so this is the correct value to
+// pass to `new Program(IDL)`; the cast exposes the camelCase decoded-account types via Shadowspace.
+export const IDL = {
+  "address": "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY",
   "metadata": {
     "name": "shadowspace",
     "version": "0.3.0",
@@ -4229,7 +4534,7 @@ export const IDL: Shadowspace = {
   },
   "instructions": [
     {
-      "name": "closeChat",
+      "name": "close_chat",
       "docs": [
         "Close a legacy chat account and return rent"
       ],
@@ -4260,7 +4565,7 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "chatId"
+                "path": "chat_id"
               }
             ]
           }
@@ -4299,13 +4604,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "chatId",
+          "name": "_chat_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closeComment",
+      "name": "close_comment",
       "docs": [
         "Close a comment account and return rent"
       ],
@@ -4343,14 +4648,16 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "commentIndex"
+                "path": "comment_index"
               }
             ]
           }
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -4365,11 +4672,43 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
               }
             ]
           }
@@ -4383,7 +4722,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -4400,7 +4739,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "comment.author",
-                "account": "comment"
+                "account": "Comment"
               }
             ]
           }
@@ -4434,17 +4773,17 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "_post_id",
           "type": "u64"
         },
         {
-          "name": "commentIndex",
+          "name": "_comment_index",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closeCommunity",
+      "name": "close_community",
       "discriminator": [
         193,
         80,
@@ -4477,13 +4816,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "communityId"
+                "path": "community_id"
               }
             ]
           }
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -4500,7 +4839,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "community.creator",
-                "account": "community"
+                "account": "Community"
               }
             ]
           }
@@ -4542,13 +4881,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "communityId",
+          "name": "_community_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closeMessage",
+      "name": "close_message",
       "docs": [
         "Close a legacy message account and return rent"
       ],
@@ -4582,11 +4921,11 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "chatId"
+                "path": "chat_id"
               },
               {
                 "kind": "arg",
-                "path": "messageIndex"
+                "path": "message_index"
               }
             ]
           }
@@ -4625,17 +4964,17 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "chatId",
+          "name": "_chat_id",
           "type": "u64"
         },
         {
-          "name": "messageIndex",
+          "name": "_message_index",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closePoll",
+      "name": "close_poll",
       "discriminator": [
         139,
         213,
@@ -4664,11 +5003,11 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "poll.creator",
-                "account": "poll"
+                "account": "Poll"
               },
               {
                 "kind": "arg",
-                "path": "pollId"
+                "path": "poll_id"
               }
             ]
           }
@@ -4682,7 +5021,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -4699,7 +5038,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "poll.creator",
-                "account": "poll"
+                "account": "Poll"
               }
             ]
           }
@@ -4707,13 +5046,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "pollId",
+          "name": "_poll_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closePost",
+      "name": "close_post",
       "docs": [
         "Close a post account and return rent to the treasury"
       ],
@@ -4745,11 +5084,46 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "docs": [
+            "Close the companion stats account in the same tx so it can't be orphaned (rent leak)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
               }
             ]
           }
@@ -4774,7 +5148,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               }
             ]
           }
@@ -4788,7 +5162,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -4805,7 +5179,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               }
             ]
           }
@@ -4839,13 +5213,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "_post_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "closeProfile",
+      "name": "close_profile",
       "docs": [
         "Close a profile account and return rent to the treasury"
       ],
@@ -4919,7 +5293,7 @@ export const IDL: Shadowspace = {
       "args": []
     },
     {
-      "name": "closeReaction",
+      "name": "close_reaction",
       "docs": [
         "Close a reaction account and return rent"
       ],
@@ -4959,7 +5333,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "reaction.user",
-                "account": "reaction"
+                "account": "Reaction"
               }
             ]
           }
@@ -4980,11 +5354,43 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
               }
             ]
           }
@@ -4998,7 +5404,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5015,7 +5421,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "reaction.user",
-                "account": "reaction"
+                "account": "Reaction"
               }
             ]
           }
@@ -5049,13 +5455,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "_post_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "createChat",
+      "name": "create_chat",
       "discriminator": [
         133,
         186,
@@ -5083,13 +5489,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "chatId"
+                "path": "chat_id"
               }
             ]
           }
         },
         {
-          "name": "user1Profile",
+          "name": "user1_profile",
           "docs": [
             "First participant's profile — identity = `user1_profile.owner`"
           ],
@@ -5110,7 +5516,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "user1_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5124,7 +5530,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5141,7 +5547,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "user1_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5158,19 +5564,19 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "chatId",
+          "name": "chat_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "createComment",
+      "name": "create_comment",
       "discriminator": [
         236,
         232,
@@ -5205,14 +5611,16 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "commentIndex"
+                "path": "comment_index"
               }
             ]
           }
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -5227,17 +5635,49 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
               }
             ]
           }
         },
         {
-          "name": "commenterProfile",
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "commenter_profile",
           "pda": {
             "seeds": [
               {
@@ -5255,7 +5695,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "commenter_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5269,7 +5709,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5286,7 +5726,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "commenter_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5297,17 +5737,17 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "post_id",
           "type": "u64"
         },
         {
-          "name": "commentIndex",
+          "name": "comment_index",
           "type": "u64"
         },
         {
@@ -5317,7 +5757,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "createCommunity",
+      "name": "create_community",
       "discriminator": [
         203,
         214,
@@ -5350,13 +5790,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "communityId"
+                "path": "community_id"
               }
             ]
           }
         },
         {
-          "name": "nameRegistry",
+          "name": "name_registry",
           "docs": [
             "Community-name registry — `init` makes a duplicate name fail: a second",
             "community claiming the same name (even with a different id) aborts the tx."
@@ -5391,7 +5831,7 @@ export const IDL: Shadowspace = {
           }
         },
         {
-          "name": "creatorProfile",
+          "name": "creator_profile",
           "pda": {
             "seeds": [
               {
@@ -5409,7 +5849,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "creator_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5423,7 +5863,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5440,7 +5880,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "creator_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5451,13 +5891,13 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "communityId",
+          "name": "community_id",
           "type": "u64"
         },
         {
@@ -5469,13 +5909,13 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "avatarUrl",
+          "name": "avatar_url",
           "type": "string"
         }
       ]
     },
     {
-      "name": "createPoll",
+      "name": "create_poll",
       "discriminator": [
         182,
         171,
@@ -5504,11 +5944,11 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               },
               {
                 "kind": "arg",
-                "path": "pollId"
+                "path": "poll_id"
               }
             ]
           }
@@ -5533,7 +5973,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5547,7 +5987,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5564,7 +6004,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5575,13 +6015,13 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "pollId",
+          "name": "poll_id",
           "type": "u64"
         },
         {
@@ -5589,33 +6029,33 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "optionA",
+          "name": "option_a",
           "type": "string"
         },
         {
-          "name": "optionB",
+          "name": "option_b",
           "type": "string"
         },
         {
-          "name": "optionC",
+          "name": "option_c",
           "type": "string"
         },
         {
-          "name": "optionD",
+          "name": "option_d",
           "type": "string"
         },
         {
-          "name": "numOptions",
+          "name": "num_options",
           "type": "u8"
         },
         {
-          "name": "endsAt",
+          "name": "ends_at",
           "type": "i64"
         }
       ]
     },
     {
-      "name": "createPost",
+      "name": "create_post",
       "discriminator": [
         123,
         92,
@@ -5644,11 +6084,46 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "docs": [
+            "Companion hot-stats account — created alongside the body, same (author, post_id) seed inputs."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
               }
             ]
           }
@@ -5673,7 +6148,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5687,7 +6162,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "docs": [
             "Optional agent record proving `author` is the owner's delegated signer"
           ],
@@ -5707,7 +6182,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -5747,13 +6222,13 @@ export const IDL: Shadowspace = {
           "writable": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "post_id",
           "type": "u64"
         },
         {
@@ -5761,13 +6236,13 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "isPrivate",
+          "name": "is_private",
           "type": "bool"
         }
       ]
     },
     {
-      "name": "createProfile",
+      "name": "create_profile",
       "discriminator": [
         225,
         205,
@@ -5804,7 +6279,7 @@ export const IDL: Shadowspace = {
           }
         },
         {
-          "name": "usernameRegistry",
+          "name": "username_registry",
           "docs": [
             "Username registry — `init` (not `init_if_needed`) makes a duplicate username",
             "fail: claiming an already-taken handle aborts the transaction."
@@ -5846,7 +6321,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -5856,7 +6331,7 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "displayName",
+          "name": "display_name",
           "type": "string"
         },
         {
@@ -5866,7 +6341,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "editPost",
+      "name": "edit_post",
       "discriminator": [
         218,
         25,
@@ -5898,11 +6373,11 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
               }
             ]
           }
@@ -5915,7 +6390,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -5932,7 +6407,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               }
             ]
           }
@@ -5940,17 +6415,17 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "_post_id",
           "type": "u64"
         },
         {
-          "name": "newContent",
+          "name": "new_content",
           "type": "string"
         }
       ]
     },
     {
-      "name": "followUser",
+      "name": "follow_user",
       "discriminator": [
         126,
         176,
@@ -5963,7 +6438,7 @@ export const IDL: Shadowspace = {
       ],
       "accounts": [
         {
-          "name": "followAccount",
+          "name": "follow_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -5981,18 +6456,18 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               },
               {
                 "kind": "account",
                 "path": "following_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "followerProfile",
+          "name": "follower_profile",
           "writable": true,
           "pda": {
             "seeds": [
@@ -6011,13 +6486,13 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "followingProfile",
+          "name": "following_profile",
           "writable": true,
           "pda": {
             "seeds": [
@@ -6036,7 +6511,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "following_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6050,7 +6525,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6067,7 +6542,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6081,14 +6556,14 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": []
     },
     {
-      "name": "initConfig",
+      "name": "init_config",
       "docs": [
         "One-time bootstrap of the GlobalConfig PDA. Gated to the known deployer key",
         "(TREASURY_PUBKEY) so it can't be front-run between the program upgrade and this call.",
@@ -6135,7 +6610,7 @@ export const IDL: Shadowspace = {
           "address": "BYNtxb7zMereaMrmMcWCQx3G6Y1KZspnMJbiuqoh9MrF"
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -6151,7 +6626,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "joinCommunity",
+      "name": "join_community",
       "discriminator": [
         252,
         106,
@@ -6190,7 +6665,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6216,13 +6691,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "communityId"
+                "path": "community_id"
               }
             ]
           }
         },
         {
-          "name": "memberProfile",
+          "name": "member_profile",
           "pda": {
             "seeds": [
               {
@@ -6240,7 +6715,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6254,7 +6729,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6271,7 +6746,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6282,19 +6757,19 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "communityId",
+          "name": "_community_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "leaveCommunity",
+      "name": "leave_community",
       "discriminator": [
         218,
         140,
@@ -6333,7 +6808,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6359,13 +6834,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "communityId"
+                "path": "community_id"
               }
             ]
           }
         },
         {
-          "name": "memberProfile",
+          "name": "member_profile",
           "pda": {
             "seeds": [
               {
@@ -6383,7 +6858,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6397,7 +6872,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6414,7 +6889,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "member_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6448,13 +6923,13 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "communityId",
+          "name": "_community_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "likePost",
+      "name": "like_post",
       "discriminator": [
         45,
         242,
@@ -6468,7 +6943,10 @@ export const IDL: Shadowspace = {
       "accounts": [
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only here (author + key); the counter is on PostStats — keeping the body",
+            "unlocked lets concurrent likes on different posts parallelize."
+          ],
           "pda": {
             "seeds": [
               {
@@ -6483,11 +6961,43 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
               }
             ]
           }
@@ -6511,13 +7021,13 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "likeRecord",
+          "name": "like_record",
           "docs": [
             "One LikeRecord PDA per (post, owner) — init will fail if they've already liked"
           ],
@@ -6540,7 +7050,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6553,7 +7063,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6570,7 +7080,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6584,19 +7094,19 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "post_id",
           "type": "u64"
         }
       ]
     },
     {
-      "name": "migrateProfile",
+      "name": "migrate_profile",
       "docs": [
         "Resize an existing profile account to the current schema size.",
         "This is needed when the Profile struct grows (e.g. adding follower/following counts)."
@@ -6642,14 +7152,14 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": []
     },
     {
-      "name": "reactToPost",
+      "name": "react_to_post",
       "discriminator": [
         186,
         193,
@@ -6686,7 +7196,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "reactor_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6707,17 +7217,49 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "post.author",
-                "account": "post"
+                "account": "Post"
               },
               {
                 "kind": "arg",
-                "path": "postId"
+                "path": "post_id"
               }
             ]
           }
         },
         {
-          "name": "reactorProfile",
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "reactor_profile",
           "pda": {
             "seeds": [
               {
@@ -6735,7 +7277,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "reactor_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6749,7 +7291,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6766,7 +7308,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "reactor_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6777,23 +7319,23 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "postId",
+          "name": "post_id",
           "type": "u64"
         },
         {
-          "name": "reactionType",
+          "name": "reaction_type",
           "type": "u8"
         }
       ]
     },
     {
-      "name": "revokeAgent",
+      "name": "revoke_agent",
       "docs": [
         "Revoke the caller's agent, closing the record and refunding its rent to the owner."
       ],
@@ -6809,7 +7351,7 @@ export const IDL: Shadowspace = {
       ],
       "accounts": [
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "docs": [
             "Close the agent record and refund rent to the owner."
           ],
@@ -6829,7 +7371,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6866,7 +7408,7 @@ export const IDL: Shadowspace = {
       "args": []
     },
     {
-      "name": "sendMessage",
+      "name": "send_message",
       "discriminator": [
         57,
         40,
@@ -6897,11 +7439,11 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "chatId"
+                "path": "chat_id"
               },
               {
                 "kind": "arg",
-                "path": "messageIndex"
+                "path": "message_index"
               }
             ]
           }
@@ -6922,13 +7464,13 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "chatId"
+                "path": "chat_id"
               }
             ]
           }
         },
         {
-          "name": "senderProfile",
+          "name": "sender_profile",
           "docs": [
             "Sender's profile — identity = `sender_profile.owner`"
           ],
@@ -6949,7 +7491,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "sender_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6963,7 +7505,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -6980,7 +7522,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "sender_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -6994,17 +7536,17 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "chatId",
+          "name": "chat_id",
           "type": "u64"
         },
         {
-          "name": "messageIndex",
+          "name": "message_index",
           "type": "u64"
         },
         {
@@ -7014,7 +7556,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "setAgent",
+      "name": "set_agent",
       "docs": [
         "Register (or update) the wallet authorized to sign social actions on behalf of the",
         "caller. Only the profile owner can set their own agent. Re-calling updates the agent."
@@ -7031,7 +7573,7 @@ export const IDL: Shadowspace = {
       ],
       "accounts": [
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "docs": [
             "The agent record for the caller's identity — `init_if_needed` so the same owner",
             "can set once and later update. Seeded by `profile.owner`, so only the identity's",
@@ -7053,7 +7595,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -7090,7 +7632,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -7102,7 +7644,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "unfollowUser",
+      "name": "unfollow_user",
       "discriminator": [
         204,
         183,
@@ -7115,7 +7657,7 @@ export const IDL: Shadowspace = {
       ],
       "accounts": [
         {
-          "name": "followAccount",
+          "name": "follow_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -7133,18 +7675,18 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               },
               {
                 "kind": "account",
                 "path": "following_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "followerProfile",
+          "name": "follower_profile",
           "writable": true,
           "pda": {
             "seeds": [
@@ -7163,13 +7705,13 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "followingProfile",
+          "name": "following_profile",
           "writable": true,
           "pda": {
             "seeds": [
@@ -7188,7 +7730,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "following_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -7202,7 +7744,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -7219,7 +7761,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "follower_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -7254,7 +7796,7 @@ export const IDL: Shadowspace = {
       "args": []
     },
     {
-      "name": "updateCommunity",
+      "name": "update_community",
       "discriminator": [
         250,
         158,
@@ -7287,7 +7829,7 @@ export const IDL: Shadowspace = {
               },
               {
                 "kind": "arg",
-                "path": "communityId"
+                "path": "community_id"
               }
             ]
           }
@@ -7301,7 +7843,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -7318,7 +7860,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "community.creator",
-                "account": "community"
+                "account": "Community"
               }
             ]
           }
@@ -7326,7 +7868,7 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "communityId",
+          "name": "_community_id",
           "type": "u64"
         },
         {
@@ -7334,13 +7876,13 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "avatarUrl",
+          "name": "avatar_url",
           "type": "string"
         }
       ]
     },
     {
-      "name": "updateConfig",
+      "name": "update_config",
       "docs": [
         "The DAO lever (authority-only). Partial updates via `Option` so a proposal changes only",
         "what it intends: rotate governance, rotate the fee sink, flip the switch, or adjust the",
@@ -7389,25 +7931,25 @@ export const IDL: Shadowspace = {
       ],
       "args": [
         {
-          "name": "newAuthority",
+          "name": "new_authority",
           "type": {
             "option": "pubkey"
           }
         },
         {
-          "name": "newTreasury",
+          "name": "new_treasury",
           "type": {
             "option": "pubkey"
           }
         },
         {
-          "name": "postFeeEnabled",
+          "name": "post_fee_enabled",
           "type": {
             "option": "bool"
           }
         },
         {
-          "name": "postFeeBps",
+          "name": "post_fee_bps",
           "type": {
             "option": "u32"
           }
@@ -7415,7 +7957,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "updateProfile",
+      "name": "update_profile",
       "discriminator": [
         98,
         67,
@@ -7465,13 +8007,13 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "displayName",
+          "name": "display_name",
           "type": "string"
         },
         {
@@ -7479,17 +8021,17 @@ export const IDL: Shadowspace = {
           "type": "string"
         },
         {
-          "name": "avatarUrl",
+          "name": "avatar_url",
           "type": "string"
         },
         {
-          "name": "bannerUrl",
+          "name": "banner_url",
           "type": "string"
         }
       ]
     },
     {
-      "name": "votePoll",
+      "name": "vote_poll",
       "discriminator": [
         154,
         219,
@@ -7518,17 +8060,17 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "poll.creator",
-                "account": "poll"
+                "account": "Poll"
               },
               {
                 "kind": "arg",
-                "path": "pollId"
+                "path": "poll_id"
               }
             ]
           }
         },
         {
-          "name": "pollVote",
+          "name": "poll_vote",
           "writable": true,
           "pda": {
             "seeds": [
@@ -7553,13 +8095,13 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "voter_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
         },
         {
-          "name": "voterProfile",
+          "name": "voter_profile",
           "pda": {
             "seeds": [
               {
@@ -7577,7 +8119,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "voter_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -7591,7 +8133,7 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "agentRecord",
+          "name": "agent_record",
           "optional": true,
           "pda": {
             "seeds": [
@@ -7608,7 +8150,7 @@ export const IDL: Shadowspace = {
               {
                 "kind": "account",
                 "path": "voter_profile.owner",
-                "account": "profile"
+                "account": "Profile"
               }
             ]
           }
@@ -7619,13 +8161,13 @@ export const IDL: Shadowspace = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "pollId",
+          "name": "_poll_id",
           "type": "u64"
         },
         {
@@ -7637,7 +8179,7 @@ export const IDL: Shadowspace = {
   ],
   "accounts": [
     {
-      "name": "agent",
+      "name": "Agent",
       "discriminator": [
         47,
         166,
@@ -7650,7 +8192,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "chat",
+      "name": "Chat",
       "discriminator": [
         170,
         4,
@@ -7663,7 +8205,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "comment",
+      "name": "Comment",
       "discriminator": [
         150,
         135,
@@ -7676,7 +8218,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "community",
+      "name": "Community",
       "discriminator": [
         192,
         73,
@@ -7689,7 +8231,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "communityNameRegistry",
+      "name": "CommunityNameRegistry",
       "discriminator": [
         55,
         189,
@@ -7702,7 +8244,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "followAccount",
+      "name": "FollowAccount",
       "discriminator": [
         174,
         177,
@@ -7715,7 +8257,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "globalConfig",
+      "name": "GlobalConfig",
       "discriminator": [
         149,
         8,
@@ -7728,7 +8270,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "likeRecord",
+      "name": "LikeRecord",
       "discriminator": [
         179,
         237,
@@ -7741,7 +8283,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "membership",
+      "name": "Membership",
       "discriminator": [
         231,
         141,
@@ -7754,7 +8296,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "message",
+      "name": "Message",
       "discriminator": [
         110,
         151,
@@ -7767,7 +8309,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "poll",
+      "name": "Poll",
       "discriminator": [
         110,
         234,
@@ -7780,7 +8322,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "pollVote",
+      "name": "PollVote",
       "discriminator": [
         60,
         154,
@@ -7793,7 +8335,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "post",
+      "name": "Post",
       "discriminator": [
         8,
         147,
@@ -7806,7 +8348,20 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "profile",
+      "name": "PostStats",
+      "discriminator": [
+        104,
+        236,
+        206,
+        40,
+        231,
+        171,
+        30,
+        210
+      ]
+    },
+    {
+      "name": "Profile",
       "discriminator": [
         184,
         101,
@@ -7819,7 +8374,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "reaction",
+      "name": "Reaction",
       "discriminator": [
         226,
         61,
@@ -7832,7 +8387,7 @@ export const IDL: Shadowspace = {
       ]
     },
     {
-      "name": "usernameRegistry",
+      "name": "UsernameRegistry",
       "discriminator": [
         145,
         217,
@@ -7848,88 +8403,88 @@ export const IDL: Shadowspace = {
   "errors": [
     {
       "code": 6000,
-      "name": "alreadyFollowing",
+      "name": "AlreadyFollowing",
       "msg": "Already following this user"
     },
     {
       "code": 6001,
-      "name": "notFollowing",
+      "name": "NotFollowing",
       "msg": "Not following this user"
     },
     {
       "code": 6002,
-      "name": "unauthorized",
-      "msg": "unauthorized"
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
     },
     {
       "code": 6003,
-      "name": "contentTooLong",
+      "name": "ContentTooLong",
       "msg": "Content too long"
     },
     {
       "code": 6004,
-      "name": "cannotFollowSelf",
+      "name": "CannotFollowSelf",
       "msg": "Cannot follow yourself"
     },
     {
       "code": 6005,
-      "name": "invalidAmount",
+      "name": "InvalidAmount",
       "msg": "Invalid amount"
     },
     {
       "code": 6006,
-      "name": "communityFull",
+      "name": "CommunityFull",
       "msg": "Community is full (max 100 members)"
     },
     {
       "code": 6007,
-      "name": "alreadyInitialized",
+      "name": "AlreadyInitialized",
       "msg": "Account already initialized"
     },
     {
       "code": 6008,
-      "name": "invalidPollOptions",
+      "name": "InvalidPollOptions",
       "msg": "Poll must have 2-4 options"
     },
     {
       "code": 6009,
-      "name": "invalidPollChoice",
+      "name": "InvalidPollChoice",
       "msg": "Invalid poll choice"
     },
     {
       "code": 6010,
-      "name": "pollAlreadyEnded",
+      "name": "PollAlreadyEnded",
       "msg": "Poll has ended"
     },
     {
       "code": 6011,
-      "name": "alreadyLiked",
+      "name": "AlreadyLiked",
       "msg": "Already liked this post"
     },
     {
       "code": 6012,
-      "name": "cannotLikeOwnPost",
+      "name": "CannotLikeOwnPost",
       "msg": "Cannot like your own post"
     },
     {
       "code": 6013,
-      "name": "invalidReactionType",
+      "name": "InvalidReactionType",
       "msg": "Invalid reaction type"
     },
     {
       "code": 6014,
-      "name": "feeTooHigh",
+      "name": "FeeTooHigh",
       "msg": "Fee exceeds the allowed maximum"
     },
     {
       "code": 6015,
-      "name": "invalidTreasury",
+      "name": "InvalidTreasury",
       "msg": "Treasury account does not match config"
     }
   ],
   "types": [
     {
-      "name": "agent",
+      "name": "Agent",
       "docs": [
         "Maps an identity (funding wallet, `owner`) to its authorized agent (signing",
         "wallet). Presence + match = the agent may sign social actions for `owner`.",
@@ -7947,11 +8502,11 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           },
           {
-            "name": "updatedAt",
+            "name": "updated_at",
             "type": "i64"
           },
           {
@@ -7962,12 +8517,12 @@ export const IDL: Shadowspace = {
       }
     },
     {
-      "name": "chat",
+      "name": "Chat",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "chatId",
+            "name": "chat_id",
             "type": "u64"
           },
           {
@@ -7979,18 +8534,18 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "messageCount",
+            "name": "message_count",
             "type": "u64"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "comment",
+      "name": "Comment",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8003,7 +8558,7 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "commentIndex",
+            "name": "comment_index",
             "type": "u64"
           },
           {
@@ -8011,14 +8566,14 @@ export const IDL: Shadowspace = {
             "type": "string"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "community",
+      "name": "Community",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8027,7 +8582,7 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "communityId",
+            "name": "community_id",
             "type": "u64"
           },
           {
@@ -8039,22 +8594,22 @@ export const IDL: Shadowspace = {
             "type": "string"
           },
           {
-            "name": "avatarUrl",
+            "name": "avatar_url",
             "type": "string"
           },
           {
-            "name": "memberCount",
+            "name": "member_count",
             "type": "u32"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "communityNameRegistry",
+      "name": "CommunityNameRegistry",
       "docs": [
         "Reservation account proving a community name is taken (PDA seeded by the name)."
       ],
@@ -8066,14 +8621,14 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "communityId",
+            "name": "community_id",
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "followAccount",
+      "name": "FollowAccount",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8089,7 +8644,7 @@ export const IDL: Shadowspace = {
       }
     },
     {
-      "name": "globalConfig",
+      "name": "GlobalConfig",
       "docs": [
         "Protocol-fee config — the single DAO-owned knob (PDA seeded `[CONFIG_SEED]`, one per program).",
         "`authority` may call `update_config`; `treasury` is the fee sink; `post_fee_enabled` is the",
@@ -8109,15 +8664,15 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "postFeeEnabled",
+            "name": "post_fee_enabled",
             "type": "bool"
           },
           {
-            "name": "postFeeBps",
+            "name": "post_fee_bps",
             "type": "u32"
           },
           {
-            "name": "reserved",
+            "name": "_reserved",
             "type": {
               "array": [
                 "u8",
@@ -8133,7 +8688,7 @@ export const IDL: Shadowspace = {
       }
     },
     {
-      "name": "likeRecord",
+      "name": "LikeRecord",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8146,14 +8701,14 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "likedAt",
+            "name": "liked_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "membership",
+      "name": "Membership",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8166,23 +8721,23 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "joinedAt",
+            "name": "joined_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "message",
+      "name": "Message",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "chatId",
+            "name": "chat_id",
             "type": "u64"
           },
           {
-            "name": "messageIndex",
+            "name": "message_index",
             "type": "u64"
           },
           {
@@ -8201,7 +8756,7 @@ export const IDL: Shadowspace = {
       }
     },
     {
-      "name": "poll",
+      "name": "Poll",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8210,7 +8765,7 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "pollId",
+            "name": "poll_id",
             "type": "u64"
           },
           {
@@ -8218,62 +8773,62 @@ export const IDL: Shadowspace = {
             "type": "string"
           },
           {
-            "name": "optionA",
+            "name": "option_a",
             "type": "string"
           },
           {
-            "name": "optionB",
+            "name": "option_b",
             "type": "string"
           },
           {
-            "name": "optionC",
+            "name": "option_c",
             "type": "string"
           },
           {
-            "name": "optionD",
+            "name": "option_d",
             "type": "string"
           },
           {
-            "name": "numOptions",
+            "name": "num_options",
             "type": "u8"
           },
           {
-            "name": "votesA",
+            "name": "votes_a",
             "type": "u32"
           },
           {
-            "name": "votesB",
+            "name": "votes_b",
             "type": "u32"
           },
           {
-            "name": "votesC",
+            "name": "votes_c",
             "type": "u32"
           },
           {
-            "name": "votesD",
+            "name": "votes_d",
             "type": "u32"
           },
           {
-            "name": "totalVotes",
+            "name": "total_votes",
             "type": "u32"
           },
           {
-            "name": "endsAt",
+            "name": "ends_at",
             "type": "i64"
           },
           {
-            "name": "isClosed",
+            "name": "is_closed",
             "type": "bool"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "pollVote",
+      "name": "PollVote",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8290,14 +8845,21 @@ export const IDL: Shadowspace = {
             "type": "u8"
           },
           {
-            "name": "votedAt",
+            "name": "voted_at",
             "type": "i64"
           }
         ]
       }
     },
     {
-      "name": "post",
+      "name": "Post",
+      "docs": [
+        "Post BODY (cold). Fixed-width fields FIRST, variable `content` LAST, so author / is_private /",
+        "epoch_day / created_at all sit at stable byte offsets the client can `memcmp`-filter and",
+        "`dataSlice`-project. Mutable counters moved to `PostStats`. See docs/PRD-post-layout-split-stats.md.",
+        "Byte offsets after the 8-byte discriminator:",
+        "author 8 · post_id 40 · is_private 48 · epoch_day 49 · created_at 53 · updated_at 61 · content 69(var)"
+      ],
       "type": {
         "kind": "struct",
         "fields": [
@@ -8306,38 +8868,82 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "postId",
+            "name": "post_id",
             "type": "u64"
+          },
+          {
+            "name": "is_private",
+            "type": "bool"
+          },
+          {
+            "name": "epoch_day",
+            "type": "u32"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
           },
           {
             "name": "content",
             "type": "string"
-          },
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostStats",
+      "docs": [
+        "Post STATS (hot). The mutable counters split out of `Post` so the feed can refresh counts via a",
+        "cheap `getMultipleAccounts` over ~90-byte accounts (or a full scan) without re-downloading the",
+        "500-byte bodies. `reaction_counts` lets the feed render reaction tallies with NO whole-`Reaction`",
+        "scan. Seeded `[POST_STATS_SEED, author, post_id]` — same inputs as the body."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            "name": "isPrivate",
-            "type": "bool"
+            "name": "post",
+            "type": "pubkey"
           },
           {
             "name": "likes",
             "type": "u32"
           },
           {
-            "name": "commentCount",
+            "name": "comment_count",
             "type": "u32"
           },
           {
-            "name": "createdAt",
-            "type": "i64"
+            "name": "reaction_counts",
+            "type": {
+              "array": [
+                "u32",
+                6
+              ]
+            }
           },
           {
-            "name": "updatedAt",
-            "type": "i64"
+            "name": "_reserved",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "profile",
+      "name": "Profile",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8350,7 +8956,7 @@ export const IDL: Shadowspace = {
             "type": "string"
           },
           {
-            "name": "displayName",
+            "name": "display_name",
             "type": "string"
           },
           {
@@ -8358,42 +8964,42 @@ export const IDL: Shadowspace = {
             "type": "string"
           },
           {
-            "name": "isPrivate",
+            "name": "is_private",
             "type": "bool"
           },
           {
-            "name": "postCount",
+            "name": "post_count",
             "type": "u32"
           },
           {
-            "name": "followerCount",
+            "name": "follower_count",
             "type": "u32"
           },
           {
-            "name": "followingCount",
+            "name": "following_count",
             "type": "u32"
           },
           {
-            "name": "activeConversationCount",
+            "name": "active_conversation_count",
             "type": "u16"
           },
           {
-            "name": "createdAt",
+            "name": "created_at",
             "type": "i64"
           },
           {
-            "name": "avatarUrl",
+            "name": "avatar_url",
             "type": "string"
           },
           {
-            "name": "bannerUrl",
+            "name": "banner_url",
             "type": "string"
           }
         ]
       }
     },
     {
-      "name": "reaction",
+      "name": "Reaction",
       "type": {
         "kind": "struct",
         "fields": [
@@ -8406,14 +9012,14 @@ export const IDL: Shadowspace = {
             "type": "pubkey"
           },
           {
-            "name": "reactionType",
+            "name": "reaction_type",
             "type": "u8"
           }
         ]
       }
     },
     {
-      "name": "usernameRegistry",
+      "name": "UsernameRegistry",
       "docs": [
         "Reservation account proving a username is taken. Its PDA is seeded by the",
         "username itself, so it can exist at most once per handle — that single-init",
@@ -8430,4 +9036,4 @@ export const IDL: Shadowspace = {
       }
     }
   ]
-};
+} as unknown as Shadowspace;

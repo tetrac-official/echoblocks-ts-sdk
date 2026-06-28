@@ -6,7 +6,8 @@ description: >
   follows, communities, polls, 1:1 chat) on devnet/mainnet. Use when writing,
   reviewing, or debugging code that imports EchoBlocksClient: configuring
   fromEnv / PRIVATE_KEY / RPC failover, creating a profile and posting, deriving
-  PDAs, reading on-chain accounts, handling content limits and caller-chosen ids,
+  PDAs, reading on-chain accounts (post counts now live on a separate PostStats PDA),
+  handling content limits and caller-chosen ids,
   or diagnosing failures like AnchorError 3007 "AccountOwnedByWrongProgram",
   "account ... already in use", WalletRequiredError, InvalidTreasury, the protocol
   fee plus the config + treasury accounts now required on create_post and every
@@ -16,7 +17,8 @@ description: >
 # EchoBlocksClient (@tetrac/echoblocks-ts-sdk)
 
 A typed client for the **ShadowSpace** Anchor program on Solana
-(`CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh`, devnet by default). It exposes
+(`5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY`, devnet by default — the id is read from
+the bundled IDL, overridable via `SOLANA_PDA_ADDRESS`). It exposes
 every on-chain instruction, derives all PDAs for you, and routes RPC through a
 multi-provider failover pool. One `PRIVATE_KEY` signs **and** pays for everything —
 no separate wallet account is created.
@@ -89,7 +91,8 @@ Every read returns the decoded account or `null`.
 
 **Posts:** `createPost({ postId, content, isPrivate? })` ·
 `editPost({ postId, content })` · `closePost({ postId })` / `deletePost(...)` ·
-`likePost({ author, postId })`.
+`likePost({ author, postId })`. A post's mutable **counts** (likes, commentCount,
+reaction tallies) are NOT on the post body — read them with `getPostStats(author, postId)`.
 
 **Comments:** `createComment({ postAuthor, postId, commentIndex, content })` ·
 `closeComment({ postAuthor, postId, commentIndex })`.
@@ -112,12 +115,12 @@ Every read returns the decoded account or `null`.
 `sendMessage({ chatId, messageIndex, content })` (content stored verbatim —
 encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messageIndex })`.
 
-**Reads (single, → `T | null`):** `getProfile`, `getPost`, `getComment`,
+**Reads (single, → `T | null`):** `getProfile`, `getPost`, `getPostStats`, `getComment`,
 `getCommunity`, `getMembership`, `getPoll`, `getPollVote`, `getChat`, `getMessage`,
 `getFollow`, `getLikeRecord`.
 
 **Reads (collections, heavy `getProgramAccounts` — avoid on public RPC):**
-`allProfiles`, `allPosts`, `postsByAuthor(author)`, `commentsForPost`,
+`allProfiles`, `allPosts`, `allPostStats`, `postsByAuthor(author)`, `commentsForPost`,
 `likesForPost`, `allCommunities`, `membershipsOf(member)`, `allPolls`,
 `following(user)`, `followers(user)`.
 
@@ -126,9 +129,9 @@ encrypt client-side) · `closeChat({ chatId })` · `closeMessage({ chatId, messa
 
 `Address` args accept a `PublicKey` or base58 string. `U64Like` ids accept
 `number | string | BN`. Need a PDA yourself? Use `client.pdas` (`profile(owner)`,
-`post(author, postId)`, `comment`, `reaction`, `like`, `follow`, `community`,
-`membership`, `poll`, `pollVote`, `chat`, `message`, `config` (the global
-protocol-fee config PDA), `usernameRegistry`, `communityNameRegistry`).
+`post(author, postId)`, `postStats(author, postId)`, `comment`, `reaction`, `like`,
+`follow`, `community`, `membership`, `poll`, `pollVote`, `chat`, `message`, `config`
+(the global protocol-fee config PDA), `usernameRegistry`, `communityNameRegistry`).
 
 ## Correctness rules — read before you write
 
@@ -136,6 +139,12 @@ protocol-fee config PDA), `usernameRegistry`, `communityNameRegistry`).
   caller's profile PDA to exist. Call `getProfile(me)` and `createProfile(...)`
   once up front. Username is unique on-chain (a registry PDA) — a taken handle
   fails the transaction.
+- **Post counts live on a separate `PostStats` account, not the post body.** `getPost`
+  returns only `author, postId, content, isPrivate, epochDay, createdAt, updatedAt`. For
+  `likes` / `commentCount` / `reactionCounts` (the per-type tally array, indices 0–5) call
+  `getPostStats(author, postId)` — or `allPostStats()` and join by the `post` pubkey it
+  stores. `createPost` creates **both** Post + PostStats; `closePost` closes both; the SDK
+  threads the `postStats` account into create/like/comment/react/close for you.
 - **Caller-chosen ids must be unique per scope, and they make ops idempotent.**
   `postId` (per author), `commentIndex` (per post), `pollId` (per creator),
   `communityId`, `chatId`, `messageIndex` are yours to pick. Re-using one fails on

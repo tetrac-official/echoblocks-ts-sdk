@@ -1,6 +1,6 @@
 {
   "name": "@tetrac/echoblocks-ts-sdk",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
   "license": "MIT",
   "author": "Tetrac",
@@ -41,6 +41,7 @@
     "lint": "eslint . && prettier --check \"**/*.{ts,js,mjs,json,md}\"",
     "lint:fix": "eslint . --fix && prettier --write \"**/*.{ts,js,mjs,json,md}\"",
     "format": "prettier --write \"**/*.{ts,js,mjs,json,md}\"",
+    "idl:regen": "node scripts/regen-idl.mjs",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "example:post": "tsx examples/post.ts",

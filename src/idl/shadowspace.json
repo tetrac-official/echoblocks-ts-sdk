@@ -1,5 +1,5 @@
 {
-  "address": "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh",
+  "address": "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY",
   "metadata": {
     "name": "shadowspace",
     "version": "0.3.0",
@@ -129,7 +129,9 @@
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -139,6 +141,38 @@
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -534,6 +568,41 @@
           }
         },
         {
+          "name": "post_stats",
+          "docs": [
+            "Close the companion stats account in the same tx so it can't be orphaned (rent leak)."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
           "name": "profile",
           "writable": true,
           "pda": {
@@ -754,6 +823,38 @@
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -991,7 +1092,9 @@
         },
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only (its key seeds the comment); the comment_count is on PostStats."
+          ],
           "pda": {
             "seeds": [
               {
@@ -1001,6 +1104,38 @@
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -1082,7 +1217,7 @@
       ],
       "args": [
         {
-          "name": "_post_id",
+          "name": "post_id",
           "type": "u64"
         },
         {
@@ -1418,6 +1553,41 @@
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "docs": [
+            "Companion hot-stats account — created alongside the body, same (author, post_id) seed inputs."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -2247,7 +2417,10 @@
       "accounts": [
         {
           "name": "post",
-          "writable": true,
+          "docs": [
+            "Body is read-only here (author + key); the counter is on PostStats — keeping the body",
+            "unlocked lets concurrent likes on different posts parallelize."
+          ],
           "pda": {
             "seeds": [
               {
@@ -2257,6 +2430,38 @@
                   111,
                   115,
                   116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
                 ]
               },
               {
@@ -2369,7 +2574,7 @@
       ],
       "args": [
         {
-          "name": "_post_id",
+          "name": "post_id",
           "type": "u64"
         }
       ]
@@ -2496,6 +2701,38 @@
           }
         },
         {
+          "name": "post_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "post.author",
+                "account": "Post"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
           "name": "reactor_profile",
           "pda": {
             "seeds": [
@@ -2562,7 +2799,7 @@
       ],
       "args": [
         {
-          "name": "_post_id",
+          "name": "post_id",
           "type": "u64"
         },
         {
@@ -3585,6 +3822,19 @@
       ]
     },
     {
+      "name": "PostStats",
+      "discriminator": [
+        104,
+        236,
+        206,
+        40,
+        231,
+        171,
+        30,
+        210
+      ]
+    },
+    {
       "name": "Profile",
       "discriminator": [
         184,
@@ -4077,6 +4327,13 @@
     },
     {
       "name": "Post",
+      "docs": [
+        "Post BODY (cold). Fixed-width fields FIRST, variable `content` LAST, so author / is_private /",
+        "epoch_day / created_at all sit at stable byte offsets the client can `memcmp`-filter and",
+        "`dataSlice`-project. Mutable counters moved to `PostStats`. See docs/PRD-post-layout-split-stats.md.",
+        "Byte offsets after the 8-byte discriminator:",
+        "author 8 · post_id 40 · is_private 48 · epoch_day 49 · created_at 53 · updated_at 61 · content 69(var)"
+      ],
       "type": {
         "kind": "struct",
         "fields": [
@@ -4089,12 +4346,42 @@
             "type": "u64"
           },
           {
-            "name": "content",
-            "type": "string"
-          },
-          {
             "name": "is_private",
             "type": "bool"
+          },
+          {
+            "name": "epoch_day",
+            "type": "u32"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "content",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PostStats",
+      "docs": [
+        "Post STATS (hot). The mutable counters split out of `Post` so the feed can refresh counts via a",
+        "cheap `getMultipleAccounts` over ~90-byte accounts (or a full scan) without re-downloading the",
+        "500-byte bodies. `reaction_counts` lets the feed render reaction tallies with NO whole-`Reaction`",
+        "scan. Seeded `[POST_STATS_SEED, author, post_id]` — same inputs as the body."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "post",
+            "type": "pubkey"
           },
           {
             "name": "likes",
@@ -4105,12 +4392,26 @@
             "type": "u32"
           },
           {
-            "name": "created_at",
-            "type": "i64"
+            "name": "reaction_counts",
+            "type": {
+              "array": [
+                "u32",
+                6
+              ]
+            }
           },
           {
-            "name": "updated_at",
-            "type": "i64"
+            "name": "_reserved",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }

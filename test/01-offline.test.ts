@@ -32,7 +32,7 @@ describe("config", () => {
     assert.equal(cfg.isMainnet, false);
     assert.equal(cfg.cluster, "devnet");
     assert.equal(cfg.programId.toBase58(), DEFAULT_PROGRAM_ID.toBase58());
-    assert.equal(cfg.programId.toBase58(), "CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh");
+    assert.equal(cfg.programId.toBase58(), "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY");
     assert.equal(cfg.treasury.toBase58(), DEFAULT_TREASURY.toBase58());
     assert.equal(cfg.commitment, "confirmed");
     assert.equal(cfg.rpc.expectedGenesis, DEVNET_GENESIS);

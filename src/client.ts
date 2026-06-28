@@ -26,6 +26,7 @@ import type {
   PollAccount,
   PollVoteAccount,
   PostAccount,
+  PostStatsAccount,
   ProfileAccount,
   LikeRecordAccount,
   SendOptions,
@@ -311,6 +312,7 @@ export class EchoBlocksClient {
       .createPost(this.bn(input.postId), input.content, input.isPrivate ?? false)
       .accountsPartial({
         post,
+        postStats: this.pdas.postStats(owner, input.postId),
         profile,
         author: owner,
         agentRecord: null, // owner-signed (no agent delegation in the SDK) → None
@@ -344,6 +346,7 @@ export class EchoBlocksClient {
       .closePost(this.bn(input.postId))
       .accountsPartial({
         post,
+        postStats: this.pdas.postStats(owner, input.postId),
         profile,
         user: owner,
         agentRecord: null,
@@ -370,6 +373,7 @@ export class EchoBlocksClient {
       .likePost(this.bn(input.postId))
       .accountsPartial({
         post,
+        postStats: this.pdas.postStats(author, input.postId),
         profile,
         likeRecord,
         user: owner,
@@ -395,6 +399,7 @@ export class EchoBlocksClient {
       .accountsPartial({
         comment,
         post,
+        postStats: this.pdas.postStats(postAuthor, input.postId),
         commenterProfile,
         author: owner,
         agentRecord: null,
@@ -416,6 +421,7 @@ export class EchoBlocksClient {
       .accountsPartial({
         comment,
         post,
+        postStats: this.pdas.postStats(postAuthor, input.postId),
         user: owner,
         agentRecord: null,
         config: this.pdas.config(),
@@ -442,6 +448,7 @@ export class EchoBlocksClient {
       .accountsPartial({
         reaction,
         post,
+        postStats: this.pdas.postStats(postAuthor, input.postId),
         reactorProfile,
         user: owner,
         agentRecord: null,
@@ -463,6 +470,7 @@ export class EchoBlocksClient {
       .accountsPartial({
         reaction,
         post,
+        postStats: this.pdas.postStats(postAuthor, input.postId),
         user: owner,
         agentRecord: null,
         config: this.pdas.config(),
@@ -721,6 +729,9 @@ export class EchoBlocksClient {
       .createChat(this.bn(input.chatId))
       .accountsPartial({
         chat,
+        // user1_profile is self-referentially seeded ([PROFILE_SEED, user1_profile.owner]); Anchor's
+        // resolver can't derive it (circular), so it must be passed explicitly. owner == user1.
+        user1Profile: this.pdas.profile(owner),
         user1: owner,
         user2,
         agentRecord: null,
@@ -742,6 +753,8 @@ export class EchoBlocksClient {
       .accountsPartial({
         message,
         chat,
+        // sender_profile is self-referentially seeded; the resolver can't derive it — pass it. owner == sender.
+        senderProfile: this.pdas.profile(owner),
         sender: owner,
         agentRecord: null,
         payer: owner,
@@ -788,6 +801,13 @@ export class EchoBlocksClient {
   /** Fetch a post by (author, postId). Returns null if it doesn't exist. */
   async getPost(author: Address, postId: U64Like): Promise<PostAccount | null> {
     return this.program.account.post.fetchNullable(this.pdas.post(author, postId));
+  }
+
+  /** Fetch a post's mutable counters — `likes`, `commentCount`, `reactionCounts` (per-type tallies,
+   * indices 0..5). These moved off the post body into a separate `PostStats` PDA; returns null if
+   * the stats account doesn't exist. */
+  async getPostStats(author: Address, postId: U64Like): Promise<PostStatsAccount | null> {
+    return this.program.account.postStats.fetchNullable(this.pdas.postStats(author, postId));
   }
 
   /** Fetch a comment by (postAuthor, postId, commentIndex). */
@@ -848,6 +868,12 @@ export class EchoBlocksClient {
   /** All posts. */
   async allPosts(): Promise<WithAddress<PostAccount>[]> {
     return this.program.account.post.all();
+  }
+
+  /** All PostStats accounts (the per-post counters). Pair with {@link allPosts} and join by the
+   * `post` pubkey each PostStats stores to attach counts to posts without re-reading bodies. */
+  async allPostStats(): Promise<WithAddress<PostStatsAccount>[]> {
+    return this.program.account.postStats.all();
   }
 
   /** Posts authored by a given wallet (memcmp on the `author` field). */

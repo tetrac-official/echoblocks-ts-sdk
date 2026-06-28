@@ -24,7 +24,8 @@ Profiles · posts · likes · comments · reactions · follows · communities ·
 
 `@tetrac/echoblocks-ts-sdk` is a typed client for the **ShadowSpace** Solana program — a social app
 (profiles, posts, likes, comments, reactions, follows, communities, polls, and 1:1 chat) deployed as an
-[Anchor](https://www.anchor-lang.com/) program on **devnet** (`CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh`).
+[Anchor](https://www.anchor-lang.com/) program on **devnet** (`5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY`). The
+SDK's default program id is read from the bundled IDL (`src/idl/shadowspace`), overridable via `SOLANA_PDA_ADDRESS`.
 
 It exposes **every instruction** the program has, derives all PDAs for you, and routes RPC through a
 **multi-provider failover pool** with a **mainnet/devnet switch** — all configured from a `.env` file.
@@ -133,7 +134,7 @@ PRIVATE_KEY=your_base58_secret_key
 IS_MAINNET=false
 
 # Program address (env so you can upgrade/repoint without a code change)
-SOLANA_PDA_ADDRESS=CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh
+SOLANA_PDA_ADDRESS=5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY
 
 # RPC: a custom primary (optional) + failover providers (optional)
 RPC_NODE_URL=

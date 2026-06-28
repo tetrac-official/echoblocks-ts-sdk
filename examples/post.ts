@@ -37,9 +37,10 @@ async function main(): Promise<void> {
   });
   console.log(`Commented: ${comment.signature}`);
 
-  // 4. Read it back.
+  // 4. Read it back — counters live on the separate PostStats account now.
   const fetched = await client.getPost(me, postId);
-  console.log(`Fetched post content: "${fetched?.content}" | likes: ${fetched?.likes}`);
+  const stats = await client.getPostStats(me, postId);
+  console.log(`Fetched post content: "${fetched?.content}" | likes: ${stats?.likes ?? 0}`);
 }
 
 main().catch((err) => {
