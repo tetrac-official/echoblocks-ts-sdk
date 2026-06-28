@@ -193,30 +193,39 @@ The SDK builds each instruction's account list from its **bundled** IDL
 (`src/idl/shadowspace.json`, mirrored as a typed `src/idl/shadowspace.ts`). It must
 match the deployed program or Anchor sends the wrong accounts in the wrong slots.
 
-**As of the bundled IDL v0.3.0 the SDK is current** with the deployed program
-(`CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh`). Two upgrades are absorbed and wired
-into every affected method:
+**As of the bundled IDL v0.5.0 the SDK is current** with the deployed program
+(`5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY`, a clean redeploy under a new id). Three
+upgrades are absorbed and wired into every affected method:
 
-- **Delegated signing (optional `agent_record`).** Every social instruction now takes
-  an OPTIONAL `agent_record`. The SDK always signs as the owner, so it passes
-  `agentRecord: null` (Anchor encodes None as the program id). It does **not** yet
-  expose `set_agent` / delegated signing — a future enhancement.
-- **Protocol-fee switch (`config` + `treasury`).** `create_post` and every
-  rent-returning close (`close_post/comment/reaction/profile/chat/message`,
-  `unfollow_user`, `leave_community`, `close_community`) require a PDA-derived `config`
-  account (`["config"]`) and a `treasury` bound on-chain to `config.treasury`. The SDK
-  passes `config: client.pdas.config()` and `treasury: client.treasury` for you.
+- **Post / PostStats split.** A post's mutable counters moved off the `Post` body into a
+  separate **`PostStats`** PDA (seeded `["post_stats", author, postId]`) holding `likes`,
+  `commentCount`, `reactionCounts[6]`. `create_post`, `like_post`, `create_comment`,
+  `react_to_post`, and the matching `close_*` all take an extra `postStats` account (the SDK
+  threads `client.pdas.postStats(author, postId)` — always the **post author**, never the
+  actor); `close_post` closes both accounts. Read counts via `getPostStats` / `allPostStats`.
+- **Delegated signing (optional `agent_record`).** Every social instruction takes an
+  OPTIONAL `agent_record`. The SDK always signs as the owner, so it passes `agentRecord: null`
+  (Anchor encodes None as the program id). It does **not** yet expose `set_agent` / delegated
+  signing — a future enhancement.
+- **Protocol-fee switch (`config` + `treasury`).** `create_post` and every rent-returning
+  close (`close_post/comment/reaction/profile/chat/message`, `unfollow_user`,
+  `leave_community`, `close_community`) require a PDA-derived `config` account (`["config"]`)
+  and a `treasury` bound on-chain to `config.treasury`. The SDK passes
+  `config: client.pdas.config()` and `treasury: client.treasury` for you.
 
-So `createPost` / closes / follows build correctly today — **no known drift**. The rest
-of this section is for the **next** program upgrade.
+So posts / counts / closes / follows / chat build correctly today — **no known drift**. The
+rest of this section is for the **next** program upgrade.
 
 ### Symptoms of future drift
 
 - `3007 AccountOwnedByWrongProgram` naming an account the SDK "shouldn't" touch (e.g.
   the wallet landing in a slot like `agent_record`) → the bundled IDL is **missing** a
   newly-inserted account.
-- `Reached maximum depth … Unresolved accounts: X` → the bundled IDL **has** an account
-  the builder doesn't pass (Anchor can't resolve an optional / PDA account by itself).
+- `Reached maximum depth … Unresolved accounts: X` → the builder doesn't pass an account the
+  IDL **has** and Anchor can't resolve by itself — classically a **self-referentially seeded**
+  account (its seed reads its own stored field, e.g. chat's `user1_profile` / `sender_profile`
+  seeded by `…profile.owner`). Pass it explicitly (`client.pdas.profile(owner)`); the SDK
+  already does this for `createChat` / `sendMessage`.
 - `InvalidTreasury (6015)` on a create/close → `client.treasury` ≠ on-chain
   `config.treasury` (the DAO rotated it). Fix `SOLANA_TREASURY_ADDRESS`; not an IDL bug.
 
@@ -226,8 +235,8 @@ Fetch the deployed IDL and diff the instruction's account list against the bundl
 one:
 
 ```bash
-anchor idl fetch CKdp6xnNnsMk5NsyQU9YEVU88wHfDdLUep3eJz4VVMFh \
-  --provider.cluster devnet > onchain-idl.json
+PROGRAM_ID=$(node -p "require('./src/idl/shadowspace.json').address")  # the bundled IDL's id
+anchor idl fetch "$PROGRAM_ID" --provider.cluster devnet > onchain-idl.json
 # compare instructions[].accounts (names + order) vs src/idl/shadowspace.json
 ```
 
@@ -235,18 +244,24 @@ If account names/order differ, the SDK is out of sync.
 
 ### Fix A — maintainer (preferred): regenerate the bundled IDL, then rewire
 
-This is exactly how v0.3.0 was produced:
-
-1. Copy the on-chain IDL into `src/idl/shadowspace.json`; regenerate the typed
-   `src/idl/shadowspace.ts` (Anchor's camelCase `Shadowspace` type + a matching
-   `export const IDL` of the same literal).
-2. Add the new accounts to the affected client methods. The None marker for an absent
-   optional account (the SDK signs as owner, so `agent_record` is always None) is
-   `null`; add `config` + `treasury` to `create_post` and the closes:
+1. **Regenerate the bundled IDL from a fresh `anchor build`** of the program repo:
+   `npm run idl:regen -- /path/to/shadowspace-program` (= `scripts/regen-idl.mjs`). It copies
+   `target/idl/shadowspace.json` (raw snake_case) into `src/idl/shadowspace.json`, and writes
+   `src/idl/shadowspace.ts` = Anchor's camelCase `type Shadowspace` (`target/types`) +
+   `const IDL` = the **raw snake IDL cast `as unknown as Shadowspace`**. Do **not** hand-camelCase
+   the const — Anchor's type-gen and its runtime converter disagree on seed-path / error-name
+   casing, so a camelCased const won't typecheck against the type; Anchor camelCases the snake IDL
+   at runtime, so the raw value is the correct input to `new Program(IDL)`. (`DEFAULT_PROGRAM_ID`
+   in `constants.ts` derives from `IDL.address`, so the id updates automatically.)
+2. Add any new accounts to the affected client methods. The None marker for an absent optional
+   account (the SDK signs as owner, so `agent_record` is always None) is `null`; `create_post`
+   and the closes also take `config` + `treasury`, and the post instructions take `postStats`:
 
 ```ts
 .accountsPartial({
-  post, profile, author: owner,
+  post,
+  postStats: this.pdas.postStats(owner, postId), // ["post_stats", author, postId] — counts
+  profile, author: owner,
   agentRecord: null,                  // optional account absent → None
   payer: owner,
   config: this.pdas.config(),         // ["config"] PDA — required by the program
@@ -282,6 +297,7 @@ await program.methods
   .createPost(new BN(String(postId)), content, false)
   .accountsPartial({
     post: client.pdas.post(owner, postId),
+    postStats: client.pdas.postStats(owner, postId), // counts PDA — required on create_post
     profile: client.pdas.profile(owner),
     author: owner,
     agentRecord: null, // None (optional account absent)

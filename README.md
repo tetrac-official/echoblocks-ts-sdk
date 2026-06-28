@@ -172,11 +172,15 @@ fails before a transaction is sent.
 ### Reads
 
 **Single** (return the decoded account or `null`):
-`getProfile`, `getPost`, `getComment`, `getCommunity`, `getMembership`, `getPoll`, `getPollVote`, `getChat`,
-`getMessage`, `getFollow`, `getLikeRecord`.
+`getProfile`, `getPost`, `getPostStats`, `getComment`, `getCommunity`, `getMembership`, `getPoll`, `getPollVote`,
+`getChat`, `getMessage`, `getFollow`, `getLikeRecord`.
+
+> A post's mutable **counts** (`likes`, `commentCount`, per-type `reactionCounts`) live on a separate
+> **`PostStats`** account, not the post body — read them with `getPostStats(author, postId)` (or `allPostStats()`
+> and join by the `post` pubkey each one stores).
 
 **Collections:**
-`allProfiles`, `allPosts`, `postsByAuthor`, `commentsForPost`, `likesForPost`, `allCommunities`,
+`allProfiles`, `allPosts`, `allPostStats`, `postsByAuthor`, `commentsForPost`, `likesForPost`, `allCommunities`,
 `membershipsOf`, `allPolls`, `following`, `followers`.
 
 ### Utilities & escape hatches
@@ -259,9 +263,17 @@ npm run lint        # eslint + prettier --check
 npm run build       # tsup → dist (ESM + CJS + d.ts)
 ```
 
-The bundled IDL (`src/idl/shadowspace.ts` / `.json`) is fetched from the on-chain program with `anchor idl fetch`
-and converted to camelCase to match the Anchor runtime namespaces. To update it after a program upgrade, re-fetch
-and regenerate.
+The bundled IDL is `src/idl/shadowspace.json` (raw snake_case on-chain IDL) + `src/idl/shadowspace.ts` (Anchor's
+camelCase `type Shadowspace` from `target/types`, plus `const IDL` = the raw IDL cast to it). Regenerate it from a
+program `anchor build`:
+
+```bash
+npm run idl:regen -- /path/to/shadowspace-program   # = node scripts/regen-idl.mjs
+```
+
+`DEFAULT_PROGRAM_ID` derives from the bundled IDL's `address`, so a regen also repoints the default id. The const is
+kept as the **raw snake IDL** (which `new Program()` camelCases at runtime) — don't hand-camelCase it, since Anchor's
+type-gen and runtime converter disagree on seed-path / error-name casing and a camelCased const won't typecheck.
 
 ## License
 
