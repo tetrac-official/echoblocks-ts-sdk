@@ -31,8 +31,10 @@ describe("config", () => {
     const cfg = loadConfig();
     assert.equal(cfg.isMainnet, false);
     assert.equal(cfg.cluster, "devnet");
+    // The program id is the single source of truth in the bundled IDL (DEFAULT_PROGRAM_ID =
+    // IDL.address), so assert against that rather than a hardcoded literal that would rot on
+    // every clean redeploy.
     assert.equal(cfg.programId.toBase58(), DEFAULT_PROGRAM_ID.toBase58());
-    assert.equal(cfg.programId.toBase58(), "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY");
     assert.equal(cfg.treasury.toBase58(), DEFAULT_TREASURY.toBase58());
     assert.equal(cfg.commitment, "confirmed");
     assert.equal(cfg.rpc.expectedGenesis, DEVNET_GENESIS);
