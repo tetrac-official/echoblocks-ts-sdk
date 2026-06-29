@@ -9,7 +9,7 @@
  */
 
 export type Shadowspace = {
-  "address": "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY",
+  "address": "5NJDhyadLxvNebw2bRNunFxF8HSxmcfc3fncGpLKQpo",
   "metadata": {
     "name": "shadowspace",
     "version": "0.3.0",
@@ -1394,6 +1394,251 @@ export type Shadowspace = {
         },
         {
           "name": "avatarUrl",
+          "type": "string"
+        },
+        {
+          "name": "gateMint",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "gateMin",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "createCommunityPost",
+      "docs": [
+        "Create a post inside a community, enforcing the community's posting gate on the WRITE.",
+        "Mirrors `create_post` (same Post/PostStats layout, same protocol-fee path) but:",
+        "- reads the `community`'s gate and, if set, requires the poster to hold >= `gate_min`",
+        "of `gate_mint` in a token account owned by the post's IDENTITY (`profile.owner`,",
+        "the funding wallet — never the agent signer). Checked LIVE, so selling the token",
+        "removes posting ability on the very next post with no membership change.",
+        "- binds the post to the community on-chain by writing `content = \"COMM|<id>|<body>\"`,",
+        "so a holder of one community's token cannot publish into another. This is the same",
+        "`COMM|` convention the frontend feed already parses — no read-side change."
+      ],
+      "discriminator": [
+        184,
+        191,
+        153,
+        85,
+        191,
+        16,
+        58,
+        5
+      ],
+      "accounts": [
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "postStats",
+          "docs": [
+            "Companion hot-stats account — created alongside the body, same (author, post_id) seed inputs."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              },
+              {
+                "kind": "arg",
+                "path": "postId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "docs": [
+            "The gated community — read-only source of `gate_mint` / `gate_min` / `community_id`."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "communityId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "author",
+          "docs": [
+            "The acting signer — must be the profile owner OR the owner's registered agent."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "docs": [
+            "Optional agent record proving `author` is the owner's delegated signer."
+          ],
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "gateTokenAccount",
+          "docs": [
+            "Gate token account — REQUIRED only when `community.gate_mint` is set. Must be owned by",
+            "`profile.owner` (the funding wallet, NOT the agent signer) and hold >= `community.gate_min`",
+            "of `community.gate_mint`. Read-only (no CPI); Anchor's `TokenAccount` deser already asserts",
+            "the account is owned by the SPL Token program. Pass `None` for open communities."
+          ],
+          "optional": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — REQUIRED + PDA-derived ([CONFIG_SEED]) so it can't be spoofed/omitted."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Fee sink — must equal `config.treasury`, so fees can't be redirected by a crafted tx."
+          ],
+          "writable": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "postId",
+          "type": "u64"
+        },
+        {
+          "name": "communityId",
+          "type": "u64"
+        },
+        {
+          "name": "body",
           "type": "string"
         }
       ]
@@ -3128,6 +3373,100 @@ export type Shadowspace = {
       ]
     },
     {
+      "name": "setCommunityGate",
+      "docs": [
+        "Set / clear / adjust a community's posting gate. Creator-only (or their agent).",
+        "`gate_mint = None` opens the community; `Some(mint)` requires holding >= `gate_min`",
+        "base units of `mint` to post. Takes effect immediately for the NEXT post (the gate is",
+        "read live), so lowering/raising the bar or rotating the mint needs no member changes."
+      ],
+      "discriminator": [
+        169,
+        130,
+        54,
+        185,
+        194,
+        249,
+        172,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "community",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "communityId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agentRecord",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "community"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "communityId",
+          "type": "u64"
+        },
+        {
+          "name": "gateMint",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "gateMin",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "unfollowUser",
       "discriminator": [
         204,
@@ -3964,6 +4303,26 @@ export type Shadowspace = {
       "code": 6015,
       "name": "invalidTreasury",
       "msg": "Treasury account does not match config"
+    },
+    {
+      "code": 6016,
+      "name": "gateTokenRequired",
+      "msg": "This community requires a gate token to post; none was provided"
+    },
+    {
+      "code": 6017,
+      "name": "gateTokenMintMismatch",
+      "msg": "Gate token account mint does not match the community gate"
+    },
+    {
+      "code": 6018,
+      "name": "gateTokenOwnerMismatch",
+      "msg": "Gate token account is not owned by the poster"
+    },
+    {
+      "code": 6019,
+      "name": "insufficientGateBalance",
+      "msg": "Insufficient gate-token balance to post in this community"
     }
   ],
   "types": [
@@ -4088,6 +4447,21 @@ export type Shadowspace = {
           {
             "name": "createdAt",
             "type": "i64"
+          },
+          {
+            "name": "gateMint",
+            "docs": [
+              "Posting gate. `None` = open community (anyone with a profile may post). `Some(mint)` =",
+              "only wallets holding >= `gate_min` base units of `mint` may `create_community_post` here.",
+              "Checked LIVE on every post against the poster's (owner/funding-wallet) token account."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "gateMin",
+            "type": "u64"
           }
         ]
       }
@@ -4525,7 +4899,7 @@ export type Shadowspace = {
 // Raw on-chain IDL (snake_case). Anchor camelCases it at runtime, so this is the correct value to
 // pass to `new Program(IDL)`; the cast exposes the camelCase decoded-account types via Shadowspace.
 export const IDL = {
-  "address": "5zokTL2f5VCTu7vH2aaAhqhjRytLBFdxVJ6osEPxrJsY",
+  "address": "5NJDhyadLxvNebw2bRNunFxF8HSxmcfc3fncGpLKQpo",
   "metadata": {
     "name": "shadowspace",
     "version": "0.3.0",
@@ -5910,6 +6284,251 @@ export const IDL = {
         },
         {
           "name": "avatar_url",
+          "type": "string"
+        },
+        {
+          "name": "gate_mint",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "gate_min",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "create_community_post",
+      "docs": [
+        "Create a post inside a community, enforcing the community's posting gate on the WRITE.",
+        "Mirrors `create_post` (same Post/PostStats layout, same protocol-fee path) but:",
+        "- reads the `community`'s gate and, if set, requires the poster to hold >= `gate_min`",
+        "of `gate_mint` in a token account owned by the post's IDENTITY (`profile.owner`,",
+        "the funding wallet — never the agent signer). Checked LIVE, so selling the token",
+        "removes posting ability on the very next post with no membership change.",
+        "- binds the post to the community on-chain by writing `content = \"COMM|<id>|<body>\"`,",
+        "so a holder of one community's token cannot publish into another. This is the same",
+        "`COMM|` convention the frontend feed already parses — no read-side change."
+      ],
+      "discriminator": [
+        184,
+        191,
+        153,
+        85,
+        191,
+        16,
+        58,
+        5
+      ],
+      "accounts": [
+        {
+          "name": "post",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "post_stats",
+          "docs": [
+            "Companion hot-stats account — created alongside the body, same (author, post_id) seed inputs."
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  116,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              },
+              {
+                "kind": "arg",
+                "path": "post_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "community",
+          "docs": [
+            "The gated community — read-only source of `gate_mint` / `gate_min` / `community_id`."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "community_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "author",
+          "docs": [
+            "The acting signer — must be the profile owner OR the owner's registered agent."
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent_record",
+          "docs": [
+            "Optional agent record proving `author` is the owner's delegated signer."
+          ],
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "profile.owner",
+                "account": "Profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "gate_token_account",
+          "docs": [
+            "Gate token account — REQUIRED only when `community.gate_mint` is set. Must be owned by",
+            "`profile.owner` (the funding wallet, NOT the agent signer) and hold >= `community.gate_min`",
+            "of `community.gate_mint`. Read-only (no CPI); Anchor's `TokenAccount` deser already asserts",
+            "the account is owned by the SPL Token program. Pass `None` for open communities."
+          ],
+          "optional": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "docs": [
+            "Protocol-fee config — REQUIRED + PDA-derived ([CONFIG_SEED]) so it can't be spoofed/omitted."
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "treasury",
+          "docs": [
+            "Fee sink — must equal `config.treasury`, so fees can't be redirected by a crafted tx."
+          ],
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "post_id",
+          "type": "u64"
+        },
+        {
+          "name": "_community_id",
+          "type": "u64"
+        },
+        {
+          "name": "body",
           "type": "string"
         }
       ]
@@ -7644,6 +8263,100 @@ export const IDL = {
       ]
     },
     {
+      "name": "set_community_gate",
+      "docs": [
+        "Set / clear / adjust a community's posting gate. Creator-only (or their agent).",
+        "`gate_mint = None` opens the community; `Some(mint)` requires holding >= `gate_min`",
+        "base units of `mint` to post. Takes effect immediately for the NEXT post (the gate is",
+        "read live), so lowering/raising the bar or rotating the mint needs no member changes."
+      ],
+      "discriminator": [
+        169,
+        130,
+        54,
+        185,
+        194,
+        249,
+        172,
+        215
+      ],
+      "accounts": [
+        {
+          "name": "community",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  109,
+                  109,
+                  117,
+                  110,
+                  105,
+                  116,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "community_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "docs": [
+            "The acting signer — must be the community creator OR their registered agent"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent_record",
+          "optional": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "community.creator",
+                "account": "Community"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "_community_id",
+          "type": "u64"
+        },
+        {
+          "name": "gate_mint",
+          "type": {
+            "option": "pubkey"
+          }
+        },
+        {
+          "name": "gate_min",
+          "type": "u64"
+        }
+      ]
+    },
+    {
       "name": "unfollow_user",
       "discriminator": [
         204,
@@ -8480,6 +9193,26 @@ export const IDL = {
       "code": 6015,
       "name": "InvalidTreasury",
       "msg": "Treasury account does not match config"
+    },
+    {
+      "code": 6016,
+      "name": "GateTokenRequired",
+      "msg": "This community requires a gate token to post; none was provided"
+    },
+    {
+      "code": 6017,
+      "name": "GateTokenMintMismatch",
+      "msg": "Gate token account mint does not match the community gate"
+    },
+    {
+      "code": 6018,
+      "name": "GateTokenOwnerMismatch",
+      "msg": "Gate token account is not owned by the poster"
+    },
+    {
+      "code": 6019,
+      "name": "InsufficientGateBalance",
+      "msg": "Insufficient gate-token balance to post in this community"
     }
   ],
   "types": [
@@ -8604,6 +9337,21 @@ export const IDL = {
           {
             "name": "created_at",
             "type": "i64"
+          },
+          {
+            "name": "gate_mint",
+            "docs": [
+              "Posting gate. `None` = open community (anyone with a profile may post). `Some(mint)` =",
+              "only wallets holding >= `gate_min` base units of `mint` may `create_community_post` here.",
+              "Checked LIVE on every post against the poster's (owner/funding-wallet) token account."
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "gate_min",
+            "type": "u64"
           }
         ]
       }

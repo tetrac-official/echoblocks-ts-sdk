@@ -22,6 +22,13 @@ export const DEFAULT_PROGRAM_ID = new PublicKey(IDL.address);
  */
 export const DEFAULT_TREASURY = new PublicKey("BYNtxb7zMereaMrmMcWCQx3G6Y1KZspnMJbiuqoh9MrF");
 
+// ── SPL Token program ids (well-known) ───────────────────────────────────────
+// Needed to derive a gate token account (ATA) for holders-only community posting.
+// The program's `gate_token_account` is an Anchor `TokenAccount`, i.e. CLASSIC SPL
+// Token (not Token-2022), so the ATA defaults to TOKEN_PROGRAM_ID below.
+export const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+export const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL");
+
 // ── PDA seeds (byte-for-byte matches the `*_SEED` consts in lib.rs) ───────────
 export const SEEDS = {
   PROFILE: Buffer.from("profile"),
@@ -45,6 +52,41 @@ export const SEEDS = {
   // Global protocol-fee config (single PDA, no per-user seed) — holds treasury + fee switch.
   CONFIG: Buffer.from("config"),
 } as const;
+
+// ── Community post content convention ────────────────────────────────────────
+/**
+ * On-chain, a community post is a normal `Post` whose `content` is prefixed so the
+ * post is provably bound to the community feed it claims:
+ *
+ *     COMM|<communityId>|<body>
+ *
+ * `create_community_post` builds this exact string on-chain (and the frontend feed
+ * parses it), so the SDK mirrors the convention here. The ASSEMBLED string is what
+ * counts against the 500-byte `POST_CONTENT` limit — not the bare body.
+ */
+export const COMMUNITY_POST_PREFIX = "COMM";
+
+/** Build the on-chain content string for a community post: `COMM|<id>|<body>`. */
+export function buildCommunityPostContent(communityId: { toString(): string }, body: string): string {
+  return `${COMMUNITY_POST_PREFIX}|${communityId.toString()}|${body}`;
+}
+
+/**
+ * Split a fetched post's content back into `{ communityId, body }`, or return `null`
+ * if it isn't a community post. `communityId` is a decimal string (compare against
+ * `String(id)` / `new BN(id).toString()`). Only the first two `|` delimiters are
+ * significant, so a body may itself contain `|`.
+ */
+export function parseCommunityPostContent(content: string): { communityId: string; body: string } | null {
+  const prefix = `${COMMUNITY_POST_PREFIX}|`;
+  if (!content.startsWith(prefix)) return null;
+  const rest = content.slice(prefix.length);
+  const sep = rest.indexOf("|");
+  if (sep < 0) return null;
+  const communityId = rest.slice(0, sep);
+  if (!/^\d+$/.test(communityId)) return null;
+  return { communityId, body: rest.slice(sep + 1) };
+}
 
 /**
  * Reaction types accepted by `react_to_post` (the program validates `0..=5`).

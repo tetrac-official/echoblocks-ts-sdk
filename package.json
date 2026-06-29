@@ -1,6 +1,6 @@
 {
   "name": "@tetrac/echoblocks-ts-sdk",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Node/TypeScript SDK for the ShadowSpace Solana program — post, like, comment, follow, communities & polls, with multi-provider RPC failover and a mainnet/devnet switch.",
   "license": "MIT",
   "author": "Tetrac",
@@ -68,6 +68,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@solana/spl-token": "^0.4.14",
     "@types/node": "^22.10.0",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",

@@ -4,7 +4,7 @@
 
 import { PublicKey } from "@solana/web3.js";
 import { BN } from "./anchor.js";
-import { SEEDS } from "./constants.js";
+import { SEEDS, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from "./constants.js";
 
 /** A bigint-ish id accepted anywhere the program takes a `u64`. */
 export type U64Like = number | bigint | BN | string;
@@ -98,6 +98,26 @@ export class Pdas {
    * treasury + fee switch. Required on `create_post` and every rent-returning close. */
   config(): PublicKey {
     return this.derive([SEEDS.CONFIG]);
+  }
+
+  /**
+   * Associated Token Account address for `(owner, mint)` — the gate token account a
+   * holder passes to `create_community_post` when a community is token-gated. Derived
+   * exactly like `@solana/spl-token`'s `getAssociatedTokenAddressSync`
+   * (`[owner, tokenProgram, mint]` under the ATA program). Defaults to the CLASSIC SPL
+   * Token program, matching the program's Anchor `TokenAccount`; pass a different
+   * `tokenProgram` only for a Token-2022 gate mint. NOTE: this is a pure address derivation
+   * — it does NOT check the account exists or holds enough balance (the program does that).
+   */
+  associatedTokenAccount(
+    mint: PublicKey | string,
+    owner: PublicKey | string,
+    tokenProgram: PublicKey = TOKEN_PROGRAM_ID,
+  ): PublicKey {
+    return PublicKey.findProgramAddressSync(
+      [toPublicKey(owner).toBuffer(), tokenProgram.toBuffer(), toPublicKey(mint).toBuffer()],
+      ASSOCIATED_TOKEN_PROGRAM_ID,
+    )[0];
   }
 
   /** Username-uniqueness registry PDA. Seeded by the raw UTF-8 username bytes

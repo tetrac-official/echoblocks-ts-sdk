@@ -14,6 +14,8 @@ export type {
   CloseReactionInput,
   CreateCommunityInput,
   UpdateCommunityInput,
+  SetCommunityGateInput,
+  CreateCommunityPostInput,
   CreatePollInput,
   VotePollInput,
   CreateChatInput,
@@ -32,7 +34,18 @@ export {
 } from "./config.js";
 
 // Constants.
-export { DEFAULT_PROGRAM_ID, DEFAULT_TREASURY, SEEDS, LIMITS, ReactionType } from "./constants.js";
+export {
+  DEFAULT_PROGRAM_ID,
+  DEFAULT_TREASURY,
+  TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  SEEDS,
+  LIMITS,
+  ReactionType,
+  COMMUNITY_POST_PREFIX,
+  buildCommunityPostContent,
+  parseCommunityPostContent,
+} from "./constants.js";
 
 // PDA helpers.
 export { Pdas, u64ToLeBytes, toPublicKey, type U64Like } from "./pdas.js";

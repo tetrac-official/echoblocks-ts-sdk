@@ -8,7 +8,7 @@ import { BN, type Program } from "./anchor.js";
 import { config as loadDotenv } from "dotenv";
 
 import { loadConfig, type ConfigOverrides, type ShadowSpaceConfig } from "./config.js";
-import { LIMITS, ReactionType } from "./constants.js";
+import { LIMITS, ReactionType, buildCommunityPostContent } from "./constants.js";
 import { ValidationError, WalletRequiredError } from "./errors.js";
 import { RpcPool, type EndpointHealth } from "./rpc/endpoints.js";
 import { createFailoverConnection } from "./rpc/connection.js";
@@ -97,11 +97,39 @@ export interface CreateCommunityInput {
   name: string;
   description?: string;
   avatarUrl?: string;
+  /**
+   * Posting gate. Omit / `null` for an OPEN community (anyone with a profile may post).
+   * Set a mint to make it HOLDERS-ONLY: a poster must hold at least `gateMin` base units
+   * of this mint (checked LIVE per post). Adjustable later via {@link setCommunityGate}.
+   */
+  gateMint?: Address | null;
+  /** Minimum base-unit balance of `gateMint` required to post. Defaults to 0. Ignored when open. */
+  gateMin?: U64Like;
 }
 export interface UpdateCommunityInput {
   communityId: U64Like;
   description?: string;
   avatarUrl?: string;
+}
+export interface SetCommunityGateInput {
+  communityId: U64Like;
+  /** New gate mint, or `null`/omit to OPEN the community (clear the gate). */
+  gateMint?: Address | null;
+  /** Minimum base-unit balance required to post. Defaults to 0. Ignored when opening. */
+  gateMin?: U64Like;
+}
+export interface CreateCommunityPostInput {
+  postId: U64Like;
+  communityId: U64Like;
+  /** The post body. Stored on-chain as `COMM|<communityId>|<body>` (counts toward the 500-byte limit). */
+  body: string;
+  /**
+   * Gate token account proving the poster holds the community's gate token. Leave undefined to
+   * AUTO-RESOLVE: the client reads the community and, if gated, derives the owner's ATA for the
+   * gate mint (one extra RPC read). Pass an explicit account to override, or `null` to force the
+   * "no gate account" path (the program rejects with GateTokenRequired if the community is gated).
+   */
+  gateTokenAccount?: Address | null;
 }
 export interface CreatePollInput {
   pollId: U64Like;
@@ -498,8 +526,16 @@ export class EchoBlocksClient {
     // Community-name-uniqueness registry — the program `init`s this PDA (seeded by
     // the name), so a second community with the same name fails on-chain.
     const nameRegistry = this.pdas.communityNameRegistry(input.name);
+    const gateMint = input.gateMint ? toPublicKey(input.gateMint) : null;
     const signature = await this.program.methods
-      .createCommunity(this.bn(input.communityId), input.name, description, avatarUrl)
+      .createCommunity(
+        this.bn(input.communityId),
+        input.name,
+        description,
+        avatarUrl,
+        gateMint,
+        this.bn(input.gateMin ?? 0),
+      )
       .accountsPartial({
         community,
         nameRegistry,
@@ -585,6 +621,67 @@ export class EchoBlocksClient {
       })
       .rpc(this.confirmOptions(opts));
     return { signature, accounts: { community } };
+  }
+
+  /**
+   * Set, change, or clear a community's posting gate (creator only). Pass a `gateMint`
+   * to require holders-only posting (>= `gateMin` base units, default 0); omit/`null` to
+   * OPEN it. Takes effect on the very next post — the gate is read live, no member changes.
+   */
+  async setCommunityGate(input: SetCommunityGateInput, opts?: SendOptions): Promise<TxResultWithAccounts> {
+    const owner = this.owner();
+    const community = this.pdas.community(input.communityId);
+    const gateMint = input.gateMint ? toPublicKey(input.gateMint) : null;
+    const signature = await this.program.methods
+      .setCommunityGate(this.bn(input.communityId), gateMint, this.bn(input.gateMin ?? 0))
+      .accountsPartial({ community, user: owner, agentRecord: null })
+      .rpc(this.confirmOptions(opts));
+    return { signature, accounts: { community } };
+  }
+
+  /**
+   * Post into a community, enforcing its posting gate on the write. The body is stored as
+   * `COMM|<communityId>|<body>` (the on-chain feed convention). Membership is NOT required —
+   * the gate is purely the live token-balance check. For a gated community the gate token
+   * account is auto-derived (owner's ATA for the gate mint) unless you pass one explicitly.
+   */
+  async createCommunityPost(input: CreateCommunityPostInput, opts?: SendOptions): Promise<TxResultWithAccounts> {
+    const owner = this.owner();
+    // Mirror the program: it enforces the 500-byte limit on the ASSEMBLED `COMM|id|body` string.
+    this.checkLen("content", buildCommunityPostContent(this.bn(input.communityId), input.body), LIMITS.POST_CONTENT);
+
+    const community = this.pdas.community(input.communityId);
+    const post = this.pdas.post(owner, input.postId);
+    const profile = this.pdas.profile(owner);
+
+    // Resolve the gate token account: explicit value (incl. null) wins; otherwise read the
+    // community and derive the owner's ATA when gated, or null when open.
+    let gateTokenAccount: PublicKey | null;
+    if (input.gateTokenAccount !== undefined) {
+      gateTokenAccount = input.gateTokenAccount === null ? null : toPublicKey(input.gateTokenAccount);
+    } else {
+      const onchain = await this.getCommunity(input.communityId);
+      if (!onchain) throw new ValidationError(`community ${input.communityId.toString()} not found`);
+      gateTokenAccount = onchain.gateMint ? this.pdas.associatedTokenAccount(onchain.gateMint, owner) : null;
+    }
+
+    const signature = await this.program.methods
+      .createCommunityPost(this.bn(input.postId), this.bn(input.communityId), input.body)
+      .accountsPartial({
+        post,
+        postStats: this.pdas.postStats(owner, input.postId),
+        community,
+        profile,
+        author: owner,
+        agentRecord: null,
+        gateTokenAccount,
+        payer: owner,
+        config: this.pdas.config(),
+        treasury: this.config.treasury,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc(this.confirmOptions(opts));
+    return { signature, accounts: { post, profile, community } };
   }
 
   // ══════════════════════════════════════════════════════════════════════════
